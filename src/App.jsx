@@ -1,8 +1,9 @@
 import React from 'react'
+import AppLayout from './components/AppLayout'
 
 const App = () => {
   return (
-    <div>App</div>
+    <AppLayout />
   )
 }
 
