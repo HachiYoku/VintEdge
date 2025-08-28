@@ -2,6 +2,7 @@ import React from 'react';
 import AppHeader from './AppHeader';
 import { App, Flex, Layout } from 'antd';
 import AppFooter from './AppFooter';
+import { Outlet } from 'react-router-dom';
 const {  Content } = Layout;
 
 const contentStyle = {
@@ -25,7 +26,9 @@ const AppLayout = () => {
     <Flex gap="middle" wrap>
       <Layout style={layoutStyle}>
         <AppHeader />
-        <Content style={contentStyle}>Content</Content>
+        <Content style={contentStyle}>
+          <Outlet />
+        </Content>
         <AppFooter />
       </Layout>
     </Flex>
