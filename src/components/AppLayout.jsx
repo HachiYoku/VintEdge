@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppHeader from './AppHeader';
-import { App, Flex, Layout } from 'antd';
+import { Flex, Layout } from 'antd';
 import AppFooter from './AppFooter';
 import { Outlet } from 'react-router-dom';
+import axios from 'axios';
+
+
+
+
 const {  Content } = Layout;
 
 const contentStyle = {
@@ -21,13 +26,35 @@ const layoutStyle = {
   maxWidth: '100%',
 };
 
+
 const AppLayout = () => {
+
+  const [products, setProducts] = useState([]);
+
+
+  useEffect(() => {
+    axios.get('https://dummyjson.com/products')
+    .then(function (response) {
+      // handle success
+      console.log(response.data.products);
+      setProducts(response.data.products)
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .finally(function () {
+      // always executed
+    })
+    }, []);
+
+
   return (
     <Flex gap="middle" wrap>
       <Layout style={layoutStyle}>
         <AppHeader />
         <Content style={contentStyle}>
-          <Outlet />
+          <Outlet context={{ products }} />
         </Content>
         <AppFooter />
       </Layout>
