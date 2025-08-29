@@ -24,10 +24,10 @@ const ProductCard = ({ product }) => { // Accept the product prop
     >
       <Meta
         title={product.title}
-        description={product.description}
       />
-      <div style={{ marginTop: '10px', fontSize: '18px', fontWeight: 'bold' }}>
-        ${product.price}
+      <div style={{ marginTop: '10px', fontSize: '18px', fontWeight: 'normal' }}>
+        <p>${product.category}</p>
+        <p>${product.price}</p>
       </div>
     </Card>
   );
