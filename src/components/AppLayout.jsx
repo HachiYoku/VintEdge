@@ -11,8 +11,8 @@ const contentStyle = {
   textAlign: "center",
   minHeight: "100vh",
   lineHeight: "120px",
-  color: "#fff",
-  backgroundColor: "#647289ff",
+  color: "#000000ff",
+  backgroundColor: "#F0F2F2",
 };
 
 const layoutStyle = {
