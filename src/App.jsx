@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
+import "@ant-design/v5-patch-for-react-19";
 
 // Pages (all use index.jsx inside their folder)
 import Home from "./pages/Home";
@@ -9,6 +10,7 @@ import History from "./pages/History";
 import Setting from "./pages/Setting";
 import CartPage from "./pages/CartPage";
 import Profile from "./pages/Profile";
+import SearchPage from "./pages/SearchPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 // Context
@@ -26,7 +28,7 @@ const App = () => {
             <Route path="/setting" element={<Setting />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/search" element={<SearchResults />} />
+            <Route path="/search" element={<SearchPage />} />
           </Route>
 
           {/* 404 Page */}

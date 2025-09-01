@@ -1,6 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useItems } from "../../context/ItemContext"; // ✅
+import { useItems } from "../../context/ItemContext";
+import {
+  Row,
+  Col,
+  Card,
+  Input,
+  InputNumber,
+  Button,
+  Select,
+  Upload,
+  Radio,
+  Form,
+} from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+
+const { TextArea } = Input;
+const { Option } = Select;
 
 const CreateItem = () => {
   const { addItem } = useItems();
@@ -14,6 +30,7 @@ const CreateItem = () => {
     description: "",
     condition: "Brand New",
     price: 0,
+    currency: "MMK",
     image: null,
   });
 
@@ -21,8 +38,7 @@ const CreateItem = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleImage = (e) => {
-    const file = e.target.files[0];
+  const handleImage = (file) => {
     if (file) {
       setForm({ ...form, image: URL.createObjectURL(file) });
     }
@@ -34,131 +50,216 @@ const CreateItem = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <div className="row g-4">
-        {/* Left column */}
-        <div className="col-md-4 d-flex">
-          <div className="card p-3 text-center w-100 h-100">
-            <input type="file" accept="image/*" onChange={handleImage} />
-            {form.image && (
-              <img
-                src={form.image}
-                alt="preview"
-                className="img-fluid mt-2 rounded"
-                style={{ maxHeight: "200px", objectFit: "cover" }}
-              />
-            )}
+    <div style={{ padding: "24px" }}>
+      <Row gutter={[24, 24]}>
+        {/* Left Column: Image + Condition */}
+        <Col xs={24} lg={8}>
+          <Card title="Product Image" className="mb-3">
+            <Row gutter={[16, 16]}>
+              {/* Upload Area */}
+              <Col xs={12}>
+                <Upload
+                  showUploadList={false}
+                  beforeUpload={(file) => {
+                    handleImage(file);
+                    return false; // prevent auto upload
+                  }}
+                >
+                  <div
+                    style={{
+                      border: "1px dashed #d9d9d9",
+                      borderRadius: 4,
+                      height: 150,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      textAlign: "center",
+                    }}
+                  >
+                    <UploadOutlined
+                      style={{ fontSize: 20, marginBottom: 4, padding: 50 }}
+                    />
+                    {/* <div style={{ fontSize: 15 }}>Click to upload</div> */}
+                  </div>
+                </Upload>
+              </Col>
 
-            {/* Condition */}
-            <div className="text-start ">
-              <label
-                className="form-label"
-                style={{
-                  marginRight: "8px",
-                  fontWeight: "500",
-                }}
-              >
-                Condition:
-              </label>
-              <select
-                name="condition"
-                value={form.condition}
-                onChange={handleChange}
-                className="form-select d-inline-block"
-                style={{ width: "auto", display: "inline-block" }}
-              >
-                <option>Brand New</option>
-                <option>Like New</option>
-                <option>Good</option>
-                <option>Fair</option>
-                <option>Worn</option>
-                <option>For parts/not working</option>
-              </select>
-            </div>
+              {/* Preview Area */}
+              <Col xs={12}>
+                <div
+                  style={{
+                    border: "1px solid #d9d9d9",
+                    borderRadius: 4,
+                    height: 150,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    overflow: "hidden",
+                  }}
+                >
+                  {form.image ? (
+                    <img
+                      src={form.image}
+                      alt="preview"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ) : (
+                    <span style={{ color: "#999" }}>Preview</span>
+                  )}
+                </div>
+              </Col>
+            </Row>
+          </Card>
 
-            {/* Price with currency */}
-            <div className="text-start d-flex align-items-center">
-              <label
-                className="form-label"
-                style={{ marginRight: "8px", fontWeight: "500" }}
-              >
-                Price:
-              </label>
-              <input
-                type="number"
-                name="price"
-                value={form.price}
-                onChange={handleChange}
-                className="form-control"
-                style={{
-                  width: "120px",
-                  marginRight: "8px",
-                  display: "inline-block",
-                }}
-              />
-              <select
-                name="currency"
-                value={form.currency || "MMK"}
-                onChange={handleChange}
-                className="form-select"
-                style={{ width: "100px", display: "inline-block" }}
-              >
-                <option value="MMK">MMK</option>
-                <option value="USD">USD</option>
-                <option value="THB">Baht</option>
-              </select>
-            </div>
-          </div>
-        </div>
+          <Card title="Condition">
+            <Radio.Group
+              value={form.condition}
+              onChange={(e) => setForm({ ...form, condition: e.target.value })}
+            >
+              <Row gutter={[8, 8]}>
+                {[
+                  "Brand New",
+                  "Like New",
+                  "Good",
+                  "Fair",
+                  "Worn",
+                  "For parts/not working",
+                ].map((option) => (
+                  <Col key={option} xs={12}>
+                    <Radio.Button value={option}>{option}</Radio.Button>
+                  </Col>
+                ))}
+              </Row>
+            </Radio.Group>
+          </Card>
+        </Col>
 
-        {/* Right column */}
-        <div className="col-md-8 d-flex">
-          <div className="card p-4 w-100 h-100">
-            <input
-              type="text"
-              name="title"
-              placeholder="Product name"
-              value={form.title}
-              onChange={handleChange}
-              className="form-control mb-3"
-            />
+        {/* Right Column: Product Details */}
+        <Col xs={24} lg={16}>
+          <Card title="Product Details">
+            <Form layout="vertical">
+              {/* Title + Quantity */}
+              <Row gutter={[16, 16]}>
+                <Col xs={24} md={12}>
+                  <Form.Item label="Title">
+                    <Input
+                      name="title"
+                      value={form.title}
+                      onChange={handleChange}
+                      placeholder="Enter product name"
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label="Quantity">
+                    <Input.Group compact>
+                      <Button
+                        onClick={() =>
+                          setForm((f) => ({
+                            ...f,
+                            quantity: Math.max(0, Number(f.quantity || 0) - 1),
+                          }))
+                        }
+                      >
+                        –
+                      </Button>
+                      <InputNumber
+                        name="quantity"
+                        value={form.quantity}
+                        onChange={(value) =>
+                          setForm({ ...form, quantity: value })
+                        }
+                        style={{ width: "78%", textAlign: "center" }}
+                      />
+                      <Button
+                        onClick={() =>
+                          setForm((f) => ({
+                            ...f,
+                            quantity: Number(f.quantity || 0) + 1,
+                          }))
+                        }
+                      >
+                        +
+                      </Button>
+                    </Input.Group>
+                  </Form.Item>
+                </Col>
+              </Row>
 
-            <input
-              type="number"
-              name="quantity"
-              placeholder="Quantity"
-              value={form.quantity}
-              onChange={handleChange}
-              className="form-control mb-3"
-            />
+              {/* Category + Price */}
+              <Row gutter={[16, 16]}>
+                <Col xs={24} md={12}>
+                  <Form.Item label="Category">
+                    <Select
+                      name="category"
+                      value={form.category}
+                      onChange={(value) =>
+                        setForm({ ...form, category: value })
+                      }
+                      placeholder="Select category"
+                    >
+                      <Option value="Electronics">Electronics</Option>
+                      <Option value="Clothing">Clothing</Option>
+                      <Option value="Books">Books</Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label="Price">
+                    <Input.Group compact>
+                      <InputNumber
+                        name="price"
+                        value={form.price}
+                        onChange={(value) => setForm({ ...form, price: value })}
+                        style={{ width: "70%" }}
+                        placeholder="Enter price"
+                      />
+                      <Select
+                        name="currency"
+                        value={form.currency}
+                        onChange={(value) =>
+                          setForm({ ...form, currency: value })
+                        }
+                        style={{ width: "30%" }}
+                      >
+                        <Option value="MMK">MMK</Option>
+                        <Option value="USD">USD</Option>
+                        <Option value="THB">THB</Option>
+                      </Select>
+                    </Input.Group>
+                  </Form.Item>
+                </Col>
+              </Row>
 
-            <input
-              type="text"
-              name="category"
-              placeholder="Category"
-              value={form.category}
-              onChange={handleChange}
-              className="form-control mb-3"
-            />
+              {/* Description */}
+              <Form.Item label="Description">
+                <TextArea
+                  name="description"
+                  value={form.description}
+                  onChange={handleChange}
+                  rows={4}
+                  placeholder="Type your product details here"
+                />
+              </Form.Item>
 
-            <textarea
-              name="description"
-              placeholder="Description"
-              value={form.description}
-              onChange={handleChange}
-              className="form-control mb-3"
-              rows="6"
-            />
-
-            <div className="d-flex justify-content-end gap-2">
-              <button className="btn btn-secondary">Cancel</button>
-              <button onClick={handleSubmit} className="btn btn-primary">
-                Publish
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+              {/* Buttons */}
+              <Form.Item>
+                <div style={{ textAlign: "right" }}>
+                  <Button style={{ marginRight: 8 }}>Cancel</Button>
+                  <Button type="primary" onClick={handleSubmit}>
+                    Publish
+                  </Button>
+                </div>
+              </Form.Item>
+            </Form>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };
