@@ -14,7 +14,7 @@ const contentStyle = {
   minHeight: "100vh",
   lineHeight: "120px",
   color: "#000000ff",
-  backgroundColor: "#F0F2F2",
+  background: " #fceabb",
 };
 
 const layoutStyle = {
