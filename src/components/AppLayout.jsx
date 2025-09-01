@@ -45,7 +45,7 @@ const AppLayout = () => {
   return (
     <Flex gap="middle" wrap>
       <Layout style={layoutStyle}>
-        <AppHeader />
+        <AppHeader products={products} />
         <Content style={contentStyle}>
           <Outlet context={{ products }} />
         </Content>

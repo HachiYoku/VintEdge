@@ -26,6 +26,7 @@ const App = () => {
             <Route path="/setting" element={<Setting />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/search" element={<SearchResults />} />
           </Route>
 
           {/* 404 Page */}
