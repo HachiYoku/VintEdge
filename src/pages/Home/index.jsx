@@ -1,17 +1,17 @@
-import React from 'react'
-import { useOutletContext } from 'react-router-dom';
-import ProductCard from '../../components/ProductCard';
+
+import CategoryListing from '../../components/CategoryListing';
+import FlashSaleListing from '../../components/FlashSaleListing';
+import HomeCarousel from '../../components/HomeCarousel';
+import '../../styles/pages/Home.css'
 
 const Home = () => {
-  const { products } = useOutletContext();
   
-  console.log(products);
 
   return (
     <div>
-      {products.map(product => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+      <HomeCarousel />
+      <CategoryListing/>
+      <FlashSaleListing />
     </div>
   )
 }
