@@ -67,7 +67,9 @@ export default function Profile() {
                     <p style={{ margin: "2px 0" }}>Price: ${item.price}</p>
                     <p style={{ margin: "2px 0" }}>Quantity: {item.quantity}</p>
                     <p style={{ margin: "2px 0" }}>Category: {item.category}</p>
-                    <p style={{ margin: "2px 0" }}>Location: {item.location}</p>
+                    <p style={{ margin: "2px 0" }}>
+                      condition: {item.condition}
+                    </p>
                     <p
                       style={{
                         margin: "2px 0",
