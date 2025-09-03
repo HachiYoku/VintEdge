@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useItems } from "../../context/ItemContext";
-import "../../styles/pages/CreateItem.css";
-
 import {
   Row,
   Col,
@@ -68,7 +66,7 @@ const CreateItem = () => {
   };
 
   return (
-    <div className="create-item-container" style={{ padding: "24px" }}>
+    <div style={{ padding: "24px" }}>
       <Row gutter={[24, 24]}>
         {/* Left Column: Image + Condition */}
         <Col xs={24} lg={8}>
@@ -133,7 +131,6 @@ const CreateItem = () => {
           {/* Condition Card */}
           <Card title="Condition" style={{ marginTop: 16 }}>
             <Radio.Group
-              className="condition-group"
               value={form.condition}
               onChange={(e) => setForm({ ...form, condition: e.target.value })}
             >
@@ -158,11 +155,17 @@ const CreateItem = () => {
         {/* Right Column: Details */}
         <Col xs={24} lg={16}>
           <Card title="Product Details">
-            <Form layout="vertical">
+            <Form layout="vertical" onFinish={handleSubmit}>
               {/* Title + Quantity */}
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
-                  <Form.Item label="Title">
+                  <Form.Item
+                    label="Title"
+                    name="title"
+                    rules={[
+                      { required: true, message: "Please enter product title" },
+                    ]}
+                  >
                     <Input
                       name="title"
                       value={form.title}
@@ -204,7 +207,13 @@ const CreateItem = () => {
               {/* Category + Price */}
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
-                  <Form.Item label="Category">
+                  <Form.Item
+                    label="Category"
+                    name="category"
+                    rules={[
+                      { required: true, message: "Please select category" },
+                    ]}
+                  >
                     <Select
                       value={form.category}
                       onChange={(v) => setForm({ ...form, category: v })}
@@ -239,7 +248,13 @@ const CreateItem = () => {
               </Row>
 
               {/* Description */}
-              <Form.Item label="Description">
+              <Form.Item
+                label="Description"
+                name="description"
+                rules={[
+                  { required: true, message: "Please enter description" },
+                ]}
+              >
                 <TextArea
                   value={form.description}
                   onChange={(e) =>
@@ -259,7 +274,7 @@ const CreateItem = () => {
                   >
                     Cancel
                   </Button>
-                  <Button type="primary" onClick={handleSubmit}>
+                  <Button type="primary" htmlType="submit">
                     {editItem ? "Update" : "Publish"}
                   </Button>
                 </div>
