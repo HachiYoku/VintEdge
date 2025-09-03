@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useItems } from "../../context/ItemContext";
+import "../../styles/pages/CreateItem.css";
+
 import {
   Row,
   Col,
@@ -50,7 +52,7 @@ const CreateItem = () => {
   };
 
   return (
-    <div style={{ padding: "24px" }}>
+    <div className="create-item-container" style={{ padding: "24px" }}>
       <Row gutter={[24, 24]}>
         {/* Left Column: Image + Condition */}
         <Col xs={24} lg={8}>
@@ -118,6 +120,7 @@ const CreateItem = () => {
 
           <Card title="Condition">
             <Radio.Group
+              className="condition-group"
               value={form.condition}
               onChange={(e) => setForm({ ...form, condition: e.target.value })}
             >

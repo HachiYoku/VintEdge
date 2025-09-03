@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/components/AppFooter.css";
 import { Layout, Row, Col } from "antd";
 import {
   FacebookOutlined,
@@ -15,7 +16,7 @@ const { Footer } = Layout;
 
 const AppFooter = () => {
   return (
-    <Footer>
+    <Footer className="app-footer">
       <Row gutter={[32, 32]} justify="space-between">
         {/* Logo + Description */}
         <Col xs={24} sm={12} md={6}>

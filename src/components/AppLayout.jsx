@@ -61,10 +61,11 @@ const AppLayout = () => {
       <Layout style={{ borderRadius: 8, maxWidth: "100%" }}>
         <AppHeader />
         <Content
+          className="app-content"
           style={{
             textAlign: "center",
             minHeight: "100vh",
-            backgroundColor: "#f4f4f4",
+            transition: "background-color 0.3s, color 0.3s",
           }}
         >
           {loading ? (

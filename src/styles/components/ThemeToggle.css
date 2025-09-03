@@ -1,0 +1,50 @@
+/* ThemeToggle.css */
+
+/* Style for the toggle button itself */
+.theme-toggle {
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+/* Optional: hover effect */
+.theme-toggle:hover {
+  color: #ffd700; /* gold-ish highlight */
+}
+
+/* Dark mode global styles */
+body.dark-mode {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+/* Dark mode header */
+body.dark-mode .ant-layout-header {
+  background-color: #333 !important;
+}
+
+/* Dark mode inputs */
+body.dark-mode .ant-input,
+body.dark-mode .ant-input-affix-wrapper {
+  background-color: #444 !important;
+  color: #fff !important;
+  border-color: #666 !important;
+}
+
+/* Dark mode links and icons */
+body.dark-mode a,
+body.dark-mode .anticon {
+  color: #fff !important;
+}
+/* Content background */
+body.dark-mode .app-content {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+body:not(.dark-mode) .app-content {
+  background-color: #f4f4f4;
+  color: #000;
+}

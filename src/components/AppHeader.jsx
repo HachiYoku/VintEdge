@@ -4,24 +4,16 @@ import BurgerMenu from "./BurgerMenu";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { TbUserSquare } from "react-icons/tb";
 import { PiShoppingCartBold } from "react-icons/pi";
+import ThemeToggle from "./ThemeToggle";
 
 const { Header } = Layout;
-const headerStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  color: "#fff",
-  height: "50px",
-  paddingTop: "10px",
-  backgroundColor: "#c5bebeff",
-};
 
 const iconStyle = {
   fontSize: "24px",
   color: "#fff",
 };
 
-const AppHeader = () => {
+const AppHeader = ({ products = [] }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,25 +24,41 @@ const AppHeader = () => {
 
   useEffect(() => {
     setSearchTerm(initialQuery);
-  }, [location.search]);
+  }, [location.search, initialQuery]);
 
+  // Handle search
   const onSearch = (value) => {
     if (value.trim() === "") return;
-    navigate(`/search?query=${encodeURIComponent(value.trim())}`);
+
+    // Filter products by title if products are passed
+    const filtered =
+      products.length > 0
+        ? products.filter((p) =>
+            p.title.toLowerCase().includes(value.trim().toLowerCase())
+          )
+        : [];
+
+    navigate("/search", {
+      state: { results: filtered, query: value.trim() },
+    });
   };
 
   return (
     <Header
+      className="app-header"
       style={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         padding: "0 20px",
         backgroundColor: "#c5bebeff",
+        transition: "background-color 0.3s",
       }}
     >
+      {/* Left: Burger menu */}
       <BurgerMenu iconStyle={iconStyle} />
 
+      {/* Center: Search input */}
       <Input.Search
         placeholder="Search products..."
         value={searchTerm}
@@ -60,14 +68,14 @@ const AppHeader = () => {
         style={{ maxWidth: 400 }}
       />
 
-      {/* Right icons */}
+      {/* Right: Icons */}
       <Space size="large">
+        <ThemeToggle />
         <Link to="/cart">
-          <PiShoppingCartBold style={{ fontSize: "24px", color: "#fff" }} />
           <PiShoppingCartBold style={iconStyle} />
         </Link>
         <Link to="/profile">
-          <TbUserSquare style={{ fontSize: "24px", color: "#fff" }} />
+          <TbUserSquare style={iconStyle} />
         </Link>
       </Space>
     </Header>

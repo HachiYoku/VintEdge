@@ -1,0 +1,89 @@
+/* Dark mode overrides */
+body.dark-mode .create-item-container {
+  background-color: #1a1a1a;
+  color: #fff; /* Base text color */
+}
+
+/* Card background and text */
+body.dark-mode .create-item-container .ant-card {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Form labels, headings, and paragraphs inside cards */
+body.dark-mode .create-item-container .ant-form-item-label > label,
+body.dark-mode .create-item-container p,
+body.dark-mode .create-item-container h1,
+body.dark-mode .create-item-container h2,
+body.dark-mode .create-item-container h3,
+body.dark-mode .create-item-container h4,
+body.dark-mode .create-item-container h5,
+body.dark-mode .create-item-container h6 {
+  color: #fff;
+}
+
+/* Inputs, select, and textareas */
+body.dark-mode .create-item-container .ant-input,
+body.dark-mode .create-item-container .ant-input-number,
+body.dark-mode .create-item-container .ant-select-selector,
+body.dark-mode .create-item-container .ant-input-affix-wrapper,
+body.dark-mode .create-item-container .ant-select-selection-item {
+  background-color: #444 !important;
+  color: #fff !important;
+  border-color: #666 !important;
+}
+
+/* Buttons */
+body.dark-mode .create-item-container .ant-btn {
+  background-color: #555;
+  color: #fff;
+  border-color: #666;
+}
+body.dark-mode .create-item-container .ant-btn:hover {
+  background-color: #666;
+  border-color: #888;
+}
+
+/* Condition buttons */
+body.dark-mode .condition-group .ant-radio-button-wrapper {
+  background-color: #444;
+  color: #fff;
+  border-color: #666;
+}
+body.dark-mode .condition-group .ant-radio-button-wrapper-checked {
+  background-color: #555;
+  color: #fff;
+  border-color: #888;
+}
+body.dark-mode .condition-group .ant-radio-button-wrapper:hover {
+  background-color: #555;
+  border-color: #888;
+}
+
+/* Dropdown items inside Select */
+body.dark-mode .create-item-container .ant-select-item-option-content {
+  color: #fff;
+}
+
+/* Placeholder text in Inputs & TextAreas */
+body.dark-mode .create-item-container ::placeholder {
+  color: #ccc;
+}
+
+/* Card titles and content */
+body.dark-mode .create-item-container .ant-card-head-title,
+body.dark-mode .create-item-container .ant-card-body {
+  color: #fff;
+}
+
+/* Optional: make divs and spans inside card white */
+body.dark-mode .create-item-container .ant-card-body div,
+body.dark-mode .create-item-container .ant-card-body span {
+  color: #fff;
+}
+
+/* Product image preview text */
+body.dark-mode .create-item-container .ant-upload .ant-upload-text,
+body.dark-mode .create-item-container .ant-upload span {
+  color: #fff;
+}
