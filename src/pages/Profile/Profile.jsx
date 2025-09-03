@@ -113,9 +113,9 @@ const Profile = () => {
                       <p style={{ color: "#888", fontSize: 12 }}>
                         {item.description}
                       </p>
-                      <p style={{ fontSize: 12, color: "#555" }}>
+                      {/* <p style={{ fontSize: 12, color: "#555" }}>
                         Added on: {new Date(item.date).toLocaleString()}
-                      </p>
+                      </p> */}
                     </Card>
                   </Col>
                 );
