@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Space, Input } from "antd";
+import { Layout, Space, Input,Badge } from "antd";
 import BurgerMenu from "./BurgerMenu";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { TbUserSquare } from "react-icons/tb";
 import { PiShoppingCartBold } from "react-icons/pi";
-import ThemeToggle from "./ThemeToggle";
+import { useCart } from "../context/CartContext";
 
 const { Header } = Layout;
+
+const headerStyle = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  color: "#fff",
+  height: "50px",
+  paddingTop: "10px",
+  backgroundColor: "#c5bebeff",
+};
 
 const iconStyle = {
   fontSize: "24px",
@@ -16,6 +26,9 @@ const iconStyle = {
 const AppHeader = ({ products = [] }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { cart } = useCart();
+
+   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   // Pre-fill search input when on /search
   const searchParams = new URLSearchParams(location.search);
@@ -72,7 +85,9 @@ const AppHeader = ({ products = [] }) => {
       <Space size="large">
         <ThemeToggle />
         <Link to="/cart">
-          <PiShoppingCartBold style={iconStyle} />
+          <Badge count={totalItems} size="small" offset={[0, 5]}>
+            <PiShoppingCartBold style={{ fontSize: "24px", color: "#fff" }} />
+          </Badge>
         </Link>
         <Link to="/profile">
           <TbUserSquare style={iconStyle} />

@@ -1,11 +1,15 @@
 import { FaCartShopping } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import {  Card } from 'antd';
+import { Card,Button } from 'antd';
+import { useCart } from "../context/CartContext";
 
 
 
 const { Meta } = Card;
-const ProductCard = ({ product }) => { // Accept the product prop
+const ProductCard = ({ product }) => {
+
+  const { addToCart } = useCart();
+
   return (
     <Card
       style={{ width: 300 }}
@@ -17,10 +21,13 @@ const ProductCard = ({ product }) => { // Accept the product prop
         
       }
       actions={[
-        <Link to="/cart" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none', color: '#000' }}>
-          <FaCartShopping />
-          <span>Add to Cart</span>
-        </Link>,
+        <Button
+          type="primary"
+          icon={<FaCartShopping />}
+          onClick={() => addToCart(product)}
+        >
+          Add to Cart
+        </Button>,
       ]}
     >
       <Meta

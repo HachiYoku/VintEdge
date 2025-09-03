@@ -12,13 +12,17 @@ import CartPage from "./pages/CartPage";
 import Profile from "./pages/Profile";
 import SearchPage from "./pages/SearchPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import CheckoutPage from "./pages/CheckOutPage";
 
 // Context
 import { ItemProvider } from "./context/ItemContext";
+import { CartProvider } from "./context/CartContext";
+
 
 const App = () => {
   return (
-    <ItemProvider>
+    <CartProvider>
+      <ItemProvider>
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>
@@ -29,6 +33,7 @@ const App = () => {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
           </Route>
 
           {/* 404 Page */}
@@ -36,6 +41,7 @@ const App = () => {
         </Routes>
       </BrowserRouter>
     </ItemProvider>
+    </CartProvider>
   );
 };
 

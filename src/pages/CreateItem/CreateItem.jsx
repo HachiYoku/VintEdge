@@ -13,6 +13,7 @@ import {
   Select,
   Upload,
   Radio,
+  Space,
   Form,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
@@ -172,7 +173,7 @@ const CreateItem = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label="Quantity">
-                    <Input.Group compact>
+                    <Space.Compact>
                       <Button
                         onClick={() =>
                           setForm((f) => ({
@@ -195,7 +196,7 @@ const CreateItem = () => {
                       >
                         +
                       </Button>
-                    </Input.Group>
+                    </Space.Compact>
                   </Form.Item>
                 </Col>
               </Row>
@@ -217,7 +218,7 @@ const CreateItem = () => {
                 </Col>
                 <Col xs={24} md={12}>
                   <Form.Item label="Price">
-                    <Input.Group compact>
+                    <Space.Compact>
                       <InputNumber
                         value={form.price}
                         onChange={(v) => setForm({ ...form, price: v })}
@@ -232,7 +233,7 @@ const CreateItem = () => {
                         <Option value="USD">USD</Option>
                         <Option value="THB">THB</Option>
                       </Select>
-                    </Input.Group>
+                    </Space.Compact>
                   </Form.Item>
                 </Col>
               </Row>
