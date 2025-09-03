@@ -1,9 +1,13 @@
-import React from "react";
-import { Row, Col, Card, Button } from "antd";
+import React, { useState } from "react";
+import { Row, Col, Card, Dropdown, Menu } from "antd";
+import { EllipsisOutlined } from "@ant-design/icons";
 import { useItems } from "../../context/ItemContext";
+import { useNavigate } from "react-router-dom";
 
-export default function Profile() {
-  const { items } = useItems();
+const Profile = () => {
+  const { items, removeItem } = useItems();
+  const navigate = useNavigate();
+  const [viewType, setViewType] = useState("sell"); // optional, if you want toggle like history
 
   const userProfile = {
     name: "John Doe",
@@ -12,8 +16,16 @@ export default function Profile() {
     avatar: "https://via.placeholder.com/150",
   };
 
-  const handleEdit = (item) => console.log("Edit", item);
-  const handleDelete = (item) => console.log("Delete", item);
+  const handleEdit = (item) => {
+    navigate("/create-item", { state: { item } });
+  };
+
+  const handleDelete = (id) => {
+    removeItem(id);
+  };
+
+  // Only show sell items in profile
+  const currentItems = items.filter((i) => i.type === "sell");
 
   return (
     <div style={{ padding: "24px" }}>
@@ -42,73 +54,78 @@ export default function Profile() {
           </Card>
         </Col>
 
-        {/* Right Column - Products */}
+        {/* Right Column - My Products */}
         <Col xs={24} lg={16}>
-          <h3 style={{ marginBottom: "16px" }}>My Products</h3>
-          {items.length === 0 ? (
+          <h3 style={{ marginBottom: 16 }}>My Products</h3>
+
+          {currentItems.length === 0 ? (
             <p>No products added yet.</p>
           ) : (
             <Row gutter={[16, 16]}>
-              {items.map((item, index) => (
-                <Col key={index} xs={24} sm={12} lg={8}>
-                  <Card
-                    hoverable
-                    cover={
-                      item.image && (
-                        <img
-                          alt={item.title}
-                          src={item.image}
-                          style={{ height: "150px", objectFit: "cover" }}
-                        />
-                      )
-                    }
-                  >
-                    <h5 style={{ marginBottom: "4px" }}>{item.title}</h5>
-                    <p style={{ margin: "2px 0" }}>Price: ${item.price}</p>
-                    <p style={{ margin: "2px 0" }}>Quantity: {item.quantity}</p>
-                    <p style={{ margin: "2px 0" }}>Category: {item.category}</p>
-                    <p style={{ margin: "2px 0" }}>
-                      condition: {item.condition}
-                    </p>
-                    <p
-                      style={{
-                        margin: "2px 0",
-                        color: "#888",
-                        fontSize: "12px",
-                      }}
+              {currentItems.map((item) => {
+                const menu = (
+                  <Menu>
+                    <Menu.Item key="edit" onClick={() => handleEdit(item)}>
+                      Edit
+                    </Menu.Item>
+                    <Menu.Item
+                      key="delete"
+                      danger
+                      onClick={() => handleDelete(item.id)}
                     >
-                      {item.description}
-                    </p>
+                      Delete
+                    </Menu.Item>
+                  </Menu>
+                );
 
-                    <div
-                      style={{
-                        marginTop: "8px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
+                return (
+                  <Col key={item.id} xs={24} sm={12} lg={8}>
+                    <Card
+                      hoverable
+                      cover={
+                        item.image && (
+                          <img
+                            alt={item.title}
+                            src={item.image}
+                            style={{ height: 150, objectFit: "cover" }}
+                          />
+                        )
+                      }
+                      actions={[
+                        <Dropdown
+                          overlay={menu}
+                          trigger={["click"]}
+                          key="actions"
+                        >
+                          <span style={{ fontSize: 20 }}>
+                            <EllipsisOutlined />
+                          </span>
+                        </Dropdown>,
+                      ]}
                     >
-                      <Button
-                        type="primary"
-                        size="small"
-                        onClick={() => handleEdit(item)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        type="danger"
-                        size="small"
-                        onClick={() => handleDelete(item)}
-                      >
-                        Delete
-                      </Button>
-                    </div>
-                  </Card>
-                </Col>
-              ))}
+                      <h5>{item.title}</h5>
+                      <p>
+                        Price: {item.price} {item.currency}
+                      </p>
+                      <p>Quantity: {item.quantity}</p>
+                      <p>Category: {item.category}</p>
+                      <p>Condition: {item.condition}</p>
+                      <p style={{ color: "#888", fontSize: 12 }}>
+                        {item.description}
+                      </p>
+                      <p style={{ fontSize: 12, color: "#555" }}>
+                        Added on: {new Date(item.date).toLocaleString()}
+                      </p>
+                    </Card>
+                  </Col>
+                );
+              })}
             </Row>
           )}
         </Col>
       </Row>
     </div>
   );
-}
+};
+
+export default Profile;

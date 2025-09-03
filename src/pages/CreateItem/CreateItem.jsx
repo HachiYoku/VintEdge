@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useItems } from "../../context/ItemContext";
 import "../../styles/pages/CreateItem.css";
 
@@ -21,8 +21,10 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 const CreateItem = () => {
-  const { addItem } = useItems();
+  const { addItem, updateItem } = useItems();
   const navigate = useNavigate();
+  const location = useLocation();
+  const editItem = location.state?.item || null;
 
   const [form, setForm] = useState({
     title: "",
@@ -34,20 +36,33 @@ const CreateItem = () => {
     price: 0,
     currency: "MMK",
     image: null,
+    date: "",
   });
+
+  // Prefill form if editing
+  useEffect(() => {
+    if (editItem) setForm(editItem);
+  }, [editItem]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleImage = (file) => {
-    if (file) {
-      setForm({ ...form, image: URL.createObjectURL(file) });
-    }
+    if (file) setForm({ ...form, image: URL.createObjectURL(file) });
   };
 
   const handleSubmit = () => {
-    addItem(form);
+    if (editItem) {
+      updateItem({ ...form, id: editItem.id });
+    } else {
+      addItem({
+        ...form,
+        id: Date.now(),
+        type: "sell",
+        date: new Date().toISOString(),
+      });
+    }
     navigate("/profile");
   };
 
@@ -56,9 +71,8 @@ const CreateItem = () => {
       <Row gutter={[24, 24]}>
         {/* Left Column: Image + Condition */}
         <Col xs={24} lg={8}>
-          <Card title="Product Image" className="mb-3">
-            <Row gutter={[16, 16]}>
-              {/* Upload Area */}
+          <Card title="Product Image">
+            <Row gutter={16}>
               <Col xs={12}>
                 <Upload
                   showUploadList={false}
@@ -79,10 +93,7 @@ const CreateItem = () => {
                       textAlign: "center",
                     }}
                   >
-                    <UploadOutlined
-                      style={{ fontSize: 20, marginBottom: 4, padding: 50 }}
-                    />
-                    {/* <div style={{ fontSize: 15 }}>Click to upload</div> */}
+                    <UploadOutlined style={{ fontSize: 20, padding: 50 }} />
                   </div>
                 </Upload>
               </Col>
@@ -118,7 +129,8 @@ const CreateItem = () => {
             </Row>
           </Card>
 
-          <Card title="Condition">
+          {/* Condition Card */}
+          <Card title="Condition" style={{ marginTop: 16 }}>
             <Radio.Group
               className="condition-group"
               value={form.condition}
@@ -142,7 +154,7 @@ const CreateItem = () => {
           </Card>
         </Col>
 
-        {/* Right Column: Product Details */}
+        {/* Right Column: Details */}
         <Col xs={24} lg={16}>
           <Card title="Product Details">
             <Form layout="vertical">
@@ -165,26 +177,20 @@ const CreateItem = () => {
                         onClick={() =>
                           setForm((f) => ({
                             ...f,
-                            quantity: Math.max(0, Number(f.quantity || 0) - 1),
+                            quantity: Math.max(0, f.quantity - 1),
                           }))
                         }
                       >
                         –
                       </Button>
                       <InputNumber
-                        name="quantity"
                         value={form.quantity}
-                        onChange={(value) =>
-                          setForm({ ...form, quantity: value })
-                        }
+                        onChange={(v) => setForm({ ...form, quantity: v })}
                         style={{ width: "78%", textAlign: "center" }}
                       />
                       <Button
                         onClick={() =>
-                          setForm((f) => ({
-                            ...f,
-                            quantity: Number(f.quantity || 0) + 1,
-                          }))
+                          setForm((f) => ({ ...f, quantity: f.quantity + 1 }))
                         }
                       >
                         +
@@ -199,11 +205,8 @@ const CreateItem = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label="Category">
                     <Select
-                      name="category"
                       value={form.category}
-                      onChange={(value) =>
-                        setForm({ ...form, category: value })
-                      }
+                      onChange={(v) => setForm({ ...form, category: v })}
                       placeholder="Select category"
                     >
                       <Option value="Electronics">Electronics</Option>
@@ -216,18 +219,13 @@ const CreateItem = () => {
                   <Form.Item label="Price">
                     <Input.Group compact>
                       <InputNumber
-                        name="price"
                         value={form.price}
-                        onChange={(value) => setForm({ ...form, price: value })}
+                        onChange={(v) => setForm({ ...form, price: v })}
                         style={{ width: "70%" }}
-                        placeholder="Enter price"
                       />
                       <Select
-                        name="currency"
                         value={form.currency}
-                        onChange={(value) =>
-                          setForm({ ...form, currency: value })
-                        }
+                        onChange={(v) => setForm({ ...form, currency: v })}
                         style={{ width: "30%" }}
                       >
                         <Option value="MMK">MMK</Option>
@@ -242,20 +240,26 @@ const CreateItem = () => {
               {/* Description */}
               <Form.Item label="Description">
                 <TextArea
-                  name="description"
                   value={form.description}
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    setForm({ ...form, description: e.target.value })
+                  }
                   rows={4}
-                  placeholder="Type your product details here"
+                  placeholder="Type product details here"
                 />
               </Form.Item>
 
               {/* Buttons */}
               <Form.Item>
                 <div style={{ textAlign: "right" }}>
-                  <Button style={{ marginRight: 8 }}>Cancel</Button>
+                  <Button
+                    style={{ marginRight: 8 }}
+                    onClick={() => navigate(-1)}
+                  >
+                    Cancel
+                  </Button>
                   <Button type="primary" onClick={handleSubmit}>
-                    Publish
+                    {editItem ? "Update" : "Publish"}
                   </Button>
                 </div>
               </Form.Item>
