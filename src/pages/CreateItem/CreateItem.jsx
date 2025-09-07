@@ -73,6 +73,7 @@ const CreateItem = () => {
           quantity: editItem?.quantity || 1,
           condition: editItem?.condition || "Brand New",
           currency: "MMK",
+          title: editItem?.title || "",
         }}
       >
         <Row
@@ -169,9 +170,20 @@ const CreateItem = () => {
             style={{ display: "flex", flexDirection: "column" }}
           >
             <Card title="Product Details" style={{ flex: 1 }}>
+              {/* Title */}
+              <Form.Item
+                label="Title"
+                name="title"
+                rules={[
+                  { required: true, message: "Please enter a product title" },
+                ]}
+              >
+                <Input placeholder="Enter product title" />
+              </Form.Item>
+
+              {/* Quantity + Category */}
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
-                  {/* Quantity with working buttons */}
                   <Form.Item shouldUpdate>
                     {() => {
                       const quantity =
@@ -232,6 +244,7 @@ const CreateItem = () => {
                 </Col>
               </Row>
 
+              {/* Price */}
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
                   <Form.Item label="Price" name="price">
@@ -249,6 +262,7 @@ const CreateItem = () => {
                 </Col>
               </Row>
 
+              {/* Description */}
               <Form.Item
                 label="Description"
                 name="description"
@@ -259,6 +273,7 @@ const CreateItem = () => {
                 <TextArea rows={4} placeholder="Type product details here" />
               </Form.Item>
 
+              {/* Buttons */}
               <Form.Item>
                 <div style={{ textAlign: "right" }}>
                   <Button
