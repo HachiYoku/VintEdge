@@ -315,11 +315,15 @@ const ProfilePage = ({ isDarkMode = false }) => {
                               ? "green"
                               : item.condition === "Fair"
                               ? "orange"
-                              : "red",
+                              : item.condition === "Brand New" ||
+                                item.condition === "Like New"
+                              ? "blue"
+                              : "red", // For "Worn" or "For parts/not working"
                         }}
                       >
                         Condition: {item.condition}
                       </Text>
+
                       <Text
                         strong
                         style={{

@@ -65,158 +65,155 @@ const CreateItem = () => {
 
   return (
     <div style={{ padding: "24px" }}>
-      <Row gutter={[24, 24]} style={{ display: "flex", alignItems: "stretch" }}>
-        {/* Left Column: Image + Condition */}
-        <Col
-          xs={24}
-          lg={8}
-          style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+      <Form
+        layout="vertical"
+        form={formInstance}
+        onFinish={handleSubmit}
+        initialValues={{
+          quantity: editItem?.quantity || 1,
+          condition: editItem?.condition || "Brand New",
+          currency: "MMK",
+        }}
+      >
+        <Row
+          gutter={[24, 24]}
+          style={{ display: "flex", alignItems: "stretch" }}
         >
-          {/* Product Image Card */}
-          <Card title="Product Image" style={{ flex: 2 }}>
-            <Row gutter={16}>
-              <Col xs={12}>
-                <Upload showUploadList={false} beforeUpload={handleImage}>
+          {/* Left Column: Image + Condition */}
+          <Col
+            xs={24}
+            lg={8}
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
+            <Card title="Product Image" style={{ flex: 2 }}>
+              <Row gutter={16}>
+                <Col xs={12}>
+                  <Upload showUploadList={false} beforeUpload={handleImage}>
+                    <div
+                      style={{
+                        border: "1px dashed #d9d9d9",
+                        borderRadius: 4,
+                        height: 150,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        textAlign: "center",
+                      }}
+                    >
+                      <UploadOutlined style={{ fontSize: 20, padding: 50 }} />
+                    </div>
+                  </Upload>
+                </Col>
+                <Col xs={12}>
                   <div
                     style={{
-                      border: "1px dashed #d9d9d9",
+                      border: "1px solid #d9d9d9",
                       borderRadius: 4,
                       height: 150,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      cursor: "pointer",
-                      textAlign: "center",
+                      overflow: "hidden",
                     }}
                   >
-                    <UploadOutlined style={{ fontSize: 20, padding: 50 }} />
-                  </div>
-                </Upload>
-              </Col>
-
-              {/* Preview Area */}
-              <Col xs={12}>
-                <div
-                  style={{
-                    border: "1px solid #d9d9d9",
-                    borderRadius: 4,
-                    height: 150,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden",
-                  }}
-                >
-                  {imagePreview ? (
-                    <img
-                      src={imagePreview}
-                      alt="preview"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                  ) : (
-                    <span style={{ color: "#999" }}>Preview</span>
-                  )}
-                </div>
-              </Col>
-            </Row>
-          </Card>
-
-          {/* Condition Card */}
-          <Card title="Condition" style={{ flex: 1 }}>
-            <Form.Item name="condition" initialValue="Brand New">
-              <Radio.Group style={{ width: "100%" }}>
-                <Row gutter={[8, 8]}>
-                  {[
-                    "Brand New",
-                    "Like New",
-                    "Good",
-                    "Fair",
-                    "Worn",
-                    "For parts/not working",
-                  ].map((option) => (
-                    <Col key={option} xs={12}>
-                      <Radio.Button value={option}>{option}</Radio.Button>
-                    </Col>
-                  ))}
-                </Row>
-              </Radio.Group>
-            </Form.Item>
-          </Card>
-        </Col>
-
-        {/* Right Column: Product Details */}
-        <Col
-          xs={24}
-          lg={16}
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          <Card title="Product Details" style={{ flex: 1 }}>
-            <Form
-              layout="vertical"
-              form={formInstance}
-              onFinish={handleSubmit}
-              initialValues={{
-                quantity: 1,
-                condition: "Brand New",
-                currency: "MMK",
-              }}
-            >
-              {/* Title + Quantity */}
-              <Row gutter={[16, 16]}>
-                <Col xs={24} md={12}>
-                  <Form.Item
-                    label="Title"
-                    name="title"
-                    rules={[
-                      { required: true, message: "Please enter product title" },
-                    ]}
-                  >
-                    <Input placeholder="Enter product name" />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label="Quantity" name="quantity">
-                    <Space.Compact>
-                      <Button
-                        onClick={() => {
-                          const current =
-                            formInstance.getFieldValue("quantity") || 1;
-                          formInstance.setFieldsValue({
-                            quantity: Math.max(0, current - 1),
-                          });
+                    {imagePreview ? (
+                      <img
+                        src={imagePreview}
+                        alt="preview"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
                         }}
-                      >
-                        –
-                      </Button>
-                      <InputNumber
-                        value={formInstance.getFieldValue("quantity")}
-                        onChange={(v) =>
-                          formInstance.setFieldsValue({ quantity: v })
-                        }
-                        style={{ width: "78%", textAlign: "center" }}
                       />
-                      <Button
-                        onClick={() => {
-                          const current =
-                            formInstance.getFieldValue("quantity") || 0;
-                          formInstance.setFieldsValue({
-                            quantity: current + 1,
-                          });
-                        }}
-                      >
-                        +
-                      </Button>
-                    </Space.Compact>
-                  </Form.Item>
+                    ) : (
+                      <span style={{ color: "#999" }}>Preview</span>
+                    )}
+                  </div>
                 </Col>
               </Row>
+            </Card>
 
-              {/* Category + Price */}
+            <Card title="Condition" style={{ flex: 1 }}>
+              <Form.Item
+                name="condition"
+                rules={[
+                  { required: true, message: "Please select a condition" },
+                ]}
+              >
+                <Radio.Group style={{ width: "100%" }}>
+                  <Row gutter={[8, 8]}>
+                    {[
+                      "Brand New",
+                      "Like New",
+                      "Good",
+                      "Fair",
+                      "Worn",
+                      "For parts/not working",
+                    ].map((option) => (
+                      <Col key={option} xs={12}>
+                        <Radio.Button value={option}>{option}</Radio.Button>
+                      </Col>
+                    ))}
+                  </Row>
+                </Radio.Group>
+              </Form.Item>
+            </Card>
+          </Col>
+
+          {/* Right Column: Product Details */}
+          <Col
+            xs={24}
+            lg={16}
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <Card title="Product Details" style={{ flex: 1 }}>
               <Row gutter={[16, 16]}>
+                <Col xs={24} md={12}>
+                  {/* Quantity with working buttons */}
+                  <Form.Item shouldUpdate>
+                    {() => {
+                      const quantity =
+                        Number(formInstance.getFieldValue("quantity")) || 0;
+                      return (
+                        <Form.Item label="Quantity" name="quantity">
+                          <Space.Compact style={{ width: "100%" }}>
+                            <Button
+                              onClick={() =>
+                                formInstance.setFieldsValue({
+                                  quantity: Math.max(0, quantity - 1),
+                                })
+                              }
+                            >
+                              –
+                            </Button>
+                            <InputNumber
+                              min={0}
+                              value={quantity}
+                              onChange={(v) =>
+                                formInstance.setFieldsValue({
+                                  quantity: Number(v) || 0,
+                                })
+                              }
+                              style={{ width: "78%", textAlign: "center" }}
+                            />
+                            <Button
+                              onClick={() =>
+                                formInstance.setFieldsValue({
+                                  quantity: quantity + 1,
+                                })
+                              }
+                            >
+                              +
+                            </Button>
+                          </Space.Compact>
+                        </Form.Item>
+                      );
+                    }}
+                  </Form.Item>
+                </Col>
+
                 <Col xs={24} md={12}>
                   <Form.Item
                     label="Category"
@@ -233,10 +230,13 @@ const CreateItem = () => {
                     </Select>
                   </Form.Item>
                 </Col>
+              </Row>
+
+              <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
                   <Form.Item label="Price" name="price">
                     <Space.Compact>
-                      <InputNumber style={{ width: "70%" }} />
+                      <InputNumber style={{ width: "70%" }} min={0} />
                       <Form.Item name="currency" noStyle>
                         <Select style={{ width: "30%" }}>
                           <Option value="MMK">MMK</Option>
@@ -249,7 +249,6 @@ const CreateItem = () => {
                 </Col>
               </Row>
 
-              {/* Description */}
               <Form.Item
                 label="Description"
                 name="description"
@@ -260,7 +259,6 @@ const CreateItem = () => {
                 <TextArea rows={4} placeholder="Type product details here" />
               </Form.Item>
 
-              {/* Buttons */}
               <Form.Item>
                 <div style={{ textAlign: "right" }}>
                   <Button
@@ -274,10 +272,10 @@ const CreateItem = () => {
                   </Button>
                 </div>
               </Form.Item>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
+            </Card>
+          </Col>
+        </Row>
+      </Form>
     </div>
   );
 };

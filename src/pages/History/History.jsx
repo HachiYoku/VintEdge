@@ -162,12 +162,20 @@ const History = ({ isDarkMode = false }) => {
                         style={{
                           fontSize: 12,
                           display: "block",
-                          marginBottom: 4,
-                          color: isDarkMode ? "#ccc" : "#555",
+                          marginBottom: 6,
+                          fontWeight: 500,
+                          color:
+                            item.condition === "Good"
+                              ? "green"
+                              : item.condition === "Fair"
+                              ? "orange"
+                              : item.condition === "Brand New" ||
+                                item.condition === "Like New"
+                              ? "blue"
+                              : "red", // For "Worn" or "For parts/not working"
                         }}
-                        ellipsis={{ rows: 2 }}
                       >
-                        {item.description}
+                        Condition: {item.condition}
                       </Text>
 
                       {/* Category */}
