@@ -1,6 +1,3 @@
-/* ThemeToggle.css */
-
-/* Style for the toggle button itself */
 .theme-toggle {
   font-size: 20px;
   cursor: pointer;
@@ -9,9 +6,15 @@
   transition: color 0.3s ease;
 }
 
-/* Optional: hover effect */
+/* Optional: hover effect  */
 .theme-toggle:hover {
-  color: #ffd700; /* gold-ish highlight */
+  color: #ffd700;
+}
+
+/* Dark mode header */
+body.dark-mode .ant-layout-header {
+  background-color: #333333 !important;
+  color: #fff !important;
 }
 
 /* Dark mode global styles */
@@ -20,16 +23,29 @@ body.dark-mode {
   color: #ffffff;
 }
 
-/* Dark mode header */
-body.dark-mode .ant-layout-header {
-  background-color: #333 !important;
+/* Dark mode card background */
+body.dark-mode .ant-card {
+  background-color: #141414 !important;
+  color: #fff !important;
+  border-color: #303030 !important; /* subtle border */
+}
+
+/* Card header text */
+body.dark-mode .ant-card-head {
+  background-color: #141414 !important;
+  color: #fff !important;
+  border-bottom: 1px solid #303030 !important;
 }
 
 /* Dark mode inputs */
 body.dark-mode .ant-input,
-body.dark-mode .ant-input-affix-wrapper {
-  background-color: #444 !important;
-  color: #fff !important;
+body.dark-mode .ant-input-affix-wrapper,
+body.dark-mode .ant-input-number,
+body.dark-mode .ant-input-number input,
+body.dark-mode .ant-select-selector,
+body.dark-mode textarea.ant-input {
+  background-color: #222 !important; /* dark field */
+  color: #fff !important; /* white text */
   border-color: #666 !important;
 }
 
@@ -38,13 +54,40 @@ body.dark-mode a,
 body.dark-mode .anticon {
   color: #fff !important;
 }
+
 /* Content background */
 body.dark-mode .app-content {
   background-color: #1a1a1a;
   color: #fff;
 }
 
-body:not(.dark-mode) .app-content {
-  background-color: #f4f4f4;
-  color: #000;
+/* Light mode (default) */
+body:not(.dark-mode) .ant-input,
+body:not(.dark-mode) .ant-input-affix-wrapper,
+body:not(.dark-mode) .ant-input-number,
+body:not(.dark-mode) .ant-input-number input,
+body:not(.dark-mode) .ant-select-selector,
+body:not(.dark-mode) textarea.ant-input {
+  background-color: #fff !important; /* light field */
+  color: #000 !important; /* dark text */
+  border-color: #ccc !important;
+}
+
+/* Dark mode placeholders */
+body.dark-mode .ant-input::placeholder,
+body.dark-mode textarea.ant-input::placeholder,
+body.dark-mode .ant-input-number input::placeholder {
+  color: #bbb !important; /* light gray for readability */
+}
+
+/* Light mode placeholders (normal) */
+body:not(.dark-mode) .ant-input::placeholder,
+body:not(.dark-mode) textarea.ant-input::placeholder,
+body:not(.dark-mode) .ant-input-number input::placeholder {
+  color: #888 !important;
+}
+
+body.dark-mode .anticon-upload {
+  color: black !important;
+  fill: black !important;
 }

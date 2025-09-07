@@ -25,61 +25,58 @@ const CreateItem = () => {
   const location = useLocation();
   const editItem = location.state?.item || null;
 
-  const [form, setForm] = useState({
-    title: "",
-    quantity: 1,
-    category: "",
-    location: "",
-    description: "",
-    condition: "Brand New",
-    price: 0,
-    currency: "MMK",
-    image: null,
-    date: "",
-  });
+  const [formInstance] = Form.useForm();
+  const [imagePreview, setImagePreview] = useState(null);
 
   // Prefill form if editing
   useEffect(() => {
-    if (editItem) setForm(editItem);
-  }, [editItem]);
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+    if (editItem) {
+      formInstance.setFieldsValue(editItem);
+      setImagePreview(editItem.image || null);
+    }
+  }, [editItem, formInstance]);
 
   const handleImage = (file) => {
-    if (file) setForm({ ...form, image: URL.createObjectURL(file) });
+    if (file) {
+      const preview = URL.createObjectURL(file);
+      setImagePreview(preview);
+      formInstance.setFieldsValue({ image: preview });
+    }
+    return false; // prevent auto upload
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (values) => {
+    const newItem = {
+      ...values,
+      id: editItem ? editItem.id : Date.now(),
+      type: "sell",
+      date: editItem ? editItem.date : new Date().toISOString(),
+      image: values.image || imagePreview,
+    };
+
     if (editItem) {
-      updateItem({ ...form, id: editItem.id });
+      updateItem(newItem);
     } else {
-      addItem({
-        ...form,
-        id: Date.now(),
-        type: "sell",
-        date: new Date().toISOString(),
-      });
+      addItem(newItem);
     }
+
     navigate("/profile");
   };
 
   return (
     <div style={{ padding: "24px" }}>
-      <Row gutter={[24, 24]}>
+      <Row gutter={[24, 24]} style={{ display: "flex", alignItems: "stretch" }}>
         {/* Left Column: Image + Condition */}
-        <Col xs={24} lg={8}>
-          <Card title="Product Image">
+        <Col
+          xs={24}
+          lg={8}
+          style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+        >
+          {/* Product Image Card */}
+          <Card title="Product Image" style={{ flex: 2 }}>
             <Row gutter={16}>
               <Col xs={12}>
-                <Upload
-                  showUploadList={false}
-                  beforeUpload={(file) => {
-                    handleImage(file);
-                    return false; // prevent auto upload
-                  }}
-                >
+                <Upload showUploadList={false} beforeUpload={handleImage}>
                   <div
                     style={{
                       border: "1px dashed #d9d9d9",
@@ -110,9 +107,9 @@ const CreateItem = () => {
                     overflow: "hidden",
                   }}
                 >
-                  {form.image ? (
+                  {imagePreview ? (
                     <img
-                      src={form.image}
+                      src={imagePreview}
                       alt="preview"
                       style={{
                         width: "100%",
@@ -129,33 +126,45 @@ const CreateItem = () => {
           </Card>
 
           {/* Condition Card */}
-          <Card title="Condition" style={{ marginTop: 16 }}>
-            <Radio.Group
-              value={form.condition}
-              onChange={(e) => setForm({ ...form, condition: e.target.value })}
-            >
-              <Row gutter={[8, 8]}>
-                {[
-                  "Brand New",
-                  "Like New",
-                  "Good",
-                  "Fair",
-                  "Worn",
-                  "For parts/not working",
-                ].map((option) => (
-                  <Col key={option} xs={12}>
-                    <Radio.Button value={option}>{option}</Radio.Button>
-                  </Col>
-                ))}
-              </Row>
-            </Radio.Group>
+          <Card title="Condition" style={{ flex: 1 }}>
+            <Form.Item name="condition" initialValue="Brand New">
+              <Radio.Group style={{ width: "100%" }}>
+                <Row gutter={[8, 8]}>
+                  {[
+                    "Brand New",
+                    "Like New",
+                    "Good",
+                    "Fair",
+                    "Worn",
+                    "For parts/not working",
+                  ].map((option) => (
+                    <Col key={option} xs={12}>
+                      <Radio.Button value={option}>{option}</Radio.Button>
+                    </Col>
+                  ))}
+                </Row>
+              </Radio.Group>
+            </Form.Item>
           </Card>
         </Col>
 
-        {/* Right Column: Details */}
-        <Col xs={24} lg={16}>
-          <Card title="Product Details">
-            <Form layout="vertical" onFinish={handleSubmit}>
+        {/* Right Column: Product Details */}
+        <Col
+          xs={24}
+          lg={16}
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <Card title="Product Details" style={{ flex: 1 }}>
+            <Form
+              layout="vertical"
+              form={formInstance}
+              onFinish={handleSubmit}
+              initialValues={{
+                quantity: 1,
+                condition: "Brand New",
+                currency: "MMK",
+              }}
+            >
               {/* Title + Quantity */}
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
@@ -166,36 +175,38 @@ const CreateItem = () => {
                       { required: true, message: "Please enter product title" },
                     ]}
                   >
-                    <Input
-                      name="title"
-                      value={form.title}
-                      onChange={handleChange}
-                      placeholder="Enter product name"
-                    />
+                    <Input placeholder="Enter product name" />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label="Quantity">
+                  <Form.Item label="Quantity" name="quantity">
                     <Space.Compact>
                       <Button
-                        onClick={() =>
-                          setForm((f) => ({
-                            ...f,
-                            quantity: Math.max(0, f.quantity - 1),
-                          }))
-                        }
+                        onClick={() => {
+                          const current =
+                            formInstance.getFieldValue("quantity") || 1;
+                          formInstance.setFieldsValue({
+                            quantity: Math.max(0, current - 1),
+                          });
+                        }}
                       >
                         –
                       </Button>
                       <InputNumber
-                        value={form.quantity}
-                        onChange={(v) => setForm({ ...form, quantity: v })}
+                        value={formInstance.getFieldValue("quantity")}
+                        onChange={(v) =>
+                          formInstance.setFieldsValue({ quantity: v })
+                        }
                         style={{ width: "78%", textAlign: "center" }}
                       />
                       <Button
-                        onClick={() =>
-                          setForm((f) => ({ ...f, quantity: f.quantity + 1 }))
-                        }
+                        onClick={() => {
+                          const current =
+                            formInstance.getFieldValue("quantity") || 0;
+                          formInstance.setFieldsValue({
+                            quantity: current + 1,
+                          });
+                        }}
                       >
                         +
                       </Button>
@@ -214,34 +225,25 @@ const CreateItem = () => {
                       { required: true, message: "Please select category" },
                     ]}
                   >
-                    <Select
-                      value={form.category}
-                      onChange={(v) => setForm({ ...form, category: v })}
-                      placeholder="Select category"
-                    >
+                    <Select placeholder="Select category">
                       <Option value="Electronics">Electronics</Option>
-                      <Option value="Clothing">Clothing</Option>
-                      <Option value="Books">Books</Option>
+                      <Option value="Jewelery">Jewelery</Option>
+                      <Option value="Men's clothing">Men's clothing</Option>
+                      <Option value="Women's clothing">Women's clothing</Option>
                     </Select>
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
-                  <Form.Item label="Price">
+                  <Form.Item label="Price" name="price">
                     <Space.Compact>
-                      <InputNumber
-                        value={form.price}
-                        onChange={(v) => setForm({ ...form, price: v })}
-                        style={{ width: "70%" }}
-                      />
-                      <Select
-                        value={form.currency}
-                        onChange={(v) => setForm({ ...form, currency: v })}
-                        style={{ width: "30%" }}
-                      >
-                        <Option value="MMK">MMK</Option>
-                        <Option value="USD">USD</Option>
-                        <Option value="THB">THB</Option>
-                      </Select>
+                      <InputNumber style={{ width: "70%" }} />
+                      <Form.Item name="currency" noStyle>
+                        <Select style={{ width: "30%" }}>
+                          <Option value="MMK">MMK</Option>
+                          <Option value="USD">USD</Option>
+                          <Option value="THB">THB</Option>
+                        </Select>
+                      </Form.Item>
                     </Space.Compact>
                   </Form.Item>
                 </Col>
@@ -255,14 +257,7 @@ const CreateItem = () => {
                   { required: true, message: "Please enter description" },
                 ]}
               >
-                <TextArea
-                  value={form.description}
-                  onChange={(e) =>
-                    setForm({ ...form, description: e.target.value })
-                  }
-                  rows={4}
-                  placeholder="Type product details here"
-                />
+                <TextArea rows={4} placeholder="Type product details here" />
               </Form.Item>
 
               {/* Buttons */}

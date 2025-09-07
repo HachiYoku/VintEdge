@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Space, Input, Badge } from "antd";
+import ThemeToggle from "./ThemeToggle";
 import BurgerMenu from "./BurgerMenu";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { TbUserSquare } from "react-icons/tb";
 import { PiShoppingCartBold } from "react-icons/pi";
 import { useCart } from "../context/CartContext";
-import ThemeToggle from "./ThemeToggle";
 
 const { Header } = Layout;
 
@@ -16,7 +16,7 @@ const headerStyle = {
   color: "#fff",
   height: "50px",
   paddingTop: "10px",
-  backgroundColor: "#c5bebeff",
+  backgroundColor: "#F7FBFC",
 };
 
 const iconStyle = {

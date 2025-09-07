@@ -1,9 +1,9 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
 import "@ant-design/v5-patch-for-react-19";
 
-// Pages (all use index.jsx inside their folder)
+// Pages
 import Home from "./pages/Home";
 import CreateItem from "./pages/CreateItem";
 import History from "./pages/History";
@@ -11,37 +11,108 @@ import Setting from "./pages/Setting";
 import CartPage from "./pages/CartPage";
 import Profile from "./pages/Profile";
 import SearchPage from "./pages/SearchPage";
-import NotFoundPage from "./pages/NotFoundPage";
 import CheckoutPage from "./pages/CheckOutPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignUpPage";
 
 // Context
 import { ItemProvider } from "./context/ItemContext";
 import { CartProvider } from "./context/CartContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
+// Protect private routes
+const PrivateRoute = ({ children }) => {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/login" replace />;
+};
 
 const App = () => {
   return (
-    <CartProvider>
-      <ItemProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/create-item" element={<CreateItem />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/setting" element={<Setting />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-          </Route>
+    <AuthProvider>
+      <CartProvider>
+        <ItemProvider>
+          <BrowserRouter>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
 
-          {/* 404 Page */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </BrowserRouter>
-    </ItemProvider>
-    </CartProvider>
+              {/* Protected routes with AppLayout */}
+              <Route element={<AppLayout />}>
+                <Route
+                  path="/"
+                  element={
+                    <PrivateRoute>
+                      <Home />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <PrivateRoute>
+                      <Profile />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/create-item"
+                  element={
+                    <PrivateRoute>
+                      <CreateItem />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/history"
+                  element={
+                    <PrivateRoute>
+                      <History />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/setting"
+                  element={
+                    <PrivateRoute>
+                      <Setting />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/cart"
+                  element={
+                    <PrivateRoute>
+                      <CartPage />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/search"
+                  element={
+                    <PrivateRoute>
+                      <SearchPage />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/checkout"
+                  element={
+                    <PrivateRoute>
+                      <CheckoutPage />
+                    </PrivateRoute>
+                  }
+                />
+              </Route>
+
+              {/* 404 */}
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </BrowserRouter>
+        </ItemProvider>
+      </CartProvider>
+    </AuthProvider>
   );
 };
 
