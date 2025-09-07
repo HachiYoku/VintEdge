@@ -14,7 +14,7 @@ const LoginPage = () => {
     const success = login(values.email, values.password);
     if (success) {
       message.success("Logged in successfully!");
-      navigate("/profile");
+      navigate("/");
     } else {
       message.error("Invalid credentials");
     }

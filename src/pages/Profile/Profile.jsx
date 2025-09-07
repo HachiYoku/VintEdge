@@ -112,17 +112,17 @@ const ProfilePage = ({ isDarkMode = false }) => {
                   placeholder="Name"
                   style={{ marginBottom: 8 }}
                 />
-                <Input
+                {/* <Input
                   name="email"
                   value={profile.email}
                   onChange={handleProfileChange}
                   placeholder="Email"
                   style={{ marginBottom: 8 }}
-                />
+                /> */}
                 <Button
                   type="primary"
                   block
-                  onClick={saveProfile}
+                  onClick={() => setEditProfile()}
                   style={{ marginBottom: 8 }}
                 >
                   Save
