@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-const CategoryCard = ({ category }) => {
+const CategoryCard = ({ category,product }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {

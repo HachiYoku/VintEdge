@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input, Spin } from "antd";
+import { Spin } from "antd";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import ProductCard from "../../components/ProductCard";
@@ -18,10 +18,17 @@ const SearchPage = () => {
       setLoading(true);
       try {
         const res = await axios.get("https://fakestoreapi.com/products");
-        const filtered = res.data.filter(p =>
-          p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          p.category.toLowerCase() === searchTerm.toLowerCase()
-        );
+
+        let filtered = res.data;
+
+        if (searchTerm) {
+          filtered = res.data.filter(
+            (p) =>
+              p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              p.category.toLowerCase() === searchTerm.toLowerCase()
+          );
+        }
+
         setProducts(filtered);
       } catch (err) {
         console.error(err);
@@ -30,7 +37,7 @@ const SearchPage = () => {
       }
     };
 
-    if (searchTerm) fetchProducts();
+    fetchProducts();
   }, [searchTerm]);
 
   return (
