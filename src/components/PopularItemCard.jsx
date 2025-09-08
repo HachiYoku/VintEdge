@@ -1,9 +1,17 @@
 import React from "react";
 import { Card, Button, Typography } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Paragraph } = Typography;
 
 const PopularItemCard = ({ product }) => {
+
+  const navigate = useNavigate();
+
+  const handleViewDetails = () => {
+    navigate(`/product/${product.id}`);
+  };
+
   return (
     <div style={{ padding: "16px" }}>
       <Card hoverable style={{ width: "100%", maxWidth: 620, margin: "0 auto" }}>
@@ -57,8 +65,7 @@ const PopularItemCard = ({ product }) => {
             </Paragraph>
             <Button
               type="primary"
-              href="#"
-              target="_blank"
+              onClick={handleViewDetails}
               style={{
                 width: "150px",
                 backgroundColor: "#c5bebeff",
