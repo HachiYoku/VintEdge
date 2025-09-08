@@ -9,16 +9,6 @@ import { useCart } from "../context/CartContext";
 
 const { Header } = Layout;
 
-const headerStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  color: "#fff",
-  height: "50px",
-  paddingTop: "10px",
-  backgroundColor: "#F7FBFC",
-};
-
 const iconStyle = {
   fontSize: "24px",
   color: "#fff",
@@ -69,8 +59,17 @@ const AppHeader = ({ products = [] }) => {
         transition: "background-color 0.3s",
       }}
     >
-      {/* Left: Burger menu */}
-      <BurgerMenu iconStyle={iconStyle} />
+      {/* Left: Burger menu + Logo */}
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <BurgerMenu iconStyle={iconStyle} />
+        <Link to="/">
+          <img
+            src="/fav.png"
+            alt="Logo"
+            style={{ height: "60px", width: "60px", cursor: "pointer" }}
+          />
+        </Link>
+      </div>
 
       {/* Center: Search input */}
       <Input.Search
