@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Button } from "antd";
+import { Card, Button,Image } from "antd";
 import { useCart } from "../context/CartContext";
 import { FaShoppingCart, FaInfoCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -12,9 +12,15 @@ const ProductCard = ({ product }) => {
 
   return (
     <Card
-      style={{ width: 300, cursor: "pointer" }}
+      style={{ width: 300 }}
       cover={
-        <img alt={product.title} src={product.image} style={{ height: 200 }} />
+        <Image.PreviewGroup>
+          <Image
+            alt={product.title}
+            src={product.image}
+            style={{ height: 200, objectFit: "contain",padding: "10px" }}
+          />
+        </Image.PreviewGroup>
       }
       actions={[
         <Button
@@ -33,7 +39,7 @@ const ProductCard = ({ product }) => {
           onClick={() => navigate(`/product/${product.id}`)}
         >
           See Description
-        </Button>,
+        </Button>
       ]}
     >
       <Meta title={product.title} />

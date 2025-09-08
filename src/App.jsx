@@ -108,7 +108,7 @@ const App = () => {
                   path="/product/:id"
                   element={
                     <PrivateRoute>
-                      <ProductDetailPage /> {/* page wrapper */}
+                      <ProductDetailPage /> 
                     </PrivateRoute>
                   }
                 />

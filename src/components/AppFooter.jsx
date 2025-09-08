@@ -89,7 +89,7 @@ const AppFooter = () => {
 
       <hr />
       <div style={{ textAlign: "center", marginTop: "10px" }}>
-        © 2024 Eco Exchange. All Rights Reserved |{" "}
+        © 2024 VintEdge. All Rights Reserved |{" "}
         <a href="#">Terms and Conditions</a> | <a href="#">Privacy Policy</a>
       </div>
     </Footer>
