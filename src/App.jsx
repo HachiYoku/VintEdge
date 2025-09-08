@@ -15,13 +15,13 @@ import CheckoutPage from "./pages/CheckOutPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignUpPage";
-
+import ProductDetailPage from "./pages/ProductDetail";
 // Context
 import { ItemProvider } from "./context/ItemContext";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
-// Protect private routes
+// PrivateRoute wrapper
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
   return user ? children : <Navigate to="/login" replace />;
@@ -104,9 +104,17 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
+                <Route
+                  path="/product/:id"
+                  element={
+                    <PrivateRoute>
+                      <ProductDetailPage /> {/* page wrapper */}
+                    </PrivateRoute>
+                  }
+                />
               </Route>
 
-              {/* 404 */}
+              {/* 404 page */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </BrowserRouter>
