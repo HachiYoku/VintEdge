@@ -9,12 +9,11 @@ import { useCart } from "../context/CartContext";
 
 const { Header } = Layout;
 
-const iconStyle = {
-  fontSize: "24px",
-  color: "#fff",
-};
-
-const AppHeader = ({ products = [] }) => {
+const AppHeader = ({
+  products = [],
+  bgColor = "#D6B587",
+  iconColor = "#fff",
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { cart } = useCart();
@@ -34,7 +33,6 @@ const AppHeader = ({ products = [] }) => {
   const onSearch = (value) => {
     if (value.trim() === "") return;
 
-    // Filter products by title if products are passed
     const filtered =
       products.length > 0
         ? products.filter((p) =>
@@ -49,19 +47,18 @@ const AppHeader = ({ products = [] }) => {
 
   return (
     <Header
-      className="app-header"
       style={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         padding: "0 20px",
-        backgroundColor: "#c5bebeff",
+        backgroundColor: bgColor,
         transition: "background-color 0.3s",
       }}
     >
       {/* Left: Burger menu + Logo */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <BurgerMenu iconStyle={iconStyle} />
+        <BurgerMenu iconStyle={{ fontSize: "24px", color: iconColor }} />
         <Link to="/">
           <img
             src="/fav.png"
@@ -79,6 +76,7 @@ const AppHeader = ({ products = [] }) => {
         onSearch={onSearch}
         enterButton
         style={{ maxWidth: 400 }}
+        className="custom-search"
       />
 
       {/* Right: Icons */}
@@ -86,11 +84,13 @@ const AppHeader = ({ products = [] }) => {
         <ThemeToggle />
         <Link to="/cart">
           <Badge count={totalItems} size="small" offset={[0, 5]}>
-            <PiShoppingCartBold style={{ fontSize: "24px", color: "#fff" }} />
+            <PiShoppingCartBold
+              style={{ fontSize: "24px", color: iconColor }}
+            />
           </Badge>
         </Link>
         <Link to="/profile">
-          <TbUserSquare style={iconStyle} />
+          <TbUserSquare style={{ fontSize: "24px", color: iconColor }} />
         </Link>
       </Space>
     </Header>
