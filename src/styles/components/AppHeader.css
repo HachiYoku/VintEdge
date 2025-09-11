@@ -1,0 +1,61 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* vertical center */
+  padding: 0 20px;
+  background-color: #c5bebeff;
+  transition: background-color 0.3s;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-logo {
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  font-size: 22px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cart-icon,
+.profile-icon {
+  font-size: 24px;
+  color: #fff;
+}
+
+/* ✅ Center the desktop search bar */
+.desktop-search {
+  flex: 1; /* let it expand between left & right */
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center; /* vertical center */
+}
+
+/* Responsive rules */
+@media (max-width: 768px) {
+  .desktop-search {
+    display: none;
+  }
+  .mobile-search-icon {
+    display: inline-block;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-search-icon {
+    display: none;
+  }
+}

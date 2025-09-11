@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Space, Input, Badge } from "antd";
+import { Layout, Space, Input, Badge, Drawer } from "antd";
 import ThemeToggle from "./ThemeToggle";
 import BurgerMenu from "./BurgerMenu";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { TbUserSquare } from "react-icons/tb";
 import { PiShoppingCartBold } from "react-icons/pi";
+import { FiSearch } from "react-icons/fi";
 import { useCart } from "../context/CartContext";
+import "../styles/components/AppHeader.css"; // <-- import CSS
 
 const { Header } = Layout;
-
-const iconStyle = {
-  fontSize: "24px",
-  color: "#fff",
-};
 
 const AppHeader = ({ products = [] }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { cart } = useCart();
+  const [showSearchDrawer, setShowSearchDrawer] = useState(false);
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Pre-fill search input when on /search
   const searchParams = new URLSearchParams(location.search);
   const initialQuery = searchParams.get("query") || "";
   const [searchTerm, setSearchTerm] = useState(initialQuery);
@@ -30,11 +27,9 @@ const AppHeader = ({ products = [] }) => {
     setSearchTerm(initialQuery);
   }, [location.search, initialQuery]);
 
-  // Handle search
   const onSearch = (value) => {
     if (value.trim() === "") return;
 
-    // Filter products by title if products are passed
     const filtered =
       products.length > 0
         ? products.filter((p) =>
@@ -45,54 +40,68 @@ const AppHeader = ({ products = [] }) => {
     navigate("/search", {
       state: { results: filtered, query: value.trim() },
     });
+    setShowSearchDrawer(false);
   };
 
   return (
-    <Header
-      className="app-header"
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "0 20px",
-        backgroundColor: "#c5bebeff",
-        transition: "background-color 0.3s",
-      }}
-    >
-      {/* Left: Burger menu + Logo */}
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <BurgerMenu iconStyle={iconStyle} />
+    <Header className="app-header">
+      {/* Left: Burger + Logo */}
+      <div className="header-left">
+        <BurgerMenu iconStyle={{ fontSize: "24px", color: "#fff" }} />
         <Link to="/">
-          <img
-            src="/fav.png"
-            alt="Logo"
-            style={{ height: "60px", width: "60px", cursor: "pointer" }}
-          />
+          <img src="/fav.png" alt="Logo" className="header-logo" />
         </Link>
       </div>
 
-      {/* Center: Search input */}
-      <Input.Search
-        placeholder="Search products..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        onSearch={onSearch}
-        enterButton
-        style={{ maxWidth: 400 }}
-      />
+      {/* Center: Search (desktop only) */}
+      <div className="desktop-search">
+        <Input.Search
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onSearch={onSearch}
+          enterButton
+          style={{ maxWidth: 400 }}
+        />
+      </div>
 
       {/* Right: Icons */}
-      <Space size="large">
+      <Space size="large" className="header-icons">
+        {/* Mobile search icon */}
+        <div className="mobile-search-icon">
+          <FiSearch
+            className="search-icon"
+            onClick={() => setShowSearchDrawer(true)}
+          />
+        </div>
+
         <ThemeToggle />
         <Link to="/cart">
           <Badge count={totalItems} size="small" offset={[0, 5]}>
-            <PiShoppingCartBold style={{ fontSize: "24px", color: "#fff" }} />
+            <PiShoppingCartBold className="cart-icon" />
           </Badge>
         </Link>
         <Link to="/profile">
-          <TbUserSquare style={iconStyle} />
+          <TbUserSquare className="profile-icon" />
         </Link>
       </Space>
+
+      {/* Mobile Search Drawer */}
+      <Drawer
+        title="Search Products"
+        placement="top"
+        onClose={() => setShowSearchDrawer(false)}
+        open={showSearchDrawer}
+        height={100}
+      >
+        <Input.Search
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onSearch={onSearch}
+          enterButton
+        />
+      </Drawer>
     </Header>
   );
 };

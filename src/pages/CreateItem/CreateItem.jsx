@@ -36,13 +36,16 @@ const CreateItem = () => {
     }
   }, [editItem, formInstance]);
 
+  // Convert uploaded image to Base64
   const handleImage = (file) => {
-    if (file) {
-      const preview = URL.createObjectURL(file);
-      setImagePreview(preview);
-      formInstance.setFieldsValue({ image: preview });
-    }
-    return false; // prevent auto upload
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result; // convert image to Base64
+      setImagePreview(base64);
+      formInstance.setFieldsValue({ image: base64 }); // save in form
+    };
+    reader.readAsDataURL(file);
+    return false; // prevent upload to server
   };
 
   const handleSubmit = (values) => {
@@ -170,7 +173,6 @@ const CreateItem = () => {
             style={{ display: "flex", flexDirection: "column" }}
           >
             <Card title="Product Details" style={{ flex: 1 }}>
-              {/* Title */}
               <Form.Item
                 label="Title"
                 name="title"
@@ -181,7 +183,6 @@ const CreateItem = () => {
                 <Input placeholder="Enter product title" />
               </Form.Item>
 
-              {/* Quantity + Category */}
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
                   <Form.Item shouldUpdate>
@@ -244,7 +245,6 @@ const CreateItem = () => {
                 </Col>
               </Row>
 
-              {/* Price */}
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
                   <Form.Item label="Price" name="price">
@@ -262,7 +262,6 @@ const CreateItem = () => {
                 </Col>
               </Row>
 
-              {/* Description */}
               <Form.Item
                 label="Description"
                 name="description"
@@ -273,7 +272,6 @@ const CreateItem = () => {
                 <TextArea rows={4} placeholder="Type product details here" />
               </Form.Item>
 
-              {/* Buttons */}
               <Form.Item>
                 <div style={{ textAlign: "right" }}>
                   <Button

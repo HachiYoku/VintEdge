@@ -16,17 +16,36 @@ import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignUpPage";
 import ProductDetailPage from "./pages/ProductDetail";
+
 // Context
 import { ItemProvider } from "./context/ItemContext";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
-// PrivateRoute wrapper
+// ✅ PrivateRoute here
 const PrivateRoute = ({ children }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "50px" }}>Loading...</div>
+    );
+  }
+
   return user ? children : <Navigate to="/login" replace />;
 };
 
+const PublicRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "50px" }}>Loading...</div>
+    );
+  }
+
+  return !user ? children : <Navigate to="/" replace />;
+};
 const App = () => {
   return (
     <AuthProvider>
@@ -35,9 +54,22 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               {/* Public routes */}
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-
+              <Route
+                path="/login"
+                element={
+                  <PublicRoute>
+                    <LoginPage />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/signup"
+                element={
+                  <PublicRoute>
+                    <SignupPage />
+                  </PublicRoute>
+                }
+              />
               {/* Protected routes with AppLayout */}
               <Route element={<AppLayout />}>
                 <Route
@@ -108,7 +140,7 @@ const App = () => {
                   path="/product/:id"
                   element={
                     <PrivateRoute>
-                      <ProductDetailPage /> 
+                      <ProductDetailPage />
                     </PrivateRoute>
                   }
                 />

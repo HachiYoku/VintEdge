@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Row,
   Col,
@@ -19,16 +19,28 @@ import { useNavigate, Navigate } from "react-router-dom";
 const { Title, Text } = Typography;
 
 const ProfilePage = ({ isDarkMode = false }) => {
-  const { items, removeItem, updateUser } = useItems();
+  const { items, removeItem } = useItems();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const [editProfile, setEditProfile] = useState(false);
-  const [profile, setProfile] = useState({
-    name: user.name,
-    email: user.email,
-    avatar: user.avatar || "",
-  });
+  const [profile, setProfile] = useState({ name: "", email: "", avatar: "" });
+
+  // Load profile from localStorage or user context
+  useEffect(() => {
+    const savedProfile = localStorage.getItem("profile");
+    if (savedProfile) {
+      setProfile(JSON.parse(savedProfile));
+    } else if (user) {
+      const userProfile = {
+        name: user.name || "",
+        email: user.email || "",
+        avatar: user.avatar || "",
+      };
+      setProfile(userProfile);
+      localStorage.setItem("profile", JSON.stringify(userProfile));
+    }
+  }, [user]);
 
   if (!user) return <Navigate to="/login" replace />;
 
@@ -38,12 +50,18 @@ const ProfilePage = ({ isDarkMode = false }) => {
   };
 
   const handleAvatarUpload = (file) => {
-    if (file) setProfile({ ...profile, avatar: URL.createObjectURL(file) });
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfile({ ...profile, avatar: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
     return false; // prevent auto upload
   };
 
   const saveProfile = () => {
-    updateUser(profile);
+    localStorage.setItem("profile", JSON.stringify(profile));
     setEditProfile(false);
   };
 
@@ -112,17 +130,10 @@ const ProfilePage = ({ isDarkMode = false }) => {
                   placeholder="Name"
                   style={{ marginBottom: 8 }}
                 />
-                {/* <Input
-                  name="email"
-                  value={profile.email}
-                  onChange={handleProfileChange}
-                  placeholder="Email"
-                  style={{ marginBottom: 8 }}
-                /> */}
                 <Button
                   type="primary"
                   block
-                  onClick={() => setEditProfile()}
+                  onClick={saveProfile}
                   style={{ marginBottom: 8 }}
                 >
                   Save
@@ -250,15 +261,13 @@ const ProfilePage = ({ isDarkMode = false }) => {
                     {/* Image */}
                     {item.image && (
                       <img
-                        alt={item.title}
                         src={item.image}
+                        alt={item.title}
                         style={{
+                          width: "100%",
                           height: 150,
                           objectFit: "cover",
-                          width: "100%",
                           borderRadius: 12,
-                          border: "3px solid #000",
-                          display: "block",
                           marginBottom: 6,
                         }}
                       />
@@ -318,12 +327,11 @@ const ProfilePage = ({ isDarkMode = false }) => {
                               : item.condition === "Brand New" ||
                                 item.condition === "Like New"
                               ? "blue"
-                              : "red", // For "Worn" or "For parts/not working"
+                              : "red",
                         }}
                       >
                         Condition: {item.condition}
                       </Text>
-
                       <Text
                         strong
                         style={{

@@ -1,9 +1,18 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const ItemContext = createContext();
 
 export const ItemProvider = ({ children }) => {
-  const [items, setItems] = useState([]);
+  // Load initial items from localStorage or default to empty array
+  const [items, setItems] = useState(() => {
+    const saved = localStorage.getItem("items");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Save items to localStorage whenever items change
+  useEffect(() => {
+    localStorage.setItem("items", JSON.stringify(items));
+  }, [items]);
 
   const addItem = (item) => setItems((prev) => [...prev, item]);
 
