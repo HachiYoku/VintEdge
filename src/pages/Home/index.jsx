@@ -1,10 +1,9 @@
-
-import CategoryListing from '../../components/CategoryListing';
-import FlashSaleListing from '../../components/FlashSaleListing';
-import HomeCarousel from '../../components/HomeCarousel';
-import PopularItemListing from '../../components/PopularItemListing';
-import { useOutletContext } from 'react-router-dom';
-import '../../styles/pages/Home.css'
+import CategoryListing from "../../components/CategoryListing";
+import FlashSaleListing from "../../components/FlashSaleListing";
+import HomeCarousel from "../../components/HomeCarousel";
+import PopularItemListing from "../../components/PopularItemListing";
+import { useOutletContext } from "react-router-dom";
+import "../../styles/pages/Home.css";
 
 const Home = () => {
   const { products } = useOutletContext();
@@ -12,11 +11,12 @@ const Home = () => {
   return (
     <div>
       <HomeCarousel />
-      <CategoryListing />
+
       {products.length > 0 && <PopularItemListing products={products} />}
+      <CategoryListing />
       <FlashSaleListing />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

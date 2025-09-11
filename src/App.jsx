@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
 import "@ant-design/v5-patch-for-react-19";
+import "@fontsource/tinos";
 
 // Pages
 import Home from "./pages/Home";

@@ -36,18 +36,19 @@ const CreateItem = () => {
     }
   }, [editItem, formInstance]);
 
-  // Convert uploaded image to Base64
+  // Handle image upload and preview
   const handleImage = (file) => {
     const reader = new FileReader();
     reader.onloadend = () => {
-      const base64 = reader.result; // convert image to Base64
+      const base64 = reader.result;
       setImagePreview(base64);
-      formInstance.setFieldsValue({ image: base64 }); // save in form
+      formInstance.setFieldsValue({ image: base64 });
     };
     reader.readAsDataURL(file);
-    return false; // prevent upload to server
+    return false;
   };
 
+  // Submit handler
   const handleSubmit = (values) => {
     const newItem = {
       ...values,
@@ -67,7 +68,16 @@ const CreateItem = () => {
   };
 
   return (
-    <div style={{ padding: "24px" }}>
+    // Page background (needed for glass effect)
+    <div
+      style={{
+        padding: "24px",
+        backgroundColor: "#F9F9F9",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      {/* Main glass form container */}
       <Form
         layout="vertical"
         form={formInstance}
@@ -78,47 +88,77 @@ const CreateItem = () => {
           currency: "MMK",
           title: editItem?.title || "",
         }}
+        style={{
+          width: "100%",
+          maxWidth: 900,
+          padding: 24,
+          background: "#F0F0F0",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          borderRadius: 16,
+        }}
       >
-        <Row
-          gutter={[24, 24]}
-          style={{ display: "flex", alignItems: "stretch" }}
-        >
+        <Row gutter={[24, 24]}>
           {/* Left Column: Image + Condition */}
           <Col
             xs={24}
             lg={8}
             style={{ display: "flex", flexDirection: "column", gap: "16px" }}
           >
-            <Card title="Product Image" style={{ flex: 2 }}>
-              <Row gutter={16}>
-                <Col xs={12}>
+            {/* Product Image Card */}
+            <Card
+              title="Product Image"
+              style={{
+                background: "#F4F4F4", // glass effect
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+                borderRadius: 12,
+                border: "1px solid rgba(48, 6, 6, 0.09)",
+              }}
+            >
+              <Row gutter={[16, 16]} align="middle">
+                {/* Upload Box */}
+                <Col xs={24} sm={12}>
                   <Upload showUploadList={false} beforeUpload={handleImage}>
                     <div
                       style={{
                         border: "1px dashed #d9d9d9",
-                        borderRadius: 4,
+                        borderRadius: 8,
                         height: 150,
                         display: "flex",
+                        flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
                         cursor: "pointer",
                         textAlign: "center",
+                        transition: "all 0.3s",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = "#C7BFBF";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = "#d9d9d9";
                       }}
                     >
-                      <UploadOutlined style={{ fontSize: 20, padding: 50 }} />
+                      <UploadOutlined
+                        style={{ fontSize: 12, marginBottom: 8, padding: 35 }}
+                      />
                     </div>
                   </Upload>
                 </Col>
-                <Col xs={12}>
+
+                {/* Image Preview */}
+                <Col xs={24} sm={12}>
                   <div
                     style={{
                       border: "1px solid #d9d9d9",
-                      borderRadius: 4,
+                      borderRadius: 8,
                       height: 150,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       overflow: "hidden",
+                      background: "#F4F4F4",
                     }}
                   >
                     {imagePreview ? (
@@ -126,9 +166,9 @@ const CreateItem = () => {
                         src={imagePreview}
                         alt="preview"
                         style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
+                          maxWidth: "100%",
+                          maxHeight: "100%",
+                          objectFit: "contain", // <--- ensures aspect ratio is preserved
                         }}
                       />
                     ) : (
@@ -139,7 +179,17 @@ const CreateItem = () => {
               </Row>
             </Card>
 
-            <Card title="Condition" style={{ flex: 1 }}>
+            {/* Condition Card */}
+            <Card
+              title="Condition"
+              style={{
+                background: "rgba(255, 255, 255, 0.15)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+                borderRadius: 12,
+                border: "1px solid rgba(48, 6, 6, 0.09)",
+              }}
+            >
               <Form.Item
                 name="condition"
                 rules={[
@@ -147,6 +197,35 @@ const CreateItem = () => {
                 ]}
               >
                 <Radio.Group style={{ width: "100%" }}>
+                  <style>
+                    {`
+                    /* Hide default radio circle */
+                    .ant-radio-inner {
+                      display: none !important;
+                    }
+                    /* Custom text-style radio buttons */
+                    .ant-radio-wrapper {
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      padding: 6px 8px;
+                      margin: 4px;
+                      border-radius: 6px;
+                      cursor: pointer;
+                      transition: all 0.3s;
+                      width: 100%;
+                      text-align: center;
+                    }
+                    .ant-radio-wrapper:hover {
+                      background: #F4F4F4;
+                    }
+                    .ant-radio-wrapper-checked {
+                      background: #F4F4F4;
+                      font-weight: 600;
+                      color: #ff6431ed !important;
+                    }
+                  `}
+                  </style>
                   <Row gutter={[8, 8]}>
                     {[
                       "Brand New",
@@ -157,7 +236,7 @@ const CreateItem = () => {
                       "For parts/not working",
                     ].map((option) => (
                       <Col key={option} xs={12}>
-                        <Radio.Button value={option}>{option}</Radio.Button>
+                        <Radio value={option}>{option}</Radio>
                       </Col>
                     ))}
                   </Row>
@@ -170,7 +249,7 @@ const CreateItem = () => {
           <Col
             xs={24}
             lg={16}
-            style={{ display: "flex", flexDirection: "column" }}
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
           >
             <Card title="Product Details" style={{ flex: 1 }}>
               <Form.Item
@@ -275,12 +354,27 @@ const CreateItem = () => {
               <Form.Item>
                 <div style={{ textAlign: "right" }}>
                   <Button
-                    style={{ marginRight: 8 }}
+                    style={{
+                      backgroundColor: "white",
+                      borderColor: "rgba(48, 6, 6, 0.26)",
+                      color: "#ff6431ed",
+                      borderColor: "#ff6431ed",
+                      marginRight: 8,
+                    }}
                     onClick={() => navigate(-1)}
                   >
                     Cancel
                   </Button>
-                  <Button type="primary" htmlType="submit">
+
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{
+                      color: "#fff",
+                      backgroundColor: "#ff6431ed",
+                      borderColor: "#ff6431ed",
+                    }}
+                  >
                     {editItem ? "Update" : "Publish"}
                   </Button>
                 </div>

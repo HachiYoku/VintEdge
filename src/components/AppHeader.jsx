@@ -11,7 +11,15 @@ import "../styles/components/AppHeader.css"; // <-- import CSS
 
 const { Header } = Layout;
 
+<<<<<<< HEAD
 const AppHeader = ({ products = [] }) => {
+=======
+const AppHeader = ({
+  products = [],
+  bgColor = "white",
+  iconColor = "#220303ff",
+}) => {
+>>>>>>> c573f0d (designUpdateVy)
   const navigate = useNavigate();
   const location = useLocation();
   const { cart } = useCart();
@@ -49,7 +57,20 @@ const AppHeader = ({ products = [] }) => {
       <div className="header-left">
         <BurgerMenu iconStyle={{ fontSize: "24px", color: "#fff" }} />
         <Link to="/">
+<<<<<<< HEAD
           <img src="/fav.png" alt="Logo" className="header-logo" />
+=======
+          <img
+            src="/fav.png"
+            alt="Logo"
+            style={{
+              height: "70px",
+              width: "120px",
+              cursor: "pointer",
+              marginTop: "10px",
+            }}
+          />
+>>>>>>> c573f0d (designUpdateVy)
         </Link>
       </div>
 

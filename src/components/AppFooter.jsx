@@ -18,7 +18,7 @@ const AppFooter = () => {
   return (
     <Footer
       className="app-footer"
-      style={{ backgroundColor: "#D6B587", color: "#2c2c2c" }}
+      style={{ backgroundColor: "#F8F3F0", color: "#2c2c2c" }}
     >
       <Row gutter={[32, 32]} justify="space-between">
         {/* Logo + Description */}
@@ -77,7 +77,7 @@ const AppFooter = () => {
           <h4 style={{ color: "#2c2c2c" }}>Contact us</h4>
           <ul className="list-unstyled">
             <li>
-              <MailOutlined className="me-2" /> contact@ecoexchange.com
+              <MailOutlined className="me-2" /> VintEdge.com
             </li>
             <li>
               <PhoneOutlined className="me-2" /> (061) 687 - 5892

@@ -1,28 +1,50 @@
-import React, { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import ProductCard from './ProductCard';
-import '../styles/components/FlashSaleListing.css';
-import { Button } from 'antd'; 
+import React, { useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import ProductCard from "./ProductCard";
+import "../styles/components/FlashSaleListing.css";
+import { Button } from "antd";
 
 const FlashSaleListing = () => {
   const { products } = useOutletContext();
   const [visibleItems, setVisibleItems] = useState(8);
 
   const loadMoreItems = () => {
-    setVisibleItems(prevVisibleItems => prevVisibleItems + 8);
+    setVisibleItems((prevVisibleItems) => prevVisibleItems + 8);
   };
 
   return (
     <div>
-      <h1>Flash Sale</h1>
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '16px', padding: '20px' }}>
-        {products.slice(0, visibleItems).map(product => (
+      <h1
+        style={{
+          textAlign: "center",
+          marginBottom: "20px",
+          fontSize: "2rem",
+          color: "#333",
+        }}
+      >
+        Flash Sale
+      </h1>
+      <div className="flash-sale-container">
+        {products.slice(0, visibleItems).map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
       {visibleItems < products.length && (
-        <div style={{ textAlign: 'center', margin: '10px', }}>
-          <Button type="primary" onClick={loadMoreItems} style={{ padding: '10px 20px', fontSize: '16px',backgroundColor:'#c5bebeff', borderColor:'#c5bebeff' }}>
+        <div style={{ textAlign: "center", marginBottom: "50px " }}>
+          <Button
+            className="flash-sale-button"
+            type="primary"
+            onClick={loadMoreItems}
+            style={{
+              background: "#FF6530",
+              border: "none",
+              marginTop: "10px",
+              padding: "20px 24px",
+              fontSize: "16px",
+              fontWeight: "600",
+              color: "#fff",
+            }}
+          >
             Load More
           </Button>
         </div>

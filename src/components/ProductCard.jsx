@@ -1,8 +1,9 @@
 import React from "react";
-import { Card, Button,Image } from "antd";
+import { Card, Button, Image } from "antd";
 import { useCart } from "../context/CartContext";
 import { FaShoppingCart, FaInfoCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import "../styles/components/ProductCard.css";
 
 const { Meta } = Card;
 
@@ -12,40 +13,46 @@ const ProductCard = ({ product }) => {
 
   return (
     <Card
-      style={{ width: 300 }}
+      hoverable
+      className="product-card"
       cover={
-        <Image.PreviewGroup>
-          <Image
-            alt={product.title}
-            src={product.image}
-            style={{ height: 200, objectFit: "contain",padding: "10px" }}
-          />
-        </Image.PreviewGroup>
+        <div className="product-card-image-wrapper">
+          <Image.PreviewGroup>
+            <Image
+              alt={product.title}
+              src={product.image}
+              className="product-card-image"
+              preview={{ mask: <div>Click to Preview</div> }}
+            />
+          </Image.PreviewGroup>
+        </div>
       }
       actions={[
         <Button
           type="primary"
+          className="product-card-btn add-to-cart"
           icon={<FaShoppingCart />}
           onClick={(e) => {
             e.stopPropagation();
             addToCart(product);
           }}
         >
-          Add to Cart
+          Buy Now
         </Button>,
         <Button
           type="default"
+          className="product-card-btn view-details"
           icon={<FaInfoCircle />}
           onClick={() => navigate(`/product/${product.id}`)}
         >
-          See Description
-        </Button>
+          Details
+        </Button>,
       ]}
     >
-      <Meta title={product.title} />
-      <div style={{ marginTop: "10px", fontSize: "16px" }}>
-        <p>Stock: {product.rating?.count || 0}</p>
-        <p>${product.price}</p>
+      <Meta title={product.title} className="product-card-title" />
+      <div className="product-card-info">
+        <span>Stock: {product.rating?.count || 0}</span>
+        <span className="product-card-price">${product.price}</span>
       </div>
     </Card>
   );
