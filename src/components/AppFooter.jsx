@@ -16,13 +16,18 @@ const { Footer } = Layout;
 
 const AppFooter = () => {
   return (
-    <Footer className="app-footer">
+    <Footer
+      className="app-footer"
+      style={{ backgroundColor: "#D6B587", color: "#2c2c2c" }}
+    >
       <Row gutter={[32, 32]} justify="space-between">
         {/* Logo + Description */}
         <Col xs={24} sm={12} md={6}>
-          <h3>🌱 Eco Exchange</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipiscing elit aliquam</p>
-          <div style={{ fontSize: "18px" }}>
+          <h3 style={{ color: "#2c2c2c" }}>VintEdge</h3>
+          <p style={{ color: "#333" }}>
+            Lorem ipsum dolor sit amet consectetur adipiscing elit aliquam
+          </p>
+          <div style={{ fontSize: "18px", color: "#2c2c2c" }}>
             <FacebookOutlined className="me-3" />
             <TwitterOutlined className="me-3" />
             <InstagramOutlined className="me-3" />
@@ -33,7 +38,7 @@ const AppFooter = () => {
 
         {/* Product */}
         <Col xs={12} sm={6} md={4}>
-          <h4>Product</h4>
+          <h4 style={{ color: "#2c2c2c" }}>Product</h4>
           <ul className="list-unstyled">
             <li>Features</li>
             <li>Pricing</li>
@@ -45,7 +50,7 @@ const AppFooter = () => {
 
         {/* Company */}
         <Col xs={12} sm={6} md={4}>
-          <h4>Company</h4>
+          <h4 style={{ color: "#2c2c2c" }}>Company</h4>
           <ul className="list-unstyled">
             <li>About</li>
             <li>Contact us</li>
@@ -57,7 +62,7 @@ const AppFooter = () => {
 
         {/* Support */}
         <Col xs={12} sm={6} md={4}>
-          <h4>Support</h4>
+          <h4 style={{ color: "#2c2c2c" }}>Support</h4>
           <ul className="list-unstyled">
             <li>Getting started</li>
             <li>Help center</li>
@@ -69,7 +74,7 @@ const AppFooter = () => {
 
         {/* Contact */}
         <Col xs={12} sm={6} md={6}>
-          <h4>Contacts us</h4>
+          <h4 style={{ color: "#2c2c2c" }}>Contact us</h4>
           <ul className="list-unstyled">
             <li>
               <MailOutlined className="me-2" /> contact@ecoexchange.com
@@ -87,10 +92,16 @@ const AppFooter = () => {
         </Col>
       </Row>
 
-      <hr />
-      <div style={{ textAlign: "center", marginTop: "10px" }}>
-        © 2024 VintEdge. All Rights Reserved |{" "}
-        <a href="#">Terms and Conditions</a> | <a href="#">Privacy Policy</a>
+      <hr style={{ borderColor: "rgba(0,0,0,0.2)" }} />
+      <div style={{ textAlign: "center", marginTop: "10px", color: "#2c2c2c" }}>
+        © {new Date().getFullYear()} VintEdge. All Rights Reserved |{" "}
+        <a href="#" style={{ color: "#2c2c2c" }}>
+          Terms and Conditions
+        </a>{" "}
+        |{" "}
+        <a href="#" style={{ color: "#2c2c2c" }}>
+          Privacy Policy
+        </a>
       </div>
     </Footer>
   );
