@@ -36,16 +36,16 @@ const CreateItem = () => {
     }
   }, [editItem, formInstance]);
 
-  // Handle image upload and preview
+  // Convert uploaded image to Base64
   const handleImage = (file) => {
     const reader = new FileReader();
     reader.onloadend = () => {
-      const base64 = reader.result;
+      const base64 = reader.result; // convert image to Base64
       setImagePreview(base64);
-      formInstance.setFieldsValue({ image: base64 });
+      formInstance.setFieldsValue({ image: base64 }); // save in form
     };
     reader.readAsDataURL(file);
-    return false;
+    return false; // prevent upload to server
   };
 
   // Submit handler
@@ -251,7 +251,17 @@ const CreateItem = () => {
             lg={16}
             style={{ display: "flex", flexDirection: "column", gap: "16px" }}
           >
-            <Card title="Product Details" style={{ flex: 1 }}>
+            <Card
+              title="Product Details"
+              style={{
+                background: "#F4F4F4",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+                borderRadius: 12,
+                border: "1px solid rgba(48, 6, 6, 0.09)",
+              }}
+            >
+              {/* Title */}
               <Form.Item
                 label="Title"
                 name="title"

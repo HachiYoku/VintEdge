@@ -20,13 +20,13 @@ const { Title, Text } = Typography;
 const { Meta } = Card;
 
 const ProfilePage = ({ isDarkMode = false }) => {
-  const { items, removeItem } = useItems();
+  const { items, removeItem, updateUser } = useItems();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const [editProfile, setEditProfile] = useState(false);
   const [profile, setProfile] = useState({ name: "", email: "", avatar: "" });
-
+  // Load profile from localStorage or user context
   useEffect(() => {
     const savedProfile = localStorage.getItem("profile");
     if (savedProfile) {
@@ -44,13 +44,20 @@ const ProfilePage = ({ isDarkMode = false }) => {
 
   if (!user) return <Navigate to="/login" replace />;
 
+  // Profile handlers
   const handleProfileChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
   const handleAvatarUpload = (file) => {
-    if (file) setProfile({ ...profile, avatar: URL.createObjectURL(file) });
-    return false;
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfile({ ...profile, avatar: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+    return false; // prevent auto upload
   };
 
   const saveProfile = () => {
@@ -133,6 +140,13 @@ const ProfilePage = ({ isDarkMode = false }) => {
                     marginBottom: 16,
                   }}
                 />
+                {/* <Input
+                  name="email"
+                  value={profile.email}
+                  onChange={handleProfileChange}
+                  placeholder="Email"
+                  style={{ marginBottom: 8 }}
+                /> */}
                 <Button
                   type="primary"
                   block
@@ -144,18 +158,11 @@ const ProfilePage = ({ isDarkMode = false }) => {
                     color: "#fff",
                     fontWeight: "bold",
                     marginBottom: 12,
-                    height: 35,
-                    width: 70,
+                    height: 32,
+                    width: 60,
                     fontSize: 16,
                     marginRight: 50,
-                    transition: "all 0.3s",
                   }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "#ff6430c3")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "#ff6431ed")
-                  }
                 >
                   Save
                 </Button>
@@ -163,22 +170,10 @@ const ProfilePage = ({ isDarkMode = false }) => {
                   block
                   onClick={() => setEditProfile(false)}
                   style={{
-                    height: 35,
-                    width: 70,
+                    height: 32,
+                    width: 60,
                     fontSize: 16,
-                    border: "2px solid #ff6431ed",
-                    color: "#ff6431ed",
-                    fontWeight: "bold",
-                    transition: "all 0.3s",
                   }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "#ff6431ed") &
-                    (e.currentTarget.style.color = "#fff")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "#fff") &
-                    (e.currentTarget.style.color = "#ff6431ed")
-                  }
                 >
                   Cancel
                 </Button>
@@ -189,8 +184,8 @@ const ProfilePage = ({ isDarkMode = false }) => {
                   src={profile.avatar || "https://via.placeholder.com/150"}
                   alt={profile.name}
                   style={{
-                    width: 180, // bigger avatar
-                    height: 180,
+                    width: 140, // bigger avatar
+                    height: 140,
                     borderRadius: "50%",
                     objectFit: "cover",
                     marginBottom: 16,
@@ -233,7 +228,7 @@ const ProfilePage = ({ isDarkMode = false }) => {
                       color: "#ff6431ed",
                       fontWeight: "bold",
                       height: 40,
-                      minWidth: 50,
+                      minWidth: 100,
                       transition: "all 0.3s",
                     }}
                     onMouseEnter={(e) =>
@@ -260,7 +255,7 @@ const ProfilePage = ({ isDarkMode = false }) => {
                       color: "#fff",
                       fontWeight: "bold",
                       height: 40,
-                      minWidth: 50,
+                      minWidth: 100,
                       transition: "all 0.3s",
                     }}
                     onMouseEnter={(e) =>
@@ -384,91 +379,33 @@ const ProfilePage = ({ isDarkMode = false }) => {
                       </Dropdown>
                     </div>
 
-                    {/* Image */}
-                    {item.image && (
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        style={{
-                          width: "100%",
-                          height: 150,
-                          objectFit: "cover",
-                          borderRadius: 12,
-                          marginBottom: 6,
-                        }}
-                      />
-                    )}
+                    <Meta
+                      title={`${item.title} (${item.category || "Unknown"})`}
+                    />
 
-                    {/* Content */}
-                    <div style={{ padding: "0 10px 10px", flex: 1 }}>
-                      <Title
-                        level={5}
-                        style={{
-                          margin: 0,
-                          marginBottom: 4,
-                          color: isDarkMode ? "#fff" : "#000",
-                        }}
-                      >
-                        {item.title}
-                      </Title>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          display: "block",
-                          marginBottom: 4,
-                          color: isDarkMode ? "#ccc" : "#555",
-                        }}
-                        ellipsis={{ rows: 2 }}
-                      >
-                        {item.description}
-                      </Text>
-                      <Tag
-                        color="blue"
-                        style={{ fontSize: 11, marginBottom: 4 }}
-                      >
-                        {item.category}
-                      </Tag>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          display: "block",
-                          marginBottom: 4,
-                          fontWeight: 500,
-                          color: isDarkMode ? "#fff" : "#000",
-                        }}
-                      >
-                        Quantity: {item.quantity}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          display: "block",
-                          marginBottom: 6,
-                          fontWeight: 500,
-                          color:
-                            item.condition === "Good"
-                              ? "green"
-                              : item.condition === "Fair"
-                              ? "orange"
-                              : item.condition === "Brand New" ||
-                                item.condition === "Like New"
-                              ? "blue"
-                              : "red",
-                        }}
-                      >
-                        Condition: {item.condition}
-                      </Text>
-                      <Text
-                        strong
-                        style={{
-                          fontSize: 16,
-                          color: isDarkMode ? "#fff" : "#000",
-                        }}
-                      >
-                        <span>
-                          {item.price} {item.currency}
-                        </span>
-                      </Text>
+                    <p
+                      style={{
+                        fontSize: 12,
+                        color: "#555",
+                        marginTop: 4,
+                        textAlign: "center",
+                      }}
+                    >
+                      Added on: {new Date(item.date).toLocaleString()}
+                    </p>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginTop: 8,
+                        fontSize: 14,
+                      }}
+                    >
+                      <span>Stock: {item.quantity}</span>
+                      <span className="product-card-price">
+                        {item.price} {item.currency}
+                      </span>
                     </div>
                   </Card>
                 </Col>

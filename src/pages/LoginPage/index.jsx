@@ -20,16 +20,6 @@ const LoginPage = () => {
     }
   };
 
-<<<<<<< HEAD
-  // ✅ Show spinner while checking localStorage
-  if (loading) {
-    return (
-      <div style={{ textAlign: "center", marginTop: "100px" }}>
-        <Spin size="large" />
-      </div>
-    );
-  }
-=======
   const primaryColor = "#ff6431ed";
 
   const inputStyle = {
@@ -41,7 +31,6 @@ const LoginPage = () => {
     outline: "none",
     color: "#333",
   };
->>>>>>> c573f0d (designUpdateVy)
 
   return (
     <div
@@ -54,41 +43,6 @@ const LoginPage = () => {
         padding: "20px",
       }}
     >
-<<<<<<< HEAD
-      <Title level={2} style={{ textAlign: "center", marginBottom: 24 }}>
-        Login
-      </Title>
-      <Form layout="vertical" onFinish={handleLogin}>
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            { required: true, message: "Please enter your email!" },
-            { type: "email", message: "Enter a valid email!" },
-          ]}
-        >
-          <Input prefix={<MailOutlined />} placeholder="Email" size="large" />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[{ required: true, message: "Please enter your password!" }]}
-        >
-          <Input.Password
-            prefix={<LockOutlined />}
-            placeholder="Password"
-            size="large"
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block size="large">
-            Login
-          </Button>
-        </Form.Item>
-      </Form>
-      <div style={{ textAlign: "center", marginTop: 16 }}>
-        Don’t have an account? <Link to="/signup">Sign Up</Link>
-=======
       <div
         style={{
           width: "100%",
@@ -173,7 +127,6 @@ const LoginPage = () => {
             </Link>
           </Text>
         </div>
->>>>>>> c573f0d (designUpdateVy)
       </div>
     </div>
   );

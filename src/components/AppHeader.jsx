@@ -11,15 +11,11 @@ import "../styles/components/AppHeader.css"; // <-- import CSS
 
 const { Header } = Layout;
 
-<<<<<<< HEAD
-const AppHeader = ({ products = [] }) => {
-=======
 const AppHeader = ({
   products = [],
   bgColor = "white",
   iconColor = "#220303ff",
 }) => {
->>>>>>> c573f0d (designUpdateVy)
   const navigate = useNavigate();
   const location = useLocation();
   const { cart } = useCart();
@@ -52,14 +48,11 @@ const AppHeader = ({
   };
 
   return (
-    <Header className="app-header">
+    <Header className="app-header" style={{ backgroundColor: "white" }}>
       {/* Left: Burger + Logo */}
       <div className="header-left">
-        <BurgerMenu iconStyle={{ fontSize: "24px", color: "#fff" }} />
+        <BurgerMenu iconStyle={{ fontSize: "24px", color: "#280808ff" }} />
         <Link to="/">
-<<<<<<< HEAD
-          <img src="/fav.png" alt="Logo" className="header-logo" />
-=======
           <img
             src="/fav.png"
             alt="Logo"
@@ -70,7 +63,6 @@ const AppHeader = ({
               marginTop: "10px",
             }}
           />
->>>>>>> c573f0d (designUpdateVy)
         </Link>
       </div>
 
