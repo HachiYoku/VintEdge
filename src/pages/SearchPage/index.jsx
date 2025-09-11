@@ -13,39 +13,40 @@ const SearchPage = () => {
   const [loading, setLoading] = useState(false);
 
   // Fetch products based on query (search term or category)
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        const res = await axios.get("https://fakestoreapi.com/products");
+    useEffect(() => {
+      const fetchProducts = async () => {
+        setLoading(true);
+        try {
+          const res = await axios.get("https://fakestoreapi.com/products");
 
-        let filtered = res.data;
+          let filtered = res.data;
 
-        if (searchTerm) {
-          filtered = res.data.filter(
-            (p) =>
-              p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              p.category.toLowerCase() === searchTerm.toLowerCase()
-          );
+          if (searchTerm.trim() !== "") {
+            filtered = res.data.filter(
+              (p) =>
+                p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                p.category.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+          }
+
+          setProducts(filtered);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoading(false);
         }
+      };
 
-        setProducts(filtered);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+      fetchProducts();
+    }, [searchTerm]);
 
-    fetchProducts();
-  }, [searchTerm]);
 
   return (
     <div style={{ padding: 20 }}>
       {loading ? (
         <Spin size="large" style={{ marginTop: 50 }} />
       ) : (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: 'center', gap: '16px', padding: '20px' }}>
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

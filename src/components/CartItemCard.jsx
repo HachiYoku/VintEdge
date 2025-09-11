@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Button, Typography, Space, Checkbox } from "antd";
 import { useCart } from "../context/CartContext";
+import "../styles/components/CartItemCard.css"; // import the external CSS
 
 const { Text } = Typography;
 
@@ -18,37 +19,48 @@ const CartItemCard = ({ item, selected, onSelectChange }) => {
   };
 
   return (
-    <Card
-      title={
-        <Space>
-          <Checkbox
-            checked={selected}
-            onChange={(e) => onSelectChange(item.id, e.target.checked)}
-          />
-          <span>{item.title}</span>
-        </Space>
-      }
-      extra={<Text strong>${(item.price * item.quantity).toFixed(2)}</Text>}
-      cover={
-        <img
-          alt={item.title}
-          src={item.image}
-          style={{ height: 200, objectFit: "contain" }}
+    <Card className="cart-card" bodyStyle={{ padding: 0 }}>
+      <div className="cart-card-row">
+        {/* Checkbox */}
+        <Checkbox
+          checked={selected}
+          onChange={(e) => onSelectChange(item.id, e.target.checked)}
+          className="cart-checkbox"
         />
-      }
-    >
-      <p>Price: ${item.price}</p>
-      <p>Stock: {item.rating?.count ?? "N/A"}</p>
 
-      <Space>
-        <Button onClick={handleDecrease} disabled={item.quantity <= 1}>
-          −
-        </Button>
-        <Text>{item.quantity}</Text>
-        <Button type="primary" onClick={handleIncrease}>
-          +
-        </Button>
-      </Space>
+        {/* Image */}
+        <img alt={item.title} src={item.image} className="cart-card-image" />
+
+        {/* Middle Section */}
+        <div className="cart-card-details">
+          <Text strong className="cart-card-title">
+            {item.title}
+          </Text>
+          <Text type="secondary" className="cart-card-category">
+            {item.category ?? "No category"}
+          </Text>
+          <Text className="cart-card-stock">
+            Stock: {item.rating?.count ?? "N/A"}
+          </Text>
+        </div>
+
+        {/* Right Section */}
+        <div className="cart-card-right">
+          <Text strong className="cart-card-price">
+            ${(item.price * item.quantity).toFixed(2)}
+          </Text>
+
+          <Space>
+            <Button onClick={handleDecrease} disabled={item.quantity <= 1}>
+              −
+            </Button>
+            <Text>{item.quantity}</Text>
+            <Button type="primary" onClick={handleIncrease}>
+              +
+            </Button>
+          </Space>
+        </div>
+      </div>
     </Card>
   );
 };

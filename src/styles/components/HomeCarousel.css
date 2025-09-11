@@ -1,0 +1,29 @@
+.carousel-img {
+  width: 100%;
+  height: 450px;
+  object-fit: fill; /* makes image fill area without distortion */
+  border-radius: 5px;
+}
+
+/* Customize carousel dots */
+.ant-carousel .slick-dots li button {
+  background: #c1c1c1;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  opacity: 0.8;
+}
+
+.ant-carousel .slick-dots li.slick-active button {
+  background: #1890ff; /* AntD primary blue */
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .carousel-img {
+    height: 220px; /* smaller height for mobile */
+    border-radius: 8px;
+  }
+}

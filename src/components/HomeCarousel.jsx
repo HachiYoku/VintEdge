@@ -1,34 +1,24 @@
-// components/HomeCarousel.jsx
-
 import React from "react";
-import { Carousel } from "antd"; // Ant Design Carousel is still needed for its functionality
-
-const contentStyle = {
-  height: "500px",
-  color: "#fff",
-  lineHeight: "160px",
-  textAlign: "center",
-  background: "#F2F3F5",
-};
+import { Carousel } from "antd";
+import "../styles/components/HomeCarousel.css";
 
 const ProductCarousel = () => {
   return (
-    <Carousel autoplay={{ dotDuration: true }} autoplaySpeed={5000}>
+    <Carousel autoplay autoplaySpeed={1500} dots>
       <div tabIndex="-1">
-        {" "}
-        {/* Add tabIndex="-1" to prevent focus on the div itself */}
-        <h3 style={contentStyle}>1</h3>
+        <img className="carousel-img" src="/HomeCarousel-1.png" alt="Carousel 1" />
       </div>
       <div tabIndex="-1">
-        <h3 style={contentStyle}>2</h3>
+        <img className="carousel-img" src="/HomeCarousel-2.png" alt="Carousel 2" />
       </div>
       <div tabIndex="-1">
-        <h3 style={contentStyle}>3</h3>
+        <img className="carousel-img" src="/HomeCarousel-3.png" alt="Carousel 3" />
       </div>
       <div tabIndex="-1">
-        <h3 style={contentStyle}>4</h3>
+        <img className="carousel-img" src="/HomeCarousel-4.png" alt="Carousel 4" />
       </div>
     </Carousel>
   );
 };
+
 export default ProductCarousel;

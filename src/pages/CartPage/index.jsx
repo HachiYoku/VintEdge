@@ -3,6 +3,7 @@ import { useCart } from "../../context/CartContext";
 import { List, Typography, Button } from "antd";
 import CartItemCard from "../../components/CartItemCard";
 import { useNavigate } from "react-router-dom";
+import "../../styles/pages/CartPage.css"; // import css file
 
 const { Title, Text } = Typography;
 
@@ -25,38 +26,37 @@ const CartPage = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <Title level={2}>Your Cart</Title>
+    <div className="cart-page">
+      <Title className="cart-title" level={2}>Your Cart</Title>
 
       {cart.length === 0 ? (
         <Text type="secondary">Your cart is empty 🛒</Text>
       ) : (
         <>
           <List
-            grid={{ gutter: 16, column: 2 }}
-            dataSource={cart}
-            renderItem={(item) => (
-              <List.Item>
-                <CartItemCard
-                  item={item}
-                  selected={selectedItems.includes(item.id)}
-                  onSelectChange={handleSelectChange}
-                />
-              </List.Item>
-            )}
-          />
+          grid={{
+            gutter: 16,
+            column: 1,
+          }}
+          dataSource={cart}
+          renderItem={(item) => (
+            <List.Item>
+              <CartItemCard
+                item={item}
+                selected={selectedItems.includes(item.id)}
+                onSelectChange={handleSelectChange}
+              />
+            </List.Item>
+          )}
+          className="cart-list"
+        />
 
-          <div
-            style={{
-              marginTop: "20px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Title level={4}>Total: ${getTotalAmount()}</Title>
+          <div className="cart-footer">
+            <Title level={4} className="total">
+              Total: ${getTotalAmount()}
+            </Title>
 
-            <div style={{ display: "flex", gap: "10px" }}>
+            <div className="cart-actions">
               <Button danger onClick={clearAllCartItem}>
                 Clear Cart
               </Button>

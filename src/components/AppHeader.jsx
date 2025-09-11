@@ -7,7 +7,7 @@ import { TbUserSquare } from "react-icons/tb";
 import { PiShoppingCartBold } from "react-icons/pi";
 import { FiSearch } from "react-icons/fi";
 import { useCart } from "../context/CartContext";
-import "../styles/components/AppHeader.css"; // <-- import CSS
+import "../styles/components/AppHeader.css";
 
 const { Header } = Layout;
 
@@ -46,6 +46,7 @@ const AppHeader = ({
     });
     setShowSearchDrawer(false);
   };
+
 
   return (
     <Header className="app-header" style={{ backgroundColor: "white" }}>
