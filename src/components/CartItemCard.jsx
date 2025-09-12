@@ -52,11 +52,15 @@ const CartItemCard = ({ item, selected, onSelectChange }) => {
           </Text>
 
           <Space>
-            <Button onClick={handleDecrease} disabled={item.quantity <= 1}>
+            <Button
+              className="qty-btn"
+              onClick={handleDecrease}
+              disabled={item.quantity <= 1}
+            >
               −
             </Button>
             <Text>{item.quantity}</Text>
-            <Button type="primary" onClick={handleIncrease}>
+            <Button className="qty-btn" onClick={handleIncrease}>
               +
             </Button>
           </Space>
