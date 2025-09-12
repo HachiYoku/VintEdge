@@ -1,8 +1,6 @@
-
-
 .checkout-container {
   padding: 20px;
-  position:relative;
+  position: relative;
 }
 
 .back-to-cart {
@@ -86,10 +84,9 @@
 
 /* Mobile view */
 @media (max-width: 600px) {
-
   .back-to-cart {
-  font-size: 8px;
-}
+    font-size: 8px;
+  }
   .checkout-summary {
     flex-direction: column;
     align-items: end;
@@ -106,9 +103,9 @@
   }
 
   .checkout-title {
-  margin-bottom: 20px;
-  font-size: 20px !important;
-}
+    margin-bottom: 20px;
+    font-size: 20px !important;
+  }
 
   .checkout-price {
     text-align: center;
@@ -117,4 +114,20 @@
   }
 }
 
+/* 🌙 Dark mode overrides */
+.dark-mode .checkout-title,
+.dark-mode .checkout-item-title,
+.dark-mode .checkout-item-qty,
+.dark-mode .checkout-price,
+.dark-mode .checkout-summary {
+  color: #fff !important;
+}
 
+.dark-mode .checkout-card {
+  background-color: #111;
+  border: 1px solid #333;
+}
+
+.dark-mode .checkout-image {
+  background: #222;
+}
