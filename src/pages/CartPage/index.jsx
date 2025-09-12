@@ -21,35 +21,39 @@ const CartPage = () => {
   };
 
   const handleCheckout = () => {
-    const checkoutItems = cart.filter((item) => selectedItems.includes(item.id));
+    const checkoutItems = cart.filter((item) =>
+      selectedItems.includes(item.id)
+    );
     navigate("/checkout", { state: { checkoutItems } });
   };
 
   return (
     <div className="cart-page">
-      <Title className="cart-title" level={2}>Your Cart</Title>
+      <Title className="cart-title" level={2}>
+        Your Cart
+      </Title>
 
       {cart.length === 0 ? (
-        <Text type="secondary">Your cart is empty 🛒</Text>
+        <Text className="empty-cart">Your cart is empty 🛒</Text>
       ) : (
         <>
           <List
-          grid={{
-            gutter: 16,
-            column: 1,
-          }}
-          dataSource={cart}
-          renderItem={(item) => (
-            <List.Item>
-              <CartItemCard
-                item={item}
-                selected={selectedItems.includes(item.id)}
-                onSelectChange={handleSelectChange}
-              />
-            </List.Item>
-          )}
-          className="cart-list"
-        />
+            grid={{
+              gutter: 16,
+              column: 1,
+            }}
+            dataSource={cart}
+            renderItem={(item) => (
+              <List.Item>
+                <CartItemCard
+                  item={item}
+                  selected={selectedItems.includes(item.id)}
+                  onSelectChange={handleSelectChange}
+                />
+              </List.Item>
+            )}
+            className="cart-list"
+          />
 
           <div className="cart-footer">
             <Title level={4} className="total">

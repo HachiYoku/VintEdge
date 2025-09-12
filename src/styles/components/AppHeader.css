@@ -108,3 +108,19 @@ body.dark-mode .ant-input-search .ant-input {
 body.dark-mode .ant-input-search .ant-input::placeholder {
   color: #bbb !important;
 }
+
+.ant-input-search-button {
+  background-color: #ff7343 !important;
+}
+
+/* Drawer content background in dark mode */
+body.dark-mode .ant-drawer-body {
+  background-color: #121212;
+  color: #fff;
+}
+
+/* Drawer header background in dark mode */
+body.dark-mode .ant-drawer-header {
+  background-color: #121212;
+  color: #fff;
+}

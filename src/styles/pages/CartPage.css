@@ -64,7 +64,7 @@
   }
 
   .cart-title {
-    margin-top: 10px ;
+    margin-top: 10px;
     font-size: 20px !important;
   }
 
@@ -95,10 +95,25 @@
 
 /* 📱 Small Mobile */
 @media (max-width: 480px) {
-  
-
   .cart-total {
     font-size: 16px;
   }
 }
 
+/* Dark mode for cart page */
+body.dark-mode .cart-page {
+  background-color: #121212;
+  color: #fff;
+}
+
+/* Cart page title and total */
+body.dark-mode .cart-page .cart-title,
+body.dark-mode .cart-page .total {
+  color: #fff !important;
+}
+
+/* List text */
+body.dark-mode .cart-page .cart-list .ant-typography,
+body.dark-mode .cart-page .empty-cart {
+  color: #fff !important;
+}
