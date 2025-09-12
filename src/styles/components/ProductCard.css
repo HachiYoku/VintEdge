@@ -1,6 +1,6 @@
 .product-card {
   width: 300px;
-  background-color: beige;
+  background-color: #f2f3f5 !important;
   border-radius: 16px;
   cursor: pointer;
   overflow: hidden;
@@ -64,13 +64,13 @@
   margin-top: 12px;
   width: 100%;
   height: 40px;
-  background-color: #977b15;
+  background-color: #ff6431;
   border-radius: 8px;
   font-weight: 500;
 }
 
 .cart-btn:hover {
-  background-color: #ae9435 !important;
+  background-color: #ff6431eb !important;
 }
 
 /* ✅ Responsive */

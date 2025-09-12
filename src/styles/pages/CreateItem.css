@@ -94,12 +94,12 @@
   transition: all 0.3s;
   width: 100%;
   text-align: center;
-  background: #f4f4f4; /* default background */
+  background: #f0f0f0; /* default background */
   color: #000;
 }
 
 .create-item-condition .ant-radio-wrapper:hover {
-  background: #e0e0e0;
+  background: #f0f0f0;
 }
 
 .create-item-condition .ant-radio-wrapper-checked {
@@ -169,7 +169,7 @@ body.dark-mode .create-item-form .form-label {
 body.dark-mode .create-item-card {
   background-color: #5c5b5b !important;
   border: 1px solid #272626;
-  color: #fff;
+  color: #fff !important;
 }
 
 body.dark-mode .create-item-upload-box {
@@ -201,12 +201,12 @@ body.dark-mode .ant-btn-primary {
 
 /* Condition Buttons */
 body.dark-mode .create-item-condition .ant-radio-wrapper {
-  background: #3a3a3a;
+  background: #141414;
   color: #fff;
 }
 
 body.dark-mode .create-item-condition .ant-radio-wrapper:hover {
-  background: #4a4a4a;
+  background: #ff6431c8;
 }
 
 body.dark-mode .create-item-condition .ant-radio-wrapper-checked {
