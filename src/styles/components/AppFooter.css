@@ -1,6 +1,6 @@
 /* Base footer style */
 .app-footer {
-  background-color: #c5bebeff; /* light warm gray */
+  background-color: #f8f3f0; /* light warm gray */
   color: #2c2c2c;
   padding: 40px 20px;
   transition: background-color 0.3s, color 0.3s;
@@ -59,13 +59,13 @@ body.dark-mode .app-footer a {
 }
 
 body.dark-mode .app-footer a:hover {
-  color: #ffd700; /* highlight accent */
+  color: #ff7343; /* highlight accent */
 }
 
 body.dark-mode .app-footer ul li:hover {
-  color: #ffd700;
+  color: #ff7343;
 }
 
 body.dark-mode .app-footer .anticon:hover {
-  color: #ffd700;
+  color: #ff7343;
 }

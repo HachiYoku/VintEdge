@@ -6,7 +6,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  background-color: #c5bebeff; /* light warm gray */
+  background-color: #fff !important; /* light warm gray */
   transition: background-color 0.3s, color 0.3s;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   z-index: 100;
@@ -95,7 +95,7 @@ body.dark-mode .search-icon {
 body.dark-mode .cart-icon:hover,
 body.dark-mode .profile-icon:hover,
 body.dark-mode .search-icon:hover {
-  color: #ffd700;
+  color: #ff7343;
 }
 
 /* Dark mode input */
