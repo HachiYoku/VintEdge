@@ -3,6 +3,7 @@ import { Card, Dropdown, Typography, Menu, Button, Image } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { useItems } from "../../context/ItemContext";
 import { useNavigate } from "react-router-dom";
+import "../../styles/pages/History.css"; // Import the CSS
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
@@ -75,9 +76,9 @@ const History = ({ isDarkMode = false }) => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", // smaller width
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
               gap: 16,
-              justifyItems: "center", // center on small screens
+              justifyItems: "center",
             }}
           >
             {currentItems.map((item) => {
@@ -121,24 +122,10 @@ const History = ({ isDarkMode = false }) => {
                     </Image.PreviewGroup>
                   }
                   actions={[
-                    <Button
-                      type="primary"
-                      style={{
-                        backgroundColor: "#ff6530",
-                        borderColor: "#ff7f50",
-                        color: "#fff",
-                      }}
-                    >
+                    <Button className="card-action-btn primary">
                       {item.condition || "Unknown"}
                     </Button>,
-                    <Button
-                      type="default"
-                      style={{
-                        backgroundColor: "#f5f5f5",
-                        borderColor: "#d9d9d9",
-                        color: "#333",
-                      }}
-                    >
+                    <Button className="card-action-btn default">
                       Details
                     </Button>,
                   ]}
@@ -168,7 +155,7 @@ const History = ({ isDarkMode = false }) => {
                   <p
                     style={{
                       fontSize: 11,
-                      color: "#555",
+                      color: isDarkMode ? "#ccc" : "#555",
                       marginTop: 4,
                       textAlign: "center",
                     }}
@@ -181,6 +168,7 @@ const History = ({ isDarkMode = false }) => {
                       justifyContent: "space-between",
                       marginTop: 8,
                       fontSize: 13,
+                      color: isDarkMode ? "#fff" : "#000",
                     }}
                   >
                     <span>Stock: {item.quantity}</span>

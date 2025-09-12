@@ -1,0 +1,44 @@
+/* Layout container */
+.app-layout {
+  border-radius: 8px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #ffffff; /* Default background */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Main content */
+.app-content {
+  text-align: center;
+  min-height: calc(100vh - 120px);
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Grid wrapper for Outlet */
+.app-content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+/* Scroll-to-top button */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  color: #ff7343;
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.3s;
+}
+
+.scroll-top-btn:hover {
+  transform: scale(1.1);
+}

@@ -58,40 +58,13 @@ const AppLayout = () => {
   };
 
   return (
-    <Layout
-      style={{
-        borderRadius: 8,
-        width: "100%",
-        maxWidth: "100%",
-        margin: "0 auto",
-        minHeight: "100vh",
-        background: "#FFFFFF",
-      }}
-    >
+    <Layout className="app-layout">
       <AppHeader />
-      <Content
-        className="app-content"
-        style={{
-          textAlign: "center",
-          minHeight: "calc(100vh - 120px)",
-          padding: "8px",
-          transition: "background-color 0.3s, color 0.3s",
-          width: "100%",
-          boxSizing: "border-box",
-          background: "transparent",
-        }}
-      >
+      <Content className="app-content">
         {loading ? (
           <Spin size="large" style={{ marginTop: "50px" }} />
         ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-              gap: "12px",
-              width: "100%",
-            }}
-          >
+          <div className="app-content-grid">
             <Outlet context={{ products, categories, setSelectedCategory }} />
           </div>
         )}
@@ -101,17 +74,7 @@ const AppLayout = () => {
         <FaArrowCircleUp
           onClick={scrollToTop}
           size={35}
-          style={{
-            position: "fixed",
-            bottom: 40,
-            right: 40,
-            color: "#FF7343",
-            cursor: "pointer",
-            zIndex: 1000,
-            transition: "transform 0.3s",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          className="scroll-top-btn"
         />
       )}
 

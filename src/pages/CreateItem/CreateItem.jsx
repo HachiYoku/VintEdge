@@ -15,6 +15,7 @@ import {
   Form,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import "../../styles/pages/CreateItem.css";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -28,7 +29,6 @@ const CreateItem = () => {
   const [formInstance] = Form.useForm();
   const [imagePreview, setImagePreview] = useState(null);
 
-  // Prefill form if editing
   useEffect(() => {
     if (editItem) {
       formInstance.setFieldsValue(editItem);
@@ -36,19 +36,17 @@ const CreateItem = () => {
     }
   }, [editItem, formInstance]);
 
-  // Convert uploaded image to Base64
   const handleImage = (file) => {
     const reader = new FileReader();
     reader.onloadend = () => {
-      const base64 = reader.result; // convert image to Base64
+      const base64 = reader.result;
       setImagePreview(base64);
-      formInstance.setFieldsValue({ image: base64 }); // save in form
+      formInstance.setFieldsValue({ image: base64 });
     };
     reader.readAsDataURL(file);
-    return false; // prevent upload to server
+    return false;
   };
 
-  // Submit handler
   const handleSubmit = (values) => {
     const newItem = {
       ...values,
@@ -68,16 +66,7 @@ const CreateItem = () => {
   };
 
   return (
-    // Page background (needed for glass effect)
-    <div
-      style={{
-        padding: "24px",
-        backgroundColor: "#F9F9F9",
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
-      {/* Main glass form container */}
+    <div className="create-item-page">
       <Form
         layout="vertical"
         form={formInstance}
@@ -88,91 +77,31 @@ const CreateItem = () => {
           currency: "MMK",
           title: editItem?.title || "",
         }}
-        style={{
-          width: "100%",
-          maxWidth: 900,
-          padding: 24,
-          background: "#F0F0F0",
-          backdropFilter: "blur(10px)",
-          WebkitBackdropFilter: "blur(10px)",
-          borderRadius: 16,
-        }}
+        className="create-item-form"
       >
         <Row gutter={[24, 24]}>
-          {/* Left Column: Image + Condition */}
-          <Col
-            xs={24}
-            lg={8}
-            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-          >
-            {/* Product Image Card */}
-            <Card
-              title="Product Image"
-              style={{
-                background: "#F4F4F4", // glass effect
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-                borderRadius: 12,
-                border: "1px solid rgba(48, 6, 6, 0.09)",
-              }}
-            >
+          {/* Left Column */}
+          <Col xs={24} lg={8} className="left-column">
+            {/* Image Card */}
+            <Card title="Product Image" className="create-item-card">
               <Row gutter={[16, 16]} align="middle">
-                {/* Upload Box */}
                 <Col xs={24} sm={12}>
                   <Upload showUploadList={false} beforeUpload={handleImage}>
-                    <div
-                      style={{
-                        border: "1px dashed #d9d9d9",
-                        borderRadius: 8,
-                        height: 150,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        cursor: "pointer",
-                        textAlign: "center",
-                        transition: "all 0.3s",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = "#C7BFBF";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = "#d9d9d9";
-                      }}
-                    >
-                      <UploadOutlined
-                        style={{ fontSize: 12, marginBottom: 8, padding: 35 }}
-                      />
+                    <div className="create-item-upload-box">
+                      <UploadOutlined className="upload-icon" />
                     </div>
                   </Upload>
                 </Col>
-
-                {/* Image Preview */}
                 <Col xs={24} sm={12}>
-                  <div
-                    style={{
-                      border: "1px solid #d9d9d9",
-                      borderRadius: 8,
-                      height: 150,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      overflow: "hidden",
-                      background: "#F4F4F4",
-                    }}
-                  >
+                  <div className="create-item-image-preview">
                     {imagePreview ? (
                       <img
                         src={imagePreview}
                         alt="preview"
-                        style={{
-                          maxWidth: "100%",
-                          maxHeight: "100%",
-                          objectFit: "contain", // <--- ensures aspect ratio is preserved
-                        }}
+                        className="preview-img"
                       />
                     ) : (
-                      <span style={{ color: "#999" }}>Preview</span>
+                      <span className="preview-text">Preview</span>
                     )}
                   </div>
                 </Col>
@@ -180,52 +109,14 @@ const CreateItem = () => {
             </Card>
 
             {/* Condition Card */}
-            <Card
-              title="Condition"
-              style={{
-                background: "rgba(255, 255, 255, 0.15)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-                borderRadius: 12,
-                border: "1px solid rgba(48, 6, 6, 0.09)",
-              }}
-            >
+            <Card title="Condition" className="create-item-card">
               <Form.Item
                 name="condition"
                 rules={[
                   { required: true, message: "Please select a condition" },
                 ]}
               >
-                <Radio.Group style={{ width: "100%" }}>
-                  <style>
-                    {`
-                    /* Hide default radio circle */
-                    .ant-radio-inner {
-                      display: none !important;
-                    }
-                    /* Custom text-style radio buttons */
-                    .ant-radio-wrapper {
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                      padding: 6px 8px;
-                      margin: 4px;
-                      border-radius: 6px;
-                      cursor: pointer;
-                      transition: all 0.3s;
-                      width: 100%;
-                      text-align: center;
-                    }
-                    .ant-radio-wrapper:hover {
-                      background: #F4F4F4;
-                    }
-                    .ant-radio-wrapper-checked {
-                      background: #F4F4F4;
-                      font-weight: 600;
-                      color: #ff6431ed !important;
-                    }
-                  `}
-                  </style>
+                <Radio.Group className="create-item-condition">
                   <Row gutter={[8, 8]}>
                     {[
                       "Brand New",
@@ -245,23 +136,9 @@ const CreateItem = () => {
             </Card>
           </Col>
 
-          {/* Right Column: Product Details */}
-          <Col
-            xs={24}
-            lg={16}
-            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-          >
-            <Card
-              title="Product Details"
-              style={{
-                background: "#F4F4F4",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-                borderRadius: 12,
-                border: "1px solid rgba(48, 6, 6, 0.09)",
-              }}
-            >
-              {/* Title */}
+          {/* Right Column */}
+          <Col xs={24} lg={16} className="right-column">
+            <Card title="Product Details" className="create-item-card">
               <Form.Item
                 label="Title"
                 name="title"
@@ -282,6 +159,7 @@ const CreateItem = () => {
                         <Form.Item label="Quantity" name="quantity">
                           <Space.Compact style={{ width: "100%" }}>
                             <Button
+                              className="qty-btn"
                               onClick={() =>
                                 formInstance.setFieldsValue({
                                   quantity: Math.max(0, quantity - 1),
@@ -298,9 +176,10 @@ const CreateItem = () => {
                                   quantity: Number(v) || 0,
                                 })
                               }
-                              style={{ width: "78%", textAlign: "center" }}
+                              className="qty-input"
                             />
                             <Button
+                              className="qty-btn"
                               onClick={() =>
                                 formInstance.setFieldsValue({
                                   quantity: quantity + 1,
@@ -338,9 +217,9 @@ const CreateItem = () => {
                 <Col xs={24} md={12}>
                   <Form.Item label="Price" name="price">
                     <Space.Compact>
-                      <InputNumber style={{ width: "70%" }} min={0} />
+                      <InputNumber className="price-input" min={0} />
                       <Form.Item name="currency" noStyle>
-                        <Select style={{ width: "30%" }}>
+                        <Select className="currency-select">
                           <Option value="MMK">MMK</Option>
                           <Option value="USD">USD</Option>
                           <Option value="THB">THB</Option>
@@ -362,28 +241,14 @@ const CreateItem = () => {
               </Form.Item>
 
               <Form.Item>
-                <div style={{ textAlign: "right" }}>
-                  <Button
-                    style={{
-                      backgroundColor: "white",
-                      borderColor: "rgba(48, 6, 6, 0.26)",
-                      color: "#ff6431ed",
-                      borderColor: "#ff6431ed",
-                      marginRight: 8,
-                    }}
-                    onClick={() => navigate(-1)}
-                  >
+                <div className="form-buttons">
+                  <Button className="cancel-btn" onClick={() => navigate(-1)}>
                     Cancel
                   </Button>
-
                   <Button
                     type="primary"
                     htmlType="submit"
-                    style={{
-                      color: "#fff",
-                      backgroundColor: "#ff6431ed",
-                      borderColor: "#ff6431ed",
-                    }}
+                    className="publish-btn"
                   >
                     {editItem ? "Update" : "Publish"}
                   </Button>

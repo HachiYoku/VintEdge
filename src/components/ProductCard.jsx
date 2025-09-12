@@ -4,6 +4,7 @@ import { useCart } from "../context/CartContext";
 import { FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "../styles/components/ProductCard.css";
+import "../styles/components/Cards.css";
 
 const { Meta } = Card;
 
@@ -28,7 +29,6 @@ const ProductCard = ({ product }) => {
         </Image.PreviewGroup>
       }
     >
-      
       <div onClick={handleCardClick} className="product-body">
         <Meta title={<span className="product-title">{product.title}</span>} />
         <div className="product-info">

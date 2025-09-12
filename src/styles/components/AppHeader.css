@@ -1,12 +1,18 @@
+/* AppHeader.css */
+
+/* Base header style */
 .app-header {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* vertical center */
+  align-items: center;
   padding: 0 20px;
-  background-color: #c5bebeff;
-  transition: background-color 0.3s;
+  background-color: #c5bebeff; /* light warm gray */
+  transition: background-color 0.3s, color 0.3s;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  z-index: 100;
 }
 
+/* Left section: Burger + Logo */
 .header-left {
   display: flex;
   align-items: center;
@@ -19,29 +25,43 @@
   cursor: pointer;
 }
 
+/* Center: Search */
+.desktop-search {
+  flex: 1; /* expand between left & right */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.desktop-search .ant-input-search {
+  max-width: 400px;
+}
+
+/* Right: Icons */
 .header-icons {
   display: flex;
   align-items: center;
+  gap: 15px;
 }
 
 .search-icon {
   font-size: 22px;
   color: #000;
   cursor: pointer;
+  transition: color 0.3s;
 }
 
 .cart-icon,
 .profile-icon {
   font-size: 24px;
   color: #290707;
+  transition: color 0.3s;
 }
 
-/* ✅ Center the desktop search bar */
-.desktop-search {
-  flex: 1; /* let it expand between left & right */
-  display: flex;
-  justify-content: center; /* horizontal center */
-  align-items: center; /* vertical center */
+.cart-icon:hover,
+.profile-icon:hover,
+.search-icon:hover {
+  color: #ff7343; /* subtle hover accent */
 }
 
 /* Responsive rules */
@@ -58,4 +78,33 @@
   .mobile-search-icon {
     display: none;
   }
+}
+
+/* Dark mode header */
+body.dark-mode .app-header {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+body.dark-mode .cart-icon,
+body.dark-mode .profile-icon,
+body.dark-mode .search-icon {
+  color: #ddd;
+}
+
+body.dark-mode .cart-icon:hover,
+body.dark-mode .profile-icon:hover,
+body.dark-mode .search-icon:hover {
+  color: #ffd700;
+}
+
+/* Dark mode input */
+body.dark-mode .ant-input-search .ant-input {
+  background-color: #222 !important;
+  color: #fff !important;
+  border-color: #666 !important;
+}
+
+body.dark-mode .ant-input-search .ant-input::placeholder {
+  color: #bbb !important;
 }

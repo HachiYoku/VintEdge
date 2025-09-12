@@ -1,0 +1,249 @@
+/* === Page & Form === */
+.create-item-page {
+  padding: 24px;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+}
+
+.create-item-form {
+  width: 100%;
+  max-width: 900px;
+  padding: 24px;
+  background: #f0f0f0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* === Card === */
+.create-item-card {
+  background: #f0f0f0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  border: 1px solid rgba(48, 6, 6, 0.09);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* === Upload Box === */
+.create-item-upload-box {
+  border: 1px dashed #d9d9d9;
+  border-radius: 8px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.create-item-upload-box:hover {
+  border-color: #c7bfbf;
+}
+
+.upload-icon {
+  font-size: 12px;
+  margin-bottom: 8px;
+  padding: 35px;
+}
+
+/* Add spacing between Product Image and Condition cards */
+.left-column .create-item-card:first-child {
+  margin-bottom: 24px; /* spacing between image and condition */
+}
+
+/* === Image Preview === */
+.create-item-image-preview {
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #f4f4f4;
+}
+
+.preview-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.preview-text {
+  color: #999;
+}
+
+/* === Condition Radio Buttons === */
+.create-item-condition .ant-radio-inner {
+  display: none !important;
+}
+
+.create-item-condition .ant-radio-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 8px;
+  margin: 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+  text-align: center;
+  background: #f4f4f4; /* default background */
+  color: #000;
+}
+
+.create-item-condition .ant-radio-wrapper:hover {
+  background: #e0e0e0;
+}
+
+.create-item-condition .ant-radio-wrapper-checked {
+  background: #ff6431ed;
+  font-weight: 600;
+  color: #fff !important;
+}
+
+/* === Buttons === */
+.form-buttons {
+  text-align: right;
+}
+
+.cancel-btn {
+  background-color: white;
+  color: #000; /* switched to black text by default in light mode */
+  border: 1px solid #ff6431ed;
+  margin-right: 8px;
+}
+
+.cancel-btn:hover,
+.cancel-btn:hover span {
+  color: #ff6431ed !important; /* hover text changes to accent color */
+}
+
+.publish-btn {
+  background-color: #ff6431ed;
+  border: 1px solid #ff6431ed;
+  color: white;
+}
+
+/* === Quantity & Price Inputs === */
+.qty-btn {
+  width: 22%;
+}
+
+.qty-input {
+  width: 56% !important;
+  text-align: center;
+}
+
+.price-input {
+  width: 70%;
+}
+
+.currency-select {
+  width: 30%;
+}
+
+/* === Dark Mode === */
+body.dark-mode .create-item-page {
+  background-color: #282828;
+}
+
+body.dark-mode .create-item-form {
+  background-color: #000;
+  color: #fff;
+}
+
+/* Ensure all form labels/titles are visible in dark mode */
+body.dark-mode .create-item-form label,
+body.dark-mode .create-item-form .form-title,
+body.dark-mode .create-item-form .form-label {
+  color: #fff !important;
+}
+
+body.dark-mode .create-item-card {
+  background-color: #5c5b5b !important;
+  border: 1px solid #272626;
+  color: #fff;
+}
+
+body.dark-mode .create-item-upload-box {
+  border-color: #555;
+}
+
+body.dark-mode .create-item-image-preview {
+  background: #444;
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode .ant-input-number,
+body.dark-mode .ant-select-selector {
+  background-color: #555 !important;
+  color: #fff !important;
+  border-color: #666 !important;
+}
+
+body.dark-mode .ant-btn {
+  color: #fff !important;
+}
+
+body.dark-mode .ant-btn-primary {
+  background-color: #ff6530 !important;
+  border-color: #ff6530 !important;
+  color: #fff !important;
+}
+
+/* Condition Buttons */
+body.dark-mode .create-item-condition .ant-radio-wrapper {
+  background: #3a3a3a;
+  color: #fff;
+}
+
+body.dark-mode .create-item-condition .ant-radio-wrapper:hover {
+  background: #4a4a4a;
+}
+
+body.dark-mode .create-item-condition .ant-radio-wrapper-checked {
+  background: #ff6431ed;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* Quantity Buttons */
+body.dark-mode .qty-btn {
+  background-color: #444;
+  color: #fff;
+  border: 1px solid #666;
+  transition: all 0.3s;
+}
+
+body.dark-mode .qty-btn:hover {
+  background-color: #555;
+  border-color: #888;
+}
+
+body.dark-mode .qty-input .ant-input-number-input {
+  background-color: #555 !important;
+  color: #fff !important;
+  border-color: #666 !important;
+}
+
+/* Dark Mode Cancel Button */
+body.dark-mode .cancel-btn {
+  background-color: #444;
+  color: #fff !important;
+  border: 1px solid #ff6430;
+  transition: color 0.3s;
+}
+
+/* Hover effect in dark mode: text changes to accent color */
+body.dark-mode .cancel-btn:hover,
+body.dark-mode .cancel-btn:hover span {
+  color: #ff6430 !important;
+}

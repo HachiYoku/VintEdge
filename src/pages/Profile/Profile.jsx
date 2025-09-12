@@ -197,7 +197,7 @@ const ProfilePage = ({ isDarkMode = false }) => {
                 />
                 <h3
                   style={{
-                    color: isDarkMode ? "#fff" : "#333",
+                    color: isDarkMode ? "#fff" : "#333 !important",
                     marginBottom: 4,
                     fontWeight: 600,
                     fontSize: 22,
@@ -205,6 +205,7 @@ const ProfilePage = ({ isDarkMode = false }) => {
                 >
                   {profile.name}
                 </h3>
+
                 <p
                   style={{
                     color: isDarkMode ? "#aaa" : "#666",
@@ -223,22 +224,26 @@ const ProfilePage = ({ isDarkMode = false }) => {
                     onClick={() => setEditProfile(true)}
                     style={{
                       borderRadius: 8,
-                      background: "#fff",
+                      background: isDarkMode ? "#444" : "#fff",
                       border: "2px solid #ff6431ed",
-                      color: "#ff6431ed",
+                      color: isDarkMode ? "#000 !important" : "#ff6431ed",
                       fontWeight: "bold",
                       height: 40,
                       minWidth: 100,
                       transition: "all 0.3s",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.background = "#ff6431ed") &
-                      (e.currentTarget.style.color = "#fff")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = "#fff") &
-                      (e.currentTarget.style.color = "#ff6431ed")
-                    }
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "#ff6431ed";
+                      e.currentTarget.style.color = "#fff";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = isDarkMode
+                        ? "#444"
+                        : "#fff";
+                      e.currentTarget.style.color = isDarkMode
+                        ? "#000"
+                        : "#ff6431ed";
+                    }}
                   >
                     Edit
                   </Button>

@@ -16,30 +16,25 @@ const { Footer } = Layout;
 
 const AppFooter = () => {
   return (
-    <Footer
-      className="app-footer"
-      style={{ backgroundColor: "#F8F3F0", color: "#2c2c2c" }}
-    >
+    <Footer className="app-footer">
       <Row gutter={[32, 32]} justify="space-between">
         {/* Logo + Description */}
         <Col xs={24} sm={12} md={6}>
-          <h3 style={{ color: "#2c2c2c" }}>VintEdge</h3>
-          <p style={{ color: "#333" }}>
-            Lorem ipsum dolor sit amet consectetur adipiscing elit aliquam
-          </p>
-          <div style={{ fontSize: "18px", color: "#2c2c2c" }}>
-            <FacebookOutlined className="me-3" />
-            <TwitterOutlined className="me-3" />
-            <InstagramOutlined className="me-3" />
-            <LinkedinOutlined className="me-3" />
+          <h3>VintEdge</h3>
+          <p>Lorem ipsum dolor sit amet consectetur adipiscing elit aliquam</p>
+          <div style={{ fontSize: "18px" }}>
+            <FacebookOutlined />
+            <TwitterOutlined />
+            <InstagramOutlined />
+            <LinkedinOutlined />
             <YoutubeOutlined />
           </div>
         </Col>
 
         {/* Product */}
         <Col xs={12} sm={6} md={4}>
-          <h4 style={{ color: "#2c2c2c" }}>Product</h4>
-          <ul className="list-unstyled">
+          <h4>Product</h4>
+          <ul>
             <li>Features</li>
             <li>Pricing</li>
             <li>Case studies</li>
@@ -50,8 +45,8 @@ const AppFooter = () => {
 
         {/* Company */}
         <Col xs={12} sm={6} md={4}>
-          <h4 style={{ color: "#2c2c2c" }}>Company</h4>
-          <ul className="list-unstyled">
+          <h4>Company</h4>
+          <ul>
             <li>About</li>
             <li>Contact us</li>
             <li>Careers</li>
@@ -62,8 +57,8 @@ const AppFooter = () => {
 
         {/* Support */}
         <Col xs={12} sm={6} md={4}>
-          <h4 style={{ color: "#2c2c2c" }}>Support</h4>
-          <ul className="list-unstyled">
+          <h4>Support</h4>
+          <ul>
             <li>Getting started</li>
             <li>Help center</li>
             <li>Server status</li>
@@ -74,16 +69,16 @@ const AppFooter = () => {
 
         {/* Contact */}
         <Col xs={12} sm={6} md={6}>
-          <h4 style={{ color: "#2c2c2c" }}>Contact us</h4>
-          <ul className="list-unstyled">
+          <h4>Contact us</h4>
+          <ul>
             <li>
-              <MailOutlined className="me-2" /> VintEdge.com
+              <MailOutlined /> VintEdge.com
             </li>
             <li>
-              <PhoneOutlined className="me-2" /> (061) 687 - 5892
+              <PhoneOutlined /> (061) 687 - 5892
             </li>
             <li>
-              <EnvironmentOutlined className="me-2" />
+              <EnvironmentOutlined />
               333 Tha Sut, Amphoe Mueang Chiang Rai,
               <br />
               Chang Wat Chiang Rai 57100
@@ -93,15 +88,9 @@ const AppFooter = () => {
       </Row>
 
       <hr style={{ borderColor: "rgba(0,0,0,0.2)" }} />
-      <div style={{ textAlign: "center", marginTop: "10px", color: "#2c2c2c" }}>
+      <div style={{ textAlign: "center", marginTop: "10px" }}>
         © {new Date().getFullYear()} VintEdge. All Rights Reserved |{" "}
-        <a href="#" style={{ color: "#2c2c2c" }}>
-          Terms and Conditions
-        </a>{" "}
-        |{" "}
-        <a href="#" style={{ color: "#2c2c2c" }}>
-          Privacy Policy
-        </a>
+        <a href="#">Terms and Conditions</a> | <a href="#">Privacy Policy</a>
       </div>
     </Footer>
   );

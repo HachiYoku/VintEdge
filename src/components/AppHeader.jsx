@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Space, Input, Badge, Drawer } from "antd";
-import ThemeToggle from "./ThemeToggle";
 import BurgerMenu from "./BurgerMenu";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { TbUserSquare } from "react-icons/tb";
@@ -47,7 +46,6 @@ const AppHeader = ({
     setShowSearchDrawer(false);
   };
 
-
   return (
     <Header className="app-header" style={{ backgroundColor: "white" }}>
       {/* Left: Burger + Logo */}
@@ -89,7 +87,6 @@ const AppHeader = ({
           />
         </div>
 
-        <ThemeToggle />
         <Link to="/cart">
           <Badge count={totalItems} size="small" offset={[0, 5]}>
             <PiShoppingCartBold className="cart-icon" />

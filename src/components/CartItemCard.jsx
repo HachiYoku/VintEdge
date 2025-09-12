@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Button, Typography, Space, Checkbox } from "antd";
 import { useCart } from "../context/CartContext";
 import "../styles/components/CartItemCard.css"; // import the external CSS
+import "../styles/components/Cards.css";
 
 const { Text } = Typography;
 

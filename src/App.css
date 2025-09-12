@@ -1,7 +1,56 @@
+/* Light mode (default) */
 body {
   height: 100vh;
-  color: #333;
   margin: 0;
   padding: 0;
-  background-color: #f0f0f0;
+  background-color: #f0f0f0; /* light gray */
+  color: #333; /* dark text */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dark mode global styles */
+body.dark-mode {
+  background-color: #000000; /* black background for entire body */
+  color: #e0e0e0; /* light gray text */
+}
+
+/* Make main content adapt */
+body.dark-mode .app-content {
+  background-color: #000000;
+  color: #e0e0e0;
+}
+
+/* Inputs, selectors, and textareas in dark mode */
+body.dark-mode .ant-input,
+body.dark-mode .ant-input-affix-wrapper,
+body.dark-mode .ant-input-number,
+body.dark-mode .ant-input-number input,
+body.dark-mode .ant-select-selector,
+body.dark-mode textarea.ant-input {
+  background-color: #1a1a1a; /* slightly lighter than black */
+  color: #fff;
+  border-color: #444;
+}
+
+/* Placeholder text */
+body.dark-mode .ant-input::placeholder,
+body.dark-mode textarea.ant-input::placeholder,
+body.dark-mode .ant-input-number input::placeholder {
+  color: #888;
+}
+
+/* Links and icons */
+body.dark-mode a,
+body.dark-mode .anticon {
+  color: #e0e0e0;
+}
+
+/* Smooth transition for all elements */
+body,
+.app-content,
+.ant-card,
+.ant-layout-header,
+.ant-layout-footer {
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
