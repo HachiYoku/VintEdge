@@ -2,8 +2,8 @@ import React from "react";
 import { Card, Button, Typography } from "antd";
 import { FaInfoCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import "../styles/components/PopularItem.css";
 import "../styles/components/Cards.css";
+import "../styles/components/PopularItemCard.css";
 
 const { Title, Paragraph } = Typography;
 

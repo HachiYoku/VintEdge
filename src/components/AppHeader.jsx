@@ -34,8 +34,18 @@ const AppHeader = ({
   const onSearch = (value) => {
     if (value.trim() === "") return;
 
-    // Navigate with query param (SearchPage will handle filtering)
-    navigate(`/search?query=${encodeURIComponent(value.trim())}`);
+    const filtered =
+      products.length > 0
+        ? products.filter((p) =>
+            p.title.toLowerCase().includes(value.trim().toLowerCase())
+          )
+        : [];
+
+    navigate("/search", {
+      state: { results: filtered, query: value.trim() },
+    });
+    setShowSearchDrawer(false);
+    setSearchTerm("");
   };
 
   return (
@@ -91,11 +101,18 @@ const AppHeader = ({
 
       {/* Mobile Search Drawer */}
       <Drawer
-        title="Search Products"
+        title={null} // remove default title
         placement="top"
         onClose={() => setShowSearchDrawer(false)}
         open={showSearchDrawer}
-        height={100}
+        //responsive
+        height={window.innerWidth < 480 ? 140 : 100}
+        bodyStyle={{
+          padding: "10px 16px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         <Input.Search
           placeholder="Search products..."
@@ -103,6 +120,12 @@ const AppHeader = ({
           onChange={(e) => setSearchTerm(e.target.value)}
           onSearch={onSearch}
           enterButton
+          style={{
+            width: "100%",
+            maxWidth: window.innerWidth < 480 ? "100%" : "500px",
+            fontSize: window.innerWidth < 480 ? "14px" : "16px",
+            height: window.innerWidth < 480 ? "35px" : "40px",
+          }}
         />
       </Drawer>
     </Header>

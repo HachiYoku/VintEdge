@@ -4,7 +4,7 @@ import AppFooter from "./AppFooter";
 import { Layout, Spin } from "antd";
 import { Outlet } from "react-router-dom";
 import axios from "axios";
-import { FaArrowCircleUp } from "react-icons/fa";
+import { HiArrowCircleUp } from "react-icons/hi";
 import "../styles/components/AppLayout.css";
 
 const { Content } = Layout;
@@ -42,7 +42,7 @@ const AppLayout = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY >= 800) {
+      if (window.scrollY >= 90) {
         setShowTopBtn(true);
       } else {
         setShowTopBtn(false);
@@ -71,7 +71,7 @@ const AppLayout = () => {
       </Content>
 
       {showTopBtn && (
-        <FaArrowCircleUp
+        <HiArrowCircleUp
           onClick={scrollToTop}
           size={35}
           className="scroll-top-btn"
