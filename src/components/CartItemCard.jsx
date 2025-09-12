@@ -1,8 +1,7 @@
 import React from "react";
 import { Card, Button, Typography, Space, Checkbox } from "antd";
 import { useCart } from "../context/CartContext";
-import "../styles/components/CartItemCard.css"; // import the external CSS
-
+import "../styles/components/CartItemCard.css";
 const { Text } = Typography;
 
 const CartItemCard = ({ item, selected, onSelectChange }) => {
@@ -51,11 +50,18 @@ const CartItemCard = ({ item, selected, onSelectChange }) => {
           </Text>
 
           <Space>
-            <Button onClick={handleDecrease} disabled={item.quantity <= 1}>
+            <Button 
+              className="qty-btn" 
+              onClick={handleDecrease} 
+              disabled={item.quantity <= 1}
+            >
               −
             </Button>
             <Text>{item.quantity}</Text>
-            <Button type="primary" onClick={handleIncrease}>
+            <Button 
+              className="qty-btn" 
+              onClick={handleIncrease}
+            >
               +
             </Button>
           </Space>
