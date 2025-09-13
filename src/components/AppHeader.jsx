@@ -32,20 +32,8 @@ const AppHeader = ({
 
   // Handle search
   const onSearch = (value) => {
-    if (value.trim() === "") return;
-
-    const filtered =
-      products.length > 0
-        ? products.filter((p) =>
-            p.title.toLowerCase().includes(value.trim().toLowerCase())
-          )
-        : [];
-
-    navigate("/search", {
-      state: { results: filtered, query: value.trim() },
-    });
-    setShowSearchDrawer(false);
-    setSearchTerm("");
+  if (value.trim() === "") return;
+  navigate(`/search?query=${encodeURIComponent(value.trim())}`);
   };
 
   return (
