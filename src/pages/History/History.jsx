@@ -3,7 +3,7 @@ import { Card, Dropdown, Typography, Menu, Button, Image } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { useItems } from "../../context/ItemContext";
 import { useNavigate } from "react-router-dom";
-import "../../styles/pages/History.css";
+import "../../styles/pages/ProfilePage.css";
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
@@ -23,14 +23,13 @@ const History = ({ isDarkMode = false }) => {
       style={{
         padding: "24px 20px",
         minHeight: "100vh",
-        backgroundColor: isDarkMode ? "#000" : "#F9F9F9",
+        backgroundColor: isDarkMode ? "#000" : "#f2f2f26d",
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         {/* Header */}
         <div style={{ marginBottom: 24 }}>
           <Title
-            className="title-hover"
             level={3}
             style={{ marginBottom: 16, color: isDarkMode ? "#fff" : "#000" }}
           >
@@ -45,10 +44,10 @@ const History = ({ isDarkMode = false }) => {
                 style={{
                   padding: "8px 16px",
                   borderRadius: 8,
-                  border: `1px solid ${isDarkMode ? "#555" : "#d9d9d9"}`,
+                  border: `1px solid ${isDarkMode ? "#555" : "#FF7343"}`,
                   background:
                     viewType === type
-                      ? "#FF6631"
+                      ? "#FF7343"
                       : isDarkMode
                       ? "#111"
                       : "#fff",
@@ -98,80 +97,48 @@ const History = ({ isDarkMode = false }) => {
                 <Card
                   key={item.id}
                   hoverable
-                  style={{
-                    width: 280,
-                    backgroundColor: isDarkMode ? "#111" : "#f2f3f5",
-                    position: "relative",
-                    textAlign: "center",
-                    overflow: "hidden",
-                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-                    transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                  }}
+                  className={`history-card ${isDarkMode ? "dark" : "light"}`}
                   cover={
                     <Image.PreviewGroup>
-                      <Image
-                        alt={item.title}
-                        src={item.image}
-                        style={{
-                          height: 190,
-                          objectFit: "cover",
-                          padding: "20px",
-                        }}
-                      />
+                      <div className="card-image-container">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          preview={true}
+                        />
+                      </div>
                     </Image.PreviewGroup>
                   }
-                  actions={[
-                    <Button className="card-action-btn primary">
-                      {item.condition || "Unknown"}
-                    </Button>,
-                    <Button className="card-action-btn default">
-                      Details
-                    </Button>,
-                  ]}
                 >
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 5,
-                      right: 8,
-                      zIndex: 2,
-                    }}
-                  >
+                  {/* Menu Dropdown */}
+                  <div className="history-card-menu">
                     <Dropdown overlay={menu} trigger={["click"]}>
-                      <EllipsisOutlined
-                        style={{
-                          fontSize: 18,
-                          color: isDarkMode ? "#fff" : "#000",
-                        }}
-                      />
+                      <EllipsisOutlined className="history-card-menu-icon" />
                     </Dropdown>
                   </div>
 
-                  <Meta
-                    title={`${item.title} (${item.category || "Unknown"})`}
-                  />
+                  {/* Title + Condition */}
+                  <div className="history-card-body">
+                    <Text className="history-card-title">{item.title}</Text>
+                    <span
+                      className={`condition-tag ${
+                        item.condition?.toLowerCase().replace(" ", "-") ||
+                        "unknown"
+                      }`}
+                    >
+                      {item.condition || "Unknown"}
+                    </span>
+                  </div>
 
-                  <p
-                    style={{
-                      fontSize: 11,
-                      color: isDarkMode ? "#ccc" : "#555",
-                      marginTop: 4,
-                      textAlign: "center",
-                    }}
-                  >
+                  {/* Date */}
+                  <p className="history-card-date">
                     Added on: {new Date(item.date).toLocaleString()}
                   </p>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginTop: 8,
-                      fontSize: 13,
-                      color: isDarkMode ? "#fff" : "#000",
-                    }}
-                  >
-                    <span>Stock: {item.quantity}</span>
-                    <span className="product-card-price">
+
+                  {/* Footer */}
+                  <div className="history-card-footer">
+                    <span className="stock">Stock: {item.quantity}</span>
+                    <span className="price">
                       {item.price} {item.currency}
                     </span>
                   </div>
