@@ -226,7 +226,7 @@ const ProfilePage = ({ isDarkMode = false }) => {
                       borderRadius: 8,
                       background: isDarkMode ? "#444" : "#fff",
                       border: "2px solid #ff6431ed",
-                      color: isDarkMode ? "#000 " : "#ff6431ed",
+                      color: isDarkMode ? "#000 !important" : "#ff6431ed",
                       fontWeight: "bold",
                       height: 40,
                       minWidth: 100,
@@ -322,12 +322,10 @@ const ProfilePage = ({ isDarkMode = false }) => {
                   <Card
                     hoverable
                     style={{
-                      width: 255,
+                      width: 240,
                       textAlign: "center",
                       backgroundColor: isDarkMode ? "#111" : "#f2f2f2ff",
-                      overflow: "hidden",
-                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-                      transition: "transform 0.2s ease, box-shadow 0.2s ease",
+
                       borderRadius: 8,
                       position: "relative",
                       overflow: "hidden",

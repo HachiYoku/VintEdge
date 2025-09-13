@@ -3,7 +3,7 @@ import { Card, Dropdown, Typography, Menu, Button, Image } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { useItems } from "../../context/ItemContext";
 import { useNavigate } from "react-router-dom";
-import "../../styles/pages/History.css";
+import "../../styles/pages/History.css"; // Import the CSS
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
@@ -23,14 +23,13 @@ const History = ({ isDarkMode = false }) => {
       style={{
         padding: "24px 20px",
         minHeight: "100vh",
-        backgroundColor: isDarkMode ? "#000" : "#F9F9F9",
+        backgroundColor: isDarkMode ? "#000" : "#f2f2f26d",
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         {/* Header */}
         <div style={{ marginBottom: 24 }}>
           <Title
-            className="title-hover"
             level={3}
             style={{ marginBottom: 16, color: isDarkMode ? "#fff" : "#000" }}
           >
@@ -48,12 +47,16 @@ const History = ({ isDarkMode = false }) => {
                   border: `1px solid ${isDarkMode ? "#555" : "#d9d9d9"}`,
                   background:
                     viewType === type
-                      ? "#FF6631"
+                      ? "#F2F2F2"
                       : isDarkMode
                       ? "#111"
                       : "#fff",
                   color:
-                    viewType === type ? "#fff" : isDarkMode ? "#fff" : "#000",
+                    viewType === type
+                      ? "#482828ff"
+                      : isDarkMode
+                      ? "#fff"
+                      : "#000",
                   cursor: "pointer",
                   fontWeight: 500,
                 }}
@@ -73,7 +76,7 @@ const History = ({ isDarkMode = false }) => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
               gap: 16,
               justifyItems: "center",
             }}
@@ -99,13 +102,11 @@ const History = ({ isDarkMode = false }) => {
                   key={item.id}
                   hoverable
                   style={{
-                    width: 280,
-                    backgroundColor: isDarkMode ? "#111" : "#f2f3f5",
+                    width: 260,
+                    backgroundColor: isDarkMode ? "#111" : "#f2f2f2ff",
                     position: "relative",
                     textAlign: "center",
                     overflow: "hidden",
-                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-                    transition: "transform 0.2s ease, box-shadow 0.2s ease",
                   }}
                   cover={
                     <Image.PreviewGroup>
