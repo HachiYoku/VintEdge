@@ -115,20 +115,28 @@
 
 .cancel-btn {
   background-color: white;
-  color: #000; /* switched to black text by default in light mode */
+  color: #ff6431ed; /* switched to black text by default in light mode */
   border: 1px solid #ff6431ed;
   margin-right: 8px;
 }
 
-.cancel-btn:hover,
-.cancel-btn:hover span {
-  color: #ff6431ed !important; /* hover text changes to accent color */
+.cancel-btn:hover {
+  color: black !important;
+  border: 1px solid #ff6431ed !important;
+  background-color: white !important;
+  /* hover text changes to accent color */
 }
 
 .publish-btn {
-  background-color: #ff6431ed;
+  background-color: #fc8486;
   border: 1px solid #ff6431ed;
   color: white;
+}
+
+.publish-btn:hover {
+  background-color: #ff6431ed !important;
+  border: 1px solid #ff6431ed !important;
+  color: white !important;
 }
 
 /* === Quantity & Price Inputs === */

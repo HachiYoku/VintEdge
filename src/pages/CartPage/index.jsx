@@ -61,13 +61,14 @@ const CartPage = () => {
             </Title>
 
             <div className="cart-actions">
-              <Button danger onClick={clearAllCartItem}>
+              <Button danger onClick={clearAllCartItem} className="clear-btn">
                 Clear Cart
               </Button>
               <Button
                 type="primary"
                 disabled={selectedItems.length === 0}
                 onClick={handleCheckout}
+                className="checkout-btn"
               >
                 Checkout Selected
               </Button>

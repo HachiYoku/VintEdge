@@ -15,6 +15,7 @@ import { EllipsisOutlined, UploadOutlined } from "@ant-design/icons";
 import { useItems } from "../../context/ItemContext";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
+import "../../styles/pages/ProfilePage.css";
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
@@ -26,7 +27,7 @@ const ProfilePage = ({ isDarkMode = false }) => {
 
   const [editProfile, setEditProfile] = useState(false);
   const [profile, setProfile] = useState({ name: "", email: "", avatar: "" });
-  // Load profile from localStorage or user context
+
   useEffect(() => {
     const savedProfile = localStorage.getItem("profile");
     if (savedProfile) {
@@ -44,7 +45,6 @@ const ProfilePage = ({ isDarkMode = false }) => {
 
   if (!user) return <Navigate to="/login" replace />;
 
-  // Profile handlers
   const handleProfileChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
@@ -57,7 +57,7 @@ const ProfilePage = ({ isDarkMode = false }) => {
       };
       reader.readAsDataURL(file);
     }
-    return false; // prevent auto upload
+    return false;
   };
 
   const saveProfile = () => {
@@ -70,57 +70,26 @@ const ProfilePage = ({ isDarkMode = false }) => {
   const handleDeleteItem = (id) => removeItem(id);
 
   return (
-    <div
-      style={{
-        padding: "24px 20px",
-        minHeight: "100vh",
-        backgroundColor: isDarkMode ? "#000" : "#f2f2f26d",
-      }}
-    >
+    <div className={`profile-page ${isDarkMode ? "dark" : "light"}`}>
       <Row gutter={[16, 16]}>
         {/* Left Column - User Profile */}
         <Col xs={24} lg={8}>
-          <Card
-            style={{
-              textAlign: "center",
-              backgroundColor: isDarkMode ? "#111" : "transparent",
-              border: "none",
-            }}
-          >
+          <Card className="profile-card">
             {editProfile ? (
-              <div>
+              <div className="edit-profile">
                 <Upload
                   showUploadList={false}
                   beforeUpload={handleAvatarUpload}
                 >
-                  <div
-                    style={{
-                      width: 140, // increased from 100
-                      height: 140, // increased from 100
-                      margin: "0 auto 16px", // increased spacing
-                      borderRadius: "50%",
-                      border: "1px dashed #d9d9d9",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      overflow: "hidden",
-                    }}
-                  >
+                  <div className="avatar-upload">
                     {profile.avatar ? (
                       <img
                         src={profile.avatar}
                         alt="avatar"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                        }}
+                        className="avatar-img"
                       />
                     ) : (
-                      <UploadOutlined
-                        style={{ fontSize: 32, color: "#ff6431ed" }}
-                      />
+                      <UploadOutlined className="avatar-icon" />
                     )}
                   </div>
                 </Upload>
@@ -130,97 +99,33 @@ const ProfilePage = ({ isDarkMode = false }) => {
                   value={profile.name}
                   onChange={handleProfileChange}
                   placeholder="Name"
-                  style={{
-                    background: "transparent",
-                    border: "none",
-                    borderBottom: "2px solid #ff6431ed",
-                    borderRadius: 0,
-                    outline: "none",
-                    color: isDarkMode ? "#fff" : "#333",
-                    marginBottom: 16,
-                  }}
+                  className="profile-input"
                 />
-                {/* <Input
-                  name="email"
-                  value={profile.email}
-                  onChange={handleProfileChange}
-                  placeholder="Email"
-                  style={{ marginBottom: 8 }}
-                /> */}
-                <Button
-                  type="primary"
-                  block
-                  onClick={saveProfile}
-                  style={{
-                    marginBottom: 8,
-                    background: "#ff6431ed", // primary color
-                    border: "none",
-                    color: "#fff",
-                    fontWeight: "bold",
-                    marginBottom: 12,
-                    height: 32,
-                    width: 60,
-                    fontSize: 16,
-                    marginRight: 50,
-                  }}
-                >
-                  Save
-                </Button>
-                <Button
-                  block
-                  onClick={() => setEditProfile(false)}
-                  style={{
-                    height: 32,
-                    width: 60,
-                    fontSize: 16,
-                  }}
-                >
-                  Cancel
-                </Button>
+
+                <div className="profile-buttons">
+                  <Button className="save-btn" onClick={saveProfile}>
+                    Save
+                  </Button>
+                  <Button
+                    className="cancel-btn"
+                    onClick={() => setEditProfile(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </div>
             ) : (
-              <div style={{ textAlign: "center", padding: "20px" }}>
+              <div className="view-profile">
                 <img
                   src={profile.avatar || "https://via.placeholder.com/150"}
                   alt={profile.name}
-                  style={{
-                    width: 140, // bigger avatar
-                    height: 140,
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    marginBottom: 16,
-                    border: isDarkMode
-                      ? "2px solid #444"
-                      : "2px solid #ff6431ed", // subtle border
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                  }}
+                  className="avatar-img-large"
                 />
-                <h3
-                  style={{
-                    color: isDarkMode ? "#fff" : "#333 !important",
-                    marginBottom: 4,
-                    fontWeight: 600,
-                    fontSize: 22,
-                  }}
-                >
-                  {profile.name}
-                </h3>
-
-                <p
-                  style={{
-                    color: isDarkMode ? "#aaa" : "#666",
-                    marginBottom: 16,
-                    fontSize: 14,
-                  }}
-                >
-                  {profile.email}
-                </p>
-
-                <div
-                  style={{ display: "flex", justifyContent: "center", gap: 12 }}
-                >
+                <h3 className="profile-name">{profile.name}</h3>
+                <p className="profile-email">{profile.email}</p>
+                <div className="profile-action-buttons">
                   <Button
-                    block
+                    className="edit-btn"
                     onClick={() => setEditProfile(true)}
                     style={{
                       borderRadius: 8,
@@ -247,28 +152,31 @@ const ProfilePage = ({ isDarkMode = false }) => {
                   >
                     Edit
                   </Button>
-
                   <Button
-                    type="primary"
-                    danger
-                    block
+                    className="logout-btn"
                     onClick={logout}
                     style={{
                       borderRadius: 8,
-                      background: "#ff4d4f",
-                      border: "none",
-                      color: "#fff",
+                      background: isDarkMode ? "#444" : "#fff",
+                      border: "2px solid #ff6431ed",
+                      color: isDarkMode ? "#000 !important" : "#ff6431ed",
                       fontWeight: "bold",
                       height: 40,
                       minWidth: 100,
                       transition: "all 0.3s",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.background = "#ff7875")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = "#ff4d4f")
-                    }
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "#ff6431ed";
+                      e.currentTarget.style.color = "#fff";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = isDarkMode
+                        ? "#444"
+                        : "#fff";
+                      e.currentTarget.style.color = isDarkMode
+                        ? "#000"
+                        : "#ff6431ed";
+                    }}
                   >
                     Logout
                   </Button>
@@ -280,18 +188,13 @@ const ProfilePage = ({ isDarkMode = false }) => {
 
         {/* Right Column - User Products */}
         <Col xs={24} lg={16}>
-          <Title
-            level={3}
-            style={{ marginBottom: 16, color: isDarkMode ? "#fff" : "#000" }}
-          >
+          <Title level={3} className="products-title">
             My Products
           </Title>
 
           <Row gutter={[16, 16]} justify="center">
             {items.length === 0 && (
-              <Text style={{ color: isDarkMode ? "#aaa" : "#555" }}>
-                No products yet.
-              </Text>
+              <Text className="no-products">No products yet.</Text>
             )}
 
             {items.map((item) => {
@@ -313,102 +216,57 @@ const ProfilePage = ({ isDarkMode = false }) => {
               return (
                 <Col
                   key={item.id}
-                  xs={24} // 1 per row on small screens
-                  sm={12} // 2 per row on medium screens
+                  xs={24}
+                  sm={12}
                   md={12}
-                  lg={8} // 3 per row on large screens
-                  style={{ display: "flex", justifyContent: "center" }}
+                  lg={8}
+                  className="product-col"
                 >
                   <Card
+                    key={item.id}
                     hoverable
-                    style={{
-                      width: 240,
-                      textAlign: "center",
-                      backgroundColor: isDarkMode ? "#111" : "#f2f2f2ff",
-
-                      borderRadius: 8,
-                      position: "relative",
-                      overflow: "hidden",
-                    }}
+                    className={`history-card ${isDarkMode ? "dark" : "light"}`}
                     cover={
                       <Image.PreviewGroup>
-                        <Image
-                          alt={item.title}
-                          src={item.image}
-                          style={{
-                            height: 160,
-                            objectFit: "cover",
-                            padding: "20px",
-                          }}
-                        />
+                        <div className="card-image-container">
+                          <Image
+                            src={item.image}
+                            alt={item.title}
+                            preview={true}
+                          />
+                        </div>
                       </Image.PreviewGroup>
                     }
-                    actions={[
-                      <Button
-                        type="primary"
-                        style={{
-                          backgroundColor: "#ff6530",
-                          borderColor: "#ff7f50",
-                          color: "#fff",
-                        }}
-                      >
-                        {item.condition || "Unknown"}
-                      </Button>,
-                      <Button
-                        type="default"
-                        style={{
-                          backgroundColor: "#f5f5f5",
-                          borderColor: "#d9d9d9",
-                          color: "#333",
-                        }}
-                      >
-                        Details
-                      </Button>,
-                    ]}
                   >
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: 5,
-                        right: 8,
-                        zIndex: 2,
-                      }}
-                    >
+                    {/* Menu Dropdown */}
+                    <div className="history-card-menu">
                       <Dropdown overlay={menu} trigger={["click"]}>
-                        <EllipsisOutlined
-                          style={{
-                            fontSize: 20,
-                            color: isDarkMode ? "#fff" : "#000",
-                          }}
-                        />
+                        <EllipsisOutlined className="history-card-menu-icon" />
                       </Dropdown>
                     </div>
 
-                    <Meta
-                      title={`${item.title} (${item.category || "Unknown"})`}
-                    />
+                    {/* Title + Condition */}
+                    <div className="history-card-body">
+                      <Text className="history-card-title ">{item.title}</Text>
+                      <span
+                        className={`condition-tag ${
+                          item.condition?.toLowerCase().replace(" ", "-") ||
+                          "unknown"
+                        }`}
+                      >
+                        {item.condition || "Unknown"}
+                      </span>
+                    </div>
 
-                    <p
-                      style={{
-                        fontSize: 12,
-                        color: "#555",
-                        marginTop: 4,
-                        textAlign: "center",
-                      }}
-                    >
+                    {/* Date */}
+                    <p className="history-card-date">
                       Added on: {new Date(item.date).toLocaleString()}
                     </p>
 
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        marginTop: 8,
-                        fontSize: 14,
-                      }}
-                    >
-                      <span>Stock: {item.quantity}</span>
-                      <span className="product-card-price">
+                    {/* Footer */}
+                    <div className="history-card-footer">
+                      <span className="stock">Stock: {item.quantity}</span>
+                      <span className="price">
                         {item.price} {item.currency}
                       </span>
                     </div>

@@ -7,13 +7,13 @@
   margin-bottom: 10px;
   padding-left: 0;
   font-weight: 500;
-  color: #1677ff;
+  color: #ff6431ed !important;
   position: absolute;
   top: 20px;
   left: 20px;
 }
 .back-to-cart:hover {
-  color: #0958d9;
+  color: #ff6431ed;
 }
 
 .checkout-title {
@@ -61,8 +61,14 @@
   min-width: 120px;
   text-align: right;
   font-size: 16px;
-  color: #1677ff;
+  color: #ff6431ed;
   margin-left: auto;
+}
+
+.clear-btn {
+  border-radius: 6px;
+  padding: 0 24px;
+  font-weight: bold;
 }
 
 .checkout-summary {
@@ -76,7 +82,7 @@
 
 .checkout-btn {
   width: 200px;
-  background-color: #1677ff;
+  background-color: #ff6431ed !important;
   border-radius: 6px;
   padding: 0 24px;
   font-weight: bold;
