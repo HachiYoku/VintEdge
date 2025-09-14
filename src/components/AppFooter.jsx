@@ -21,7 +21,7 @@ const AppFooter = () => {
         {/* Logo + Description */}
         <Col xs={24} sm={12} md={6}>
           <h3>VintEdge</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipiscing elit aliquam</p>
+          <p>Explore, sell, and find pre-loved items on Vintedge today</p>
           <div style={{ fontSize: "18px" }}>
             <FacebookOutlined />
             <TwitterOutlined />
