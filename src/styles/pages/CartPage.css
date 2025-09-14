@@ -18,18 +18,6 @@
   font-size: 16px;
 }
 
-.cart-summary {
-  margin-top: 20px !important;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px !important;
-  border-top: 1px solid #f0f0f0;
-  background: #fff;
-  border-radius: 8px;
-  gap: 12px;
-}
-
 .cart-total {
   margin: 0;
 }
@@ -38,6 +26,7 @@
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  justify-content: flex-end; /* aligns buttons to right by default */
 }
 
 .clear-btn,
@@ -46,58 +35,35 @@
   height: 40px;
   font-size: 15px;
   border-radius: 6px;
+  text-align: center;
+  padding: 0 15px;
+  transition: all 0.3s ease;
 }
 
-/* 📱 Tablet */
-@media (max-width: 992px) {
-  .cart-summary {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
+/* Clear Button */
+.clear-btn {
+  background-color: white;
+  color: #ff6431ed;
+  border: 1px solid #ff6431ed;
 }
 
-/* 📱 Mobile */
-@media (max-width: 768px) {
-  .cart-page {
-    padding: 12px;
-  }
-
-  .cart-title {
-    margin-top: 10px;
-    font-size: 20px !important;
-  }
-
-  .cart-summary {
-    position: sticky;
-    bottom: 0;
-    z-index: 10;
-    background: #fff;
-    border-top: 2px solid #f0f0f0;
-    padding: 12px;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .cart-actions {
-    width: 100%;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .clear-btn,
-  .checkout-btn {
-    width: 100%;
-    height: 38px;
-    font-size: 14px;
-  }
+.clear-btn:hover {
+  color: #ff6431ed !important;
+  border: 2px solid #ff6431ed !important;
+  background-color: #f9f5f5 !important;
 }
 
-/* 📱 Small Mobile */
-@media (max-width: 480px) {
-  .cart-total {
-    font-size: 16px;
-  }
+/* Checkout Button */
+.checkout-btn {
+  background-color: #ff6431ed;
+  color: white !important;
+  border: 1px solid #ff6431ed;
+}
+
+.checkout-btn:hover {
+  background-color: #ea6134ed !important;
+  border: 1px solid #ff6431ed !important;
+  color: white !important;
 }
 
 /* Dark mode for cart page */
@@ -116,4 +82,63 @@ body.dark-mode .cart-page .total {
 body.dark-mode .cart-page .cart-list .ant-typography,
 body.dark-mode .cart-page .empty-cart {
   color: #fff !important;
+}
+/* Responsive adjustments for Cart Page */
+@media (max-width: 768px) {
+  .cart-page {
+    padding: 15px !important;
+  }
+
+  .cart-title {
+    font-size: 20px !important;
+    margin-bottom: 15px !important;
+  }
+
+  .cart-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .cart-actions {
+    flex-direction: column;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .clear-btn,
+  .checkout-btn {
+    width: 100% !important;
+    min-width: unset;
+    font-size: 14px;
+    height: 45px;
+  }
+
+  .empty-cart {
+    font-size: 14px !important;
+    margin-top: 15px !important;
+  }
+
+  .cart-total {
+    text-align: left;
+    margin-bottom: 10px;
+  }
+}
+
+/* Smaller screens like mobile */
+@media (max-width: 480px) {
+  .cart-page {
+    padding: 10px !important;
+  }
+
+  .cart-title {
+    font-size: 18px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .clear-btn,
+  .checkout-btn {
+    font-size: 13px;
+    height: 40px;
+  }
 }

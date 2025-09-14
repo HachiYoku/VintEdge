@@ -1,6 +1,5 @@
-
 import React from "react";
-import { useLocation,useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Card, Typography, Button } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import "../../styles/pages/CheckoutPage.css";
@@ -19,7 +18,6 @@ const CheckoutPage = () => {
   );
 
   const handleCheckout = () => {
-    
     alert("Proceeding to checkout...");
   };
 
@@ -43,12 +41,20 @@ const CheckoutPage = () => {
       ) : (
         <>
           {checkoutItems.map((item) => (
-            <Card key={item.id} className="checkout-card" styles={{
+            <Card
+              key={item.id}
+              className="checkout-card"
+              styles={{
                 body: { padding: 0 },
-              }}>
+              }}
+            >
               <div className="checkout-row">
                 {/* Image */}
-                <img alt={item.title} src={item.image} className="checkout-image" />
+                <img
+                  alt={item.title}
+                  src={item.image}
+                  className="checkout-image"
+                />
 
                 {/* Details */}
                 <div className="checkout-details">
@@ -70,7 +76,9 @@ const CheckoutPage = () => {
 
           {/* ✅ Checkout Summary */}
           <div className="checkout-summary">
-            <Title level={4}>Total: ${totalPrice.toFixed(2)}</Title>
+            <Title level={4} className="total">
+              Total: ${totalPrice.toFixed(2)}
+            </Title>
             <Button
               type="primary"
               size="large"
