@@ -16,9 +16,9 @@ const AppLayout = () => {
   const [loading, setLoading] = useState(false);
   const [showTopBtn, setShowTopBtn] = useState(false);
 
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
+  // useEffect(() => {
+  //   console.log(products);
+  // }, [products]);
 
   useEffect(() => {
     axios
