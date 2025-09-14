@@ -135,6 +135,7 @@
 .edit-btn:hover {
   background: #faf2f0ed !important;
   color: #ff6431ed !important;
+  border: 1px solid #ff6431ed !important;
 }
 
 .logout-btn {
