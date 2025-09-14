@@ -126,7 +126,10 @@ const History = ({ isDarkMode = false }) => {
                     <Text className="history-card-title">{item.title}</Text>
                     <span
                       className={`condition-tag ${
-                        item.condition?.toLowerCase().replace(" ", "-") ||
+                        item.condition
+                          ?.toLowerCase()
+                          .replace(/\s+/g, "-") // all spaces → dash
+                          .replace(/\//g, "-") || // slash → dash
                         "unknown"
                       }`}
                     >
