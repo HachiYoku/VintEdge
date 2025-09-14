@@ -3,7 +3,7 @@ import React from "react";
 import { useLocation,useNavigate } from "react-router-dom";
 import { Card, Typography, Button } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import "../../styles/pages/CheckOutPage.css";
+import "../../styles/pages/CheckoutPage.css";
 
 const { Title, Text } = Typography;
 
