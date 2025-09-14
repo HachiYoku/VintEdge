@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Card, Dropdown, Typography, Menu, Button, Image } from "antd";
+import { Card, Dropdown, Typography, Button, Image } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { useItems } from "../../context/ItemContext";
 import { useNavigate } from "react-router-dom";
 import "../../styles/pages/ProfilePage.css";
 
 const { Title, Text } = Typography;
-const { Meta } = Card;
 
 const History = ({ isDarkMode = false }) => {
   const { items, removeItem } = useItems();
@@ -78,20 +77,20 @@ const History = ({ isDarkMode = false }) => {
             }}
           >
             {currentItems.map((item) => {
-              const menu = (
-                <Menu>
-                  <Menu.Item key="edit" onClick={() => handleEdit(item)}>
-                    Edit
-                  </Menu.Item>
-                  <Menu.Item
-                    key="delete"
-                    danger
-                    onClick={() => handleDelete(item.id)}
-                  >
-                    Delete
-                  </Menu.Item>
-                </Menu>
-              );
+              // ✅ AntD v5 menu items
+              const dropdownItems = [
+                {
+                  key: "edit",
+                  label: "Edit",
+                  onClick: () => handleEdit(item),
+                },
+                {
+                  key: "delete",
+                  label: "Delete",
+                  danger: true,
+                  onClick: () => handleDelete(item.id),
+                },
+              ];
 
               return (
                 <Card
@@ -112,8 +111,13 @@ const History = ({ isDarkMode = false }) => {
                 >
                   {/* Menu Dropdown */}
                   <div className="history-card-menu">
-                    <Dropdown menu={menu} trigger={["click"]}>
-                      <EllipsisOutlined className="history-card-menu-icon" />
+                    <Dropdown
+                      menu={{ items: dropdownItems }}
+                      trigger={["click"]}
+                    >
+                      <span>
+                        <EllipsisOutlined className="history-card-menu-icon" />
+                      </span>
                     </Dropdown>
                   </div>
 

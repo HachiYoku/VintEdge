@@ -1,42 +1,46 @@
-import React from 'react';
-import { FieldTimeOutlined, HomeOutlined, PlusSquareOutlined, SettingOutlined } from '@ant-design/icons';
+import React from "react";
+import {
+  FieldTimeOutlined,
+  HomeOutlined,
+  PlusSquareOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import { TfiMenu } from "react-icons/tfi";
-import { Dropdown, Menu, Space } from 'antd';
-import { useNavigate } from 'react-router-dom';
-
+import { Button, Dropdown, Space } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const items = [
   {
-    key: '/',
-    label: 'Home',
+    key: "/",
+    label: "Home",
     icon: <HomeOutlined />,
   },
   {
-    type: 'divider',
+    type: "divider",
   },
   {
-    key: '/create-item',
-    label: 'Create Item',
+    key: "/create-item",
+    label: "Create Item",
     icon: <PlusSquareOutlined />,
   },
   {
-    type: 'divider',
+    type: "divider",
   },
   {
-    key: '/history',
-    label: 'History',
-    icon: <FieldTimeOutlined/>,
+    key: "/history",
+    label: "History",
+    icon: <FieldTimeOutlined />,
   },
   {
-    type: 'divider',
+    type: "divider",
   },
   {
-    key: '/setting',
-    label: 'Settings',
+    key: "/setting",
+    label: "Settings",
     icon: <SettingOutlined />,
   },
 ];
-const BurgerMenu = ({iconStyle}) => {
+const BurgerMenu = ({ iconStyle }) => {
   const navigate = useNavigate();
 
   const onClick = ({ key }) => {
@@ -44,14 +48,9 @@ const BurgerMenu = ({iconStyle}) => {
   };
 
   return (
-    <Dropdown menu={{ items, onClick : onClick }} >
-    <a onClick={e => e.preventDefault()}>
-      <Space>
-        
-        <TfiMenu style={iconStyle} />
-      </Space>
-    </a>
-  </Dropdown>
-  )
+    <Dropdown menu={{ items, onClick }}>
+      <Button type="text" icon={<TfiMenu style={iconStyle} />} />
+    </Dropdown>
+  );
 };
 export default BurgerMenu;

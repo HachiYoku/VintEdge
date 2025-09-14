@@ -9,7 +9,6 @@ import {
   Upload,
   Image,
   Dropdown,
-  Menu,
 } from "antd";
 import { EllipsisOutlined, UploadOutlined } from "@ant-design/icons";
 import { useItems } from "../../context/ItemContext";
@@ -21,7 +20,6 @@ import "../../styles/pages/ProfilePage.css";
 import imageCompression from "browser-image-compression";
 
 const { Title, Text } = Typography;
-const { Meta } = Card;
 
 const ProfilePage = ({ isDarkMode = false }) => {
   const { items, removeItem } = useItems();
@@ -165,20 +163,19 @@ const ProfilePage = ({ isDarkMode = false }) => {
             )}
 
             {items.map((item) => {
-              const menu = (
-                <Menu>
-                  <Menu.Item key="edit" onClick={() => handleEditItem(item)}>
-                    Edit
-                  </Menu.Item>
-                  <Menu.Item
-                    key="delete"
-                    danger
-                    onClick={() => handleDeleteItem(item.id)}
-                  >
-                    Delete
-                  </Menu.Item>
-                </Menu>
-              );
+              const dropdownItems = [
+                {
+                  key: "edit",
+                  label: "Edit",
+                  onClick: () => handleEditItem(item),
+                },
+                {
+                  key: "delete",
+                  label: "Delete",
+                  danger: true,
+                  onClick: () => handleDeleteItem(item.id),
+                },
+              ];
 
               return (
                 <Col
@@ -190,7 +187,6 @@ const ProfilePage = ({ isDarkMode = false }) => {
                   className="product-col"
                 >
                   <Card
-                    key={item.id}
                     hoverable
                     className={`history-card ${isDarkMode ? "dark" : "light"}`}
                     cover={
@@ -206,8 +202,13 @@ const ProfilePage = ({ isDarkMode = false }) => {
                     }
                   >
                     <div className="history-card-menu">
-                      <Dropdown menu={menu} trigger={["click"]}>
-                        <EllipsisOutlined className="history-card-menu-icon" />
+                      <Dropdown
+                        menu={{ items: dropdownItems }}
+                        trigger={["click"]}
+                      >
+                        <span className="history-card-menu-trigger">
+                          <EllipsisOutlined className="history-card-menu-icon" />
+                        </span>
                       </Dropdown>
                     </div>
 
