@@ -103,14 +103,14 @@ const ProfilePage = ({ isDarkMode = false }) => {
                 />
 
                 <div className="profile-buttons">
-                  <Button className="save-btn" onClick={saveProfile}>
-                    Save
-                  </Button>
                   <Button
                     className="cancel-btn"
                     onClick={() => setEditProfile(false)}
                   >
                     Cancel
+                  </Button>
+                  <Button className="save-btn" onClick={saveProfile}>
+                    Save
                   </Button>
                 </div>
               </div>

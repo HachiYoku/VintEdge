@@ -20,7 +20,7 @@ const CartItemCard = ({ item, selected, onSelectChange }) => {
   };
 
   return (
-    <Card className="cart-card" bodyStyle={{ padding: 0 }}>
+    <Card className="cart-card" bodyStyle={{ padding: 5 }}>
       <div className="cart-card-row">
         {/* Checkbox */}
         <Checkbox

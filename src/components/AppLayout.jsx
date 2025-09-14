@@ -59,7 +59,7 @@ const AppLayout = () => {
 
   return (
     <Layout className="app-layout">
-      <AppHeader />
+      <AppHeader className="app-header" />
       <Content className="app-content">
         {loading ? (
           <Spin size="large" style={{ marginTop: "50px" }} />

@@ -68,7 +68,7 @@ const CheckoutPage = () => {
 
           {/* ✅ Checkout Summary */}
           <div className="checkout-summary">
-            <Text strong>Total: ${totalPrice.toFixed(2)}</Text>
+            <Title level={4}>Total: ${totalPrice.toFixed(2)}</Title>
             <Button
               type="primary"
               size="large"

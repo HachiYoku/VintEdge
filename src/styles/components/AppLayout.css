@@ -9,6 +9,16 @@
   transition: background-color 0.3s, color 0.3s;
 }
 
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: #ffffff; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
+
 /* Main content */
 .app-content {
   text-align: center;
@@ -18,6 +28,7 @@
   box-sizing: border-box;
   background: transparent;
   transition: background-color 0.3s, color 0.3s;
+  padding-top: 64px; 
 }
 
 /* Grid wrapper for Outlet */

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Button, Image } from "antd";
+import { Card, Button, Image, message } from "antd";
 import { useCart } from "../context/CartContext";
 import { FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -43,6 +43,10 @@ const ProductCard = ({ product }) => {
           onClick={(e) => {
             e.stopPropagation();
             addToCart(product);
+            message.success({
+              content: `${product.title} added to cart!`,
+              duration: 2, // seconds
+            });
           }}
         >
           Add to Cart

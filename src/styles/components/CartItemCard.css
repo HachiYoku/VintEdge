@@ -27,6 +27,8 @@ body.dark-mode .cart-card .ant-btn-primary {
   border-color: #ff6530 !important;
   color: #fff !important;
 }
+
+
 .cart-card-row {
   display: flex;
   flex-wrap: wrap;

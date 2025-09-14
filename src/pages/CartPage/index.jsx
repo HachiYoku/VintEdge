@@ -30,7 +30,7 @@ const CartPage = () => {
   return (
     <div className="cart-page">
       <Title className="cart-title" level={2}>
-        Your Cart
+        Shopping Cart( {cart.length} )
       </Title>
 
       {cart.length === 0 ? (

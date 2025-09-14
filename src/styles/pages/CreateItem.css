@@ -115,26 +115,31 @@
 
 .cancel-btn {
   background-color: white;
-  color: #ff6431ed; /* switched to black text by default in light mode */
-  border: 1px solid #ff6431ed;
+  padding: 10px 20px!important;
+  color: #ff6431ed;
+  border: 2px solid #ff6431ed;
   margin-right: 8px;
 }
 
 .cancel-btn:hover {
-  color: black !important;
-  border: 1px solid #ff6431ed !important;
-  background-color: white !important;
-  /* hover text changes to accent color */
+  color: #ff6431ed !important;
+  border: 2px solid #ff6431ed !important;
+  background-color: #f9f5f5 !important;
+  
 }
 
 .publish-btn {
-  background-color: #fc8486;
+  background-color: #ff6431ed !important;
   border: 1px solid #ff6431ed;
   color: white;
+  font-weight: bold;
+  height: 40px;
+  min-width: 100px;
+  transition: all 0.3s;
 }
 
 .publish-btn:hover {
-  background-color: #ff6431ed !important;
+  background-color: #ea6134ed !important;
   border: 1px solid #ff6431ed !important;
   color: white !important;
 }
