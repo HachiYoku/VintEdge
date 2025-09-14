@@ -79,7 +79,6 @@
   background: #ea6134ed !important;
   border: none;
   color: #fff !important;
-  
 }
 
 .cancel-btn {
@@ -283,6 +282,19 @@
 
 .condition-tag.fair {
   background-color: #faad14;
+  color: #fff;
+}
+.condition-tag.good {
+  background-color: #9bf36e;
+  color: #fff;
+}
+.condition-tag.worn {
+  background-color: #a25b21;
+  color: #fff;
+}
+
+.condition-tag.for-parts-not-working {
+  background-color: #f5222d;
   color: #fff;
 }
 
