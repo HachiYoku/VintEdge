@@ -168,14 +168,14 @@
 }
 @media (max-width: 400px) {
   .form-buttons {
-    flex-direction: column; /* stack buttons */
+    justify-content: space-between;
     gap: 10px; /* space between buttons */
   }
 
   .cancel-btn,
   .publish-btn {
     flex: 1; /* full width */
-    max-width: 100%; /* remove horizontal limits */
+    max-width: 100% !important; /* remove horizontal limits */
     margin-right: 0; /* reset margin */
   }
 }
