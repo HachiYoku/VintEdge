@@ -3,7 +3,7 @@ import { Form, Input, Button, Typography, message } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import "../../styles/pages/LoginPage.css";  
+import "../../styles/pages/LoginPage.css";
 
 const { Title, Text } = Typography;
 
@@ -25,11 +25,17 @@ const LoginPage = () => {
     <div className="login-page">
       <div className="login-info">
         <img src="/fav.png" alt="" />
-        <h1 className="login-hero-text">Welcome Back to <span>VintEage</span></h1>
-        <p className="login-sub-text">Log in to continue your sustainable shopping journey.</p>
+        <h1 className="login-hero-text">
+          Welcome Back to <span>VintEdge</span>
+        </h1>
+        <p className="login-sub-text">
+          Log in to continue your sustainable shopping journey.
+        </p>
       </div>
       <div className="login-container">
-        <Title level={2} className="login-title">Login</Title>
+        <Title level={2} className="login-title">
+          Login
+        </Title>
         <Text className="login-subtitle">Explore VintEdge </Text>
 
         <Form layout="vertical" onFinish={handleLogin}>
@@ -75,8 +81,7 @@ const LoginPage = () => {
 
         <div className="login-footer">
           <Text>
-            Don’t have an account?{" "}
-            <Link to="/signup">Sign Up</Link>
+            Don’t have an account? <Link to="/signup">Sign Up</Link>
           </Text>
         </div>
       </div>

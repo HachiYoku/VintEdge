@@ -3,7 +3,7 @@ import { Form, Input, Button, Typography, message } from "antd";
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import "../../styles/pages/SignUpPage.css"; 
+import "../../styles/pages/SignUpPage.css";
 
 const { Title, Text } = Typography;
 
@@ -25,11 +25,17 @@ const SignUpPage = () => {
     <div className="signup-page">
       <div className="signup-info">
         <img src="/fav.png" alt="" />
-        <h1 className="hero-text">Create Your <span>VintEage</span> Account</h1>
-        <p className="sub-text">Join a trusted community marketplace for sustainable shopping.</p>
+        <h1 className="hero-text">
+          Create Your <span>VintEdge</span> Account
+        </h1>
+        <p className="sub-text">
+          Join a trusted community marketplace for sustainable shopping.
+        </p>
       </div>
       <div className="signup-container">
-        <Title level={2} className="signup-title">Sign Up</Title>
+        <Title level={2} className="signup-title">
+          Sign Up
+        </Title>
         <Text className="signup-subtitle">Join VintEdge Community!</Text>
 
         <Form layout="vertical" onFinish={handleSignUp}>
