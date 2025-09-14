@@ -17,11 +17,14 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
 import "../../styles/pages/ProfilePage.css";
 
+// 👇 add this import
+import imageCompression from "browser-image-compression";
+
 const { Title, Text } = Typography;
 const { Meta } = Card;
 
 const ProfilePage = ({ isDarkMode = false }) => {
-  const { items, removeItem, updateUser } = useItems();
+  const { items, removeItem } = useItems();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -49,19 +52,30 @@ const ProfilePage = ({ isDarkMode = false }) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
-  const handleAvatarUpload = (file) => {
-    if (file) {
+  // 👇 safer avatar upload with compression
+  const handleAvatarUpload = async (file) => {
+    try {
+      const options = { maxSizeMB: 0.2, maxWidthOrHeight: 300 };
+      const compressedFile = await imageCompression(file, options);
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfile({ ...profile, avatar: reader.result });
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(compressedFile);
+    } catch (err) {
+      console.error("Image compression failed:", err);
     }
     return false;
   };
 
   const saveProfile = () => {
-    localStorage.setItem("profile", JSON.stringify(profile));
+    try {
+      localStorage.setItem("profile", JSON.stringify(profile));
+    } catch (err) {
+      console.error("Saving profile failed:", err);
+      alert("Profile too large to save. Please use a smaller image.");
+    }
     setEditProfile(false);
   };
 
@@ -117,7 +131,7 @@ const ProfilePage = ({ isDarkMode = false }) => {
             ) : (
               <div className="view-profile">
                 <img
-                  src={profile.avatar || "https://via.placeholder.com/150"}
+                  src={profile.avatar || "/profile-img.webp"}
                   alt={profile.name}
                   className="avatar-img-large"
                 />
@@ -127,57 +141,10 @@ const ProfilePage = ({ isDarkMode = false }) => {
                   <Button
                     className="edit-btn"
                     onClick={() => setEditProfile(true)}
-                    style={{
-                      borderRadius: 8,
-                      background: isDarkMode ? "#444" : "#fff",
-                      border: "2px solid #ff6431ed",
-                      color: isDarkMode ? "#000 !important" : "#ff6431ed",
-                      fontWeight: "bold",
-                      height: 40,
-                      minWidth: 100,
-                      transition: "all 0.3s",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = "#ff6431ed";
-                      e.currentTarget.style.color = "#fff";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = isDarkMode
-                        ? "#444"
-                        : "#fff";
-                      e.currentTarget.style.color = isDarkMode
-                        ? "#000"
-                        : "#ff6431ed";
-                    }}
                   >
                     Edit
                   </Button>
-                  <Button
-                    className="logout-btn"
-                    onClick={logout}
-                    style={{
-                      borderRadius: 8,
-                      background: isDarkMode ? "#444" : "#fff",
-                      border: "2px solid #ff6431ed",
-                      color: isDarkMode ? "#000 !important" : "#ff6431ed",
-                      fontWeight: "bold",
-                      height: 40,
-                      minWidth: 100,
-                      transition: "all 0.3s",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = "#ff6431ed";
-                      e.currentTarget.style.color = "#fff";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = isDarkMode
-                        ? "#444"
-                        : "#fff";
-                      e.currentTarget.style.color = isDarkMode
-                        ? "#000"
-                        : "#ff6431ed";
-                    }}
-                  >
+                  <Button className="logout-btn" onClick={logout}>
                     Logout
                   </Button>
                 </div>
@@ -238,14 +205,12 @@ const ProfilePage = ({ isDarkMode = false }) => {
                       </Image.PreviewGroup>
                     }
                   >
-                    {/* Menu Dropdown */}
                     <div className="history-card-menu">
-                      <Dropdown overlay={menu} trigger={["click"]}>
+                      <Dropdown menu={menu} trigger={["click"]}>
                         <EllipsisOutlined className="history-card-menu-icon" />
                       </Dropdown>
                     </div>
 
-                    {/* Title + Condition */}
                     <div className="history-card-body">
                       <Text className="history-card-title ">{item.title}</Text>
                       <span
@@ -258,12 +223,10 @@ const ProfilePage = ({ isDarkMode = false }) => {
                       </span>
                     </div>
 
-                    {/* Date */}
                     <p className="history-card-date">
                       Added on: {new Date(item.date).toLocaleString()}
                     </p>
 
-                    {/* Footer */}
                     <div className="history-card-footer">
                       <span className="stock">Stock: {item.quantity}</span>
                       <span className="price">

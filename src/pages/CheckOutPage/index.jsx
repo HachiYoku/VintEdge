@@ -43,7 +43,9 @@ const CheckoutPage = () => {
       ) : (
         <>
           {checkoutItems.map((item) => (
-            <Card key={item.id} className="checkout-card" bodyStyle={{ padding: 0 }}>
+            <Card key={item.id} className="checkout-card" styles={{
+                body: { padding: 0 },
+              }}>
               <div className="checkout-row">
                 {/* Image */}
                 <img alt={item.title} src={item.image} className="checkout-image" />

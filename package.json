@@ -12,9 +12,10 @@
   "dependencies": {
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@fontsource/tinos": "^5.2.6",
-    "antd": "^5.27.1",
+    "antd": "^5.27.3",
     "axios": "^1.11.0",
     "bootstrap": "^5.3.8",
+    "browser-image-compression": "^2.0.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-icon": "^1.0.0",

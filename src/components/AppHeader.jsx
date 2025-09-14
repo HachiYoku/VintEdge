@@ -95,11 +95,13 @@ const AppHeader = ({
         open={showSearchDrawer}
         //responsive
         height={window.innerWidth < 480 ? 140 : 100}
-        bodyStyle={{
-          padding: "10px 16px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+        styles={{
+          body: {
+            padding: "10px 16px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
         }}
       >
         <Input.Search

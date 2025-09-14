@@ -112,7 +112,7 @@ const History = ({ isDarkMode = false }) => {
                 >
                   {/* Menu Dropdown */}
                   <div className="history-card-menu">
-                    <Dropdown overlay={menu} trigger={["click"]}>
+                    <Dropdown menu={menu} trigger={["click"]}>
                       <EllipsisOutlined className="history-card-menu-icon" />
                     </Dropdown>
                   </div>
