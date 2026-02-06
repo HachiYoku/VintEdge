@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
 import "@ant-design/v5-patch-for-react-19";
@@ -17,52 +16,54 @@ import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignUpPage";
 import ProductDetailPage from "./pages/ProductDetail";
+import ResetpswPage from "./pages/ResetpswPage";
+import ForgotpswPage from "./pages/ForgotpswPage";
 
 // Context
 import { ItemProvider } from "./context/ItemContext";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
-// ✅ PrivateRoute here
+/* =====================
+   Private Route
+===================== */
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div style={{ textAlign: "center", marginTop: "50px" }}>Loading...</div>
-    );
+    return <div style={{ textAlign: "center", marginTop: 50 }}>Loading...</div>;
   }
 
   return user ? children : <Navigate to="/login" replace />;
 };
 
+/* =====================
+   Public Route
+   (only for auth pages)
+===================== */
 const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div style={{ textAlign: "center", marginTop: "50px" }}>Loading...</div>
-    );
+    return <div style={{ textAlign: "center", marginTop: 50 }}>Loading...</div>;
   }
 
   return !user ? children : <Navigate to="/" replace />;
 };
+
 const App = () => {
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
+    document.body.classList.toggle("dark-mode", savedTheme === "dark");
   }, []);
+
   return (
     <AuthProvider>
       <CartProvider>
         <ItemProvider>
           <BrowserRouter>
             <Routes>
-              {/* Public routes */}
+              {/*Auth pages*/}
               <Route
                 path="/login"
                 element={
@@ -79,16 +80,33 @@ const App = () => {
                   </PublicRoute>
                 }
               />
-              {/* Protected routes with AppLayout */}
+              <Route
+                path="/forgot_password"
+                element={
+                  <PublicRoute>
+                    <ForgotpswPage />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/reset-password/:token"
+                element={
+                  <PublicRoute>
+                    <ResetpswPage />
+                  </PublicRoute>
+                }
+              />
+
+              {/*home page */}
               <Route element={<AppLayout />}>
-                <Route
-                  path="/"
-                  element={
-                    <PrivateRoute>
-                      <Home />
-                    </PrivateRoute>
-                  }
-                />
+                <Route path="/" element={<Home />} />
+
+                {/* search page*/}
+                <Route path="/search" element={<SearchPage />} />
+
+                <Route path="/product/:id" element={<ProductDetailPage />} />
+
+                {/* Protected pages */}
                 <Route
                   path="/profile"
                   element={
@@ -129,14 +147,7 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
-                <Route
-                  path="/search"
-                  element={
-                    <PrivateRoute>
-                      <SearchPage />
-                    </PrivateRoute>
-                  }
-                />
+
                 <Route
                   path="/checkout"
                   element={
@@ -145,17 +156,9 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
-                <Route
-                  path="/product/:id"
-                  element={
-                    <PrivateRoute>
-                      <ProductDetailPage />
-                    </PrivateRoute>
-                  }
-                />
               </Route>
 
-              {/* 404 page */}
+              {/*404 */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </BrowserRouter>
