@@ -17,6 +17,9 @@ import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignUpPage";
 import ProductDetailPage from "./pages/ProductDetail";
+import VerifyEmailSuccess from "./pages/auth/VerifyEmailSuccess";
+import VerifyEmailFailed from "./pages/auth/VerifyEmailFailed";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage/OrderConfirmationPage";
 
 // Context
 import { ItemProvider } from "./context/ItemContext";
@@ -157,6 +160,14 @@ const App = () => {
 
               {/* 404 page */}
               <Route path="*" element={<NotFoundPage />} />
+
+              <Route path="/verify-success" element={<VerifyEmailSuccess />} />
+              <Route path="/verify-failed" element={<VerifyEmailFailed />} />
+
+              <Route
+                path="/order-success"
+                element={<OrderConfirmationPage />}
+              />
             </Routes>
           </BrowserRouter>
         </ItemProvider>

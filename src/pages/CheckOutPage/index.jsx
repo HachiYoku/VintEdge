@@ -14,11 +14,11 @@ const CheckoutPage = () => {
   // Calculate total price
   const totalPrice = checkoutItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0
+    0,
   );
 
   const handleCheckout = () => {
-    alert("Proceeding to checkout...");
+    navigate("/order-success");
   };
 
   return (
