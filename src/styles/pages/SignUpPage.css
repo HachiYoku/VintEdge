@@ -1,4 +1,3 @@
-/* General Page Layout */
 .signup-page {
   min-height: 100vh;
   display: flex;
@@ -10,14 +9,13 @@
   gap: 20px;
 }
 
-
 .signup-info {
   position: relative;
   flex: 1 1 400px;
   min-width: 320px;
   max-width: 800px;
-  height:800px ;
-  background-image: url('/public/hero-img.jpg');
+  height: 800px;
+  background-image: url("/public/hero-img.jpg");
   background-size: cover;
   background-position: center;
   color: white;
@@ -42,15 +40,14 @@
 }
 
 .signup-info h1,
-.signup-info p ,
-.signup-info img{
-  
+.signup-info p,
+.signup-info img {
   z-index: 2;
   margin: 0;
   padding: 10px;
 }
 
-.signup-info img{
+.signup-info img {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -72,7 +69,6 @@
   margin-top: 10px;
   line-height: 1.5;
 }
-
 
 .signup-container {
   flex: 1 1 320px;
@@ -146,16 +142,21 @@
   text-decoration: underline;
 }
 
-/* Responsive Adjustments */
+/* Responsive  */
 @media screen and (max-width: 992px) {
   .signup-page {
     flex-direction: column;
     align-items: center;
   }
-  
-  .signup-info, .signup-container {
+
+  .signup-info,
+  .signup-container {
     max-width: 90%;
     width: 100%;
+  }
+
+  .signup-info {
+    height: 500px; /* reduce hero section height for tablets */
   }
 
   .hero-text {
@@ -169,11 +170,14 @@
 
 @media screen and (max-width: 480px) {
   .signup-info {
-    display: none;
+    display: none; /* hide hero section on mobile */
+    height: auto; /* reset height just in case */
   }
 
   .signup-container {
-    padding: 30px 20px;
+    padding: 25px 15px; /* reduce padding */
+    max-height: 500px; /* limit container height */
+    overflow: auto; /* scroll if content exceeds max-height */
   }
 
   .hero-text {
@@ -182,5 +186,24 @@
 
   .signup-title {
     font-size: 1.5rem;
+  }
+
+  .signup-subtitle {
+    font-size: 0.85rem; /* optional: reduce subtitle size */
+  }
+
+  .signup-input {
+    padding: 6px 5px; /* reduce input height */
+  }
+
+  .signup-button {
+    padding: 10px 0; /* reduce button height */
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .signup-container {
+    padding: 20px 10px; /* further reduce padding for very small screens */
+    max-height: 450px; /* further reduce height */
   }
 }

@@ -79,6 +79,12 @@ const LoginPage = () => {
           </Form.Item>
         </Form>
 
+        <p className="text-end mt-2">
+          <Link to="/forgot_password" className="text-decoration-none ">
+            Forgot Password?
+          </Link>
+        </p>
+
         <div className="login-footer">
           <Text>
             Don’t have an account? <Link to="/signup">Sign Up</Link>
