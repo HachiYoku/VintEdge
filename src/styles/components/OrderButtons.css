@@ -1,0 +1,10 @@
+.secondary-orange-btn {
+  color: #ed6634;
+  border-color: #ed6634;
+}
+
+.secondary-orange-btn:hover {
+  color: #ed6634 !important;
+  /* background-color: #ed6634 !important; */
+  border-color: #ed6634 !important;
+}
