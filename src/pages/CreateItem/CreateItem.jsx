@@ -8,7 +8,6 @@ import {
   Input,
   InputNumber,
   Button,
-  Select,
   Upload,
   Radio,
   Space,
@@ -21,7 +20,6 @@ import api from "../../api/client";
 import { normalizeProduct } from "../../api/normalizeProduct";
 
 const { TextArea } = Input;
-const { Option } = Select;
 
 const CreateItem = () => {
   const { addItem, updateItem } = useItems();
@@ -69,7 +67,7 @@ const CreateItem = () => {
     formData.append("description", values.description);
     formData.append("category", values.category);
     formData.append("price", String(priceNumber));
-    formData.append("currency", values.currency || "MMK");
+    formData.append("currency", "MMK");
     formData.append("quantity", String(Number(values.quantity || 0)));
     formData.append("condition", values.condition);
 
@@ -250,12 +248,7 @@ const CreateItem = () => {
                       { required: true, message: "Please select category" },
                     ]}
                   >
-                    <Select placeholder="Select category">
-                      <Option value="Electronics">Electronics</Option>
-                      <Option value="Jewelery">Jewelery</Option>
-                      <Option value="Men's clothing">Men's clothing</Option>
-                      <Option value="Women's clothing">Women's clothing</Option>
-                    </Select>
+                    <Input placeholder="Enter category" />
                   </Form.Item>
                 </Col>
               </Row>
@@ -276,13 +269,7 @@ const CreateItem = () => {
                         precision={2}
                         stringMode
                       />
-                      <Form.Item name="currency" noStyle>
-                        <Select className="currency-select">
-                          <Option value="MMK">MMK</Option>
-                          <Option value="USD">USD</Option>
-                          <Option value="THB">THB</Option>
-                        </Select>
-                      </Form.Item>
+                      <Input value="MMK" disabled className="currency-select" />
                     </Space.Compact>
                   </Form.Item>
                 </Col>

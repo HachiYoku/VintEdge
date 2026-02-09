@@ -40,7 +40,9 @@ const ProductCard = ({ product }) => {
           <p className="product-stock">
             Stock: {product.quantity ?? product.rating?.count ?? product.stock ?? 0}
           </p>
-          <p className="product-price">${product.price}</p>
+          <p className="product-price">
+            {product.price} {product.currency || "MMK"}
+          </p>
         </div>
 
         {isOwner ? (

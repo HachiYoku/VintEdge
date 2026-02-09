@@ -46,7 +46,9 @@ const ProductCardView = ({ product }) => {
       >
         <h3>{product.title}</h3>
         <p>{product.description}</p>
-        <h4>${product.price}</h4>
+        <h4>
+          {product.price} {product.currency || "MMK"}
+        </h4>
         {isOwner ? (
           <span className="product-owner-badge">Your product</span>
         ) : (
