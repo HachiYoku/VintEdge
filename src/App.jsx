@@ -18,6 +18,7 @@ import SignupPage from "./pages/SignUpPage";
 import ProductDetailPage from "./pages/ProductDetail";
 import VerifyEmailSuccess from "./pages/auth/VerifyEmailSuccess";
 import VerifyEmailFailed from "./pages/auth/VerifyEmailFailed";
+import VerifyEmail from "./pages/auth/VerifyEmail";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage/OrderConfirmationPage";
 import ResetpswPage from "./pages/ResetpswPage";
 import ForgotpswPage from "./pages/ForgotpswPage";
@@ -166,6 +167,7 @@ const App = () => {
 
               <Route path="/verify-success" element={<VerifyEmailSuccess />} />
               <Route path="/verify-failed" element={<VerifyEmailFailed />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
 
               <Route
                 path="/order-success"

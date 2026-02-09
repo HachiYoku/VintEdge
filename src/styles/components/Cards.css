@@ -37,3 +37,23 @@ body.dark-mode .product-card:hover,
 body.dark-mode .popular-item-card:hover {
   background-color: #3a3a3a;
 }
+
+.product-owner-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  width: 100%;
+  margin-top: 12px;
+  border-radius: 8px;
+  background: #f0f1f3;
+  color: #8a8f98;
+  font-weight: 600;
+  user-select: none;
+  cursor: not-allowed;
+}
+
+body.dark-mode .product-owner-badge {
+  background: #3a3a3a;
+  color: #c9c9c9;
+}

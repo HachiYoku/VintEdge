@@ -13,6 +13,7 @@ import {
 import { EllipsisOutlined, UploadOutlined } from "@ant-design/icons";
 import { useItems } from "../../context/ItemContext";
 import { useAuth } from "../../context/AuthContext";
+import api from "../../api/client";
 import { useNavigate, Navigate } from "react-router-dom";
 import "../../styles/pages/ProfilePage.css";
 
@@ -23,25 +24,21 @@ const { Title, Text } = Typography;
 
 const ProfilePage = ({ isDarkMode = false }) => {
   const { items, removeItem } = useItems();
-  const { user, logout } = useAuth();
+  const { user, logout, setUser } = useAuth();
   const navigate = useNavigate();
 
   const [editProfile, setEditProfile] = useState(false);
   const [profile, setProfile] = useState({ name: "", email: "", avatar: "" });
+  const [avatarFile, setAvatarFile] = useState(null);
 
   useEffect(() => {
-    const savedProfile = localStorage.getItem("profile");
-    if (savedProfile) {
-      setProfile(JSON.parse(savedProfile));
-    } else if (user) {
-      const userProfile = {
-        name: user.name || "",
-        email: user.email || "",
-        avatar: user.avatar || "",
-      };
-      setProfile(userProfile);
-      localStorage.setItem("profile", JSON.stringify(userProfile));
-    }
+    if (!user) return;
+    setProfile({
+      name: user.username || user.name || "",
+      email: user.email || "",
+      avatar: user.avatar || "",
+    });
+    setAvatarFile(null);
   }, [user]);
 
   if (!user) return <Navigate to="/login" replace />;
@@ -59,6 +56,7 @@ const ProfilePage = ({ isDarkMode = false }) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfile({ ...profile, avatar: reader.result });
+        setAvatarFile(compressedFile);
       };
       reader.readAsDataURL(compressedFile);
     } catch (err) {
@@ -67,14 +65,19 @@ const ProfilePage = ({ isDarkMode = false }) => {
     return false;
   };
 
-  const saveProfile = () => {
+  const saveProfile = async () => {
     try {
-      localStorage.setItem("profile", JSON.stringify(profile));
+      const formData = new FormData();
+      if (profile.name) formData.append("username", profile.name);
+      if (avatarFile) formData.append("avatar", avatarFile);
+
+      const res = await api.put("/user/profile", formData);
+      setUser(res.data);
+      setEditProfile(false);
     } catch (err) {
       console.error("Saving profile failed:", err);
-      alert("Profile too large to save. Please use a smaller image.");
+      alert(err.response?.data?.message || "Profile update failed");
     }
-    setEditProfile(false);
   };
 
   const handleEditItem = (item) =>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCart } from "../../context/CartContext";
 import { List, Typography, Button } from "antd";
 import CartItemCard from "../../components/CartItemCard";
@@ -8,22 +8,31 @@ import "../../styles/pages/CartPage.css"; // import css file
 const { Title, Text } = Typography;
 
 const CartPage = () => {
-  const { cart, clearAllCartItem, getTotalAmount } = useCart();
+  const { cart, clearAllCartItem } = useCart();
   const [selectedItems, setSelectedItems] = useState([]);
   const navigate = useNavigate();
 
   const handleSelectChange = (id, checked) => {
     if (checked) {
-      setSelectedItems((prev) => [...prev, id]);
+      setSelectedItems((prev) => [...prev, String(id)]);
     } else {
-      setSelectedItems((prev) => prev.filter((itemId) => itemId !== id));
+      setSelectedItems((prev) => prev.filter((itemId) => itemId !== String(id)));
     }
   };
 
+  useEffect(() => {
+    setSelectedItems((prev) =>
+      prev.filter((id) =>
+        cart.some((item) => String(item.id) === String(id))
+      )
+    );
+  }, [cart]);
+
   const handleCheckout = () => {
     const checkoutItems = cart.filter((item) =>
-      selectedItems.includes(item.id)
+      selectedItems.includes(String(item.id))
     );
+    if (checkoutItems.length === 0) return;
     navigate("/checkout", { state: { checkoutItems } });
   };
 
@@ -56,10 +65,6 @@ const CartPage = () => {
           />
 
           <div className="cart-footer">
-            <Title level={4} className="total">
-              Total: ${getTotalAmount()}
-            </Title>
-
             <div className="cart-actions">
               <Button danger onClick={clearAllCartItem} className="clear-btn">
                 Clear Cart

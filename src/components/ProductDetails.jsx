@@ -7,7 +7,7 @@ const ProductDetails = () => {
   const { id } = useParams();
   const { products } = useOutletContext(); // get products from AppLayout
 
-  const product = products.find((p) => p.id === parseInt(id));
+  const product = products.find((p) => String(p.id) === String(id));
 
   if (!product) return <h2>Product not found</h2>;
 

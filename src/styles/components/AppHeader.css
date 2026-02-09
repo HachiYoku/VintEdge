@@ -51,14 +51,9 @@
   transition: color 0.3s;
 }
 
-.profile-icon{
-  /* padding-top: px !important; */
-  font-size: 28px !important;;
-}
-
 .cart-icon,
 .profile-icon {
-  font-size: 25px;
+  font-size: 22px;
   color: #290707;
   transition: color 0.3s;
 }

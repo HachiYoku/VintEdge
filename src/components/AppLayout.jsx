@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AppHeader from "./AppHeader";
 import AppFooter from "./AppFooter";
 import { Layout, Spin } from "antd";
 import { Outlet } from "react-router-dom";
-import axios from "axios";
+import api from "../api/client";
+import { normalizeProducts } from "../api/normalizeProduct";
 import { HiArrowCircleUp } from "react-icons/hi";
 import "../styles/components/AppLayout.css";
 
 const { Content } = Layout;
 
 const AppLayout = () => {
+  const [allProducts, setAllProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -20,25 +22,34 @@ const AppLayout = () => {
   //   console.log(products);
   // }, [products]);
 
-  useEffect(() => {
-    axios
-      .get("https://fakestoreapi.com/products/categories")
-      .then((res) => setCategories(res.data))
-      .catch((err) => console.error(err));
+  const refreshProducts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await api.get("/product");
+      const normalized = normalizeProducts(res.data);
+      setAllProducts(normalized);
+      const categorySet = new Set(
+        normalized.map((p) => p.category).filter(Boolean)
+      );
+      setCategories([...categorySet]);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
-    setLoading(true);
-    const url = selectedCategory
-      ? `https://fakestoreapi.com/products/category/${selectedCategory}`
-      : "https://fakestoreapi.com/products";
+    refreshProducts();
+  }, [refreshProducts]);
 
-    axios
-      .get(url)
-      .then((res) => setProducts(res.data))
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
-  }, [selectedCategory]);
+  useEffect(() => {
+    if (!selectedCategory) {
+      setProducts(allProducts);
+      return;
+    }
+    setProducts(allProducts.filter((p) => p.category === selectedCategory));
+  }, [allProducts, selectedCategory]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,7 +76,14 @@ const AppLayout = () => {
           <Spin size="large" style={{ marginTop: "50px" }} />
         ) : (
           <div className="app-content-grid">
-            <Outlet context={{ products, categories, setSelectedCategory }} />
+            <Outlet
+              context={{
+                products,
+                categories,
+                setSelectedCategory,
+                refreshProducts,
+              }}
+            />
           </div>
         )}
       </Content>

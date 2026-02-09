@@ -1,8 +1,10 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Card, Typography, Button } from "antd";
+import { Card, Typography, Button, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import "../../styles/pages/CheckoutPage.css";
+import api from "../../api/client";
+import { useCart } from "../../context/CartContext";
 
 const { Title, Text } = Typography;
 
@@ -10,6 +12,7 @@ const CheckoutPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const checkoutItems = location.state?.checkoutItems || [];
+  const { setCartFromApi } = useCart();
 
   // Calculate total price
   const totalPrice = checkoutItems.reduce(
@@ -17,8 +20,20 @@ const CheckoutPage = () => {
     0,
   );
 
-  const handleCheckout = () => {
-    navigate("/order-success");
+  const handleCheckout = async () => {
+    if (checkoutItems.length === 0) return;
+    try {
+      const selectedProductIds = checkoutItems.map((i) => i.id);
+      const res = await api.post("/order/checkout", { selectedProductIds });
+      if (res.data?.cart) {
+        setCartFromApi(res.data.cart);
+      } else {
+        setCartFromApi({ items: [] });
+      }
+      navigate("/order-success");
+    } catch (err) {
+      message.error(err.response?.data?.message || "Checkout failed");
+    }
   };
 
   return (

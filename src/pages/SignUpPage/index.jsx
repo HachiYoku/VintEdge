@@ -11,13 +11,13 @@ const SignUpPage = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
 
-  const handleSignUp = (values) => {
-    const success = signup(values.name, values.email, values.password);
-    if (success) {
-      message.success("Account created successfully!");
+  const handleSignUp = async (values) => {
+    try {
+      const res = await signup(values.name, values.email, values.password);
+      message.success(res?.message || "Account created successfully!");
       navigate("/login");
-    } else {
-      message.error("Failed to create account");
+    } catch (err) {
+      message.error(err.response?.data?.message || "Failed to create account");
     }
   };
 

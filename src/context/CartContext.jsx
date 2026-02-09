@@ -1,48 +1,74 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import api from "../api/client";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
+  const { user } = useAuth();
+  const [cart, setCart] = useState(() => {
+    const saved = localStorage.getItem("cart");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  const addToCart = (product) => {
-    setCart((prev) => {
-      const existingItem = prev.find((item) => item.id === product.id);
-      if (existingItem) {
-        return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  const mapCartItems = (cartData) => {
+    if (!cartData || !Array.isArray(cartData.items)) return [];
+    return cartData.items.map((i) => {
+      const product = i.product || {};
+      const productId = product._id || product.id;
+      return {
+        ...product,
+        id: productId,
+        quantity: i.quantity,
+        stock: product.quantity ?? null,
+      };
     });
   };
 
-  const removeFromCart = (id) => {
-    setCart((prev) => {
-      const item = prev.find((item) => item.id === id);
-      if (!item) return prev;
-
-      if (item.quantity === 1) {
-        return prev.filter((item) => item.id !== id);
-      }
-
-      return prev.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
-      );
-    });
+  const setCartFromApi = (cartData) => {
+    setCart(mapCartItems(cartData));
   };
 
-  const updateCartItemCount = (quantity, id) => {
-    setCart((prev) => {
-      if (quantity <= 0) {
-        return prev.filter((item) => item.id !== id);
-      }
-      return prev.map((item) =>
-        item.id === id ? { ...item, quantity } : item
-      );
-    });
+  const refreshCart = async () => {
+    const res = await api.get("/cart");
+    setCartFromApi(res.data);
+  };
+
+  useEffect(() => {
+    if (!user) {
+      setCart([]);
+      return;
+    }
+    refreshCart().catch(() => {});
+  }, [user]);
+
+  const addToCart = async (product) => {
+    const productId = product.id ?? product._id;
+    if (!productId) return;
+    const res = await api.post("/cart", { productId, quantity: 1 });
+    setCartFromApi(res.data);
+  };
+
+  const removeFromCart = async (id) => {
+    const res = await api.delete(`/cart/${id}`);
+    if (res.data?.items) {
+      setCartFromApi(res.data);
+    } else {
+      setCart([]);
+    }
+  };
+
+  const updateCartItemCount = async (quantity, id) => {
+    const res = await api.put(`/cart/${id}`, { quantity });
+    if (res.data?.items) {
+      setCartFromApi(res.data);
+    } else {
+      setCart([]);
+    }
   };
   
   const getTotalAmount = () => {
@@ -54,12 +80,30 @@ export const CartProvider = ({ children }) => {
   };
 
 
-  const clearAllCartItem = () => {
+  const clearAllCartItem = async () => {
+    await api.delete("/cart");
     setCart([]);
-  }
+  };
+
+  const removeItems = (ids) => {
+    const idSet = new Set(ids.map(String));
+    setCart((prev) => prev.filter((item) => !idSet.has(String(item.id))));
+  };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart,updateCartItemCount, getTotalAmount,clearAllCartItem }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateCartItemCount,
+        getTotalAmount,
+        clearAllCartItem,
+        removeItems,
+        setCartFromApi,
+        refreshCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

@@ -1,21 +1,43 @@
-import { useState } from "react";
-import { Card, Dropdown, Typography, Button, Image } from "antd";
-import { EllipsisOutlined } from "@ant-design/icons";
-import { useItems } from "../../context/ItemContext";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Card, Typography, Image, Spin } from "antd";
+import api from "../../api/client";
+import { useAuth } from "../../context/AuthContext";
 import "../../styles/pages/ProfilePage.css";
 
 const { Title, Text } = Typography;
 
 const History = ({ isDarkMode = false }) => {
-  const { items, removeItem } = useItems();
-  const [viewType, setViewType] = useState("sell");
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [viewType, setViewType] = useState("buy");
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleEdit = (item) => navigate("/create-item", { state: { item } });
-  const handleDelete = (id) => removeItem(id);
+  useEffect(() => {
+    if (!user) return;
+    setLoading(true);
+    api
+      .get(`/order/${viewType}`)
+      .then((res) => setOrders(res.data || []))
+      .finally(() => setLoading(false));
+  }, [viewType, user]);
 
-  const currentItems = items.filter((i) => i.type === viewType);
+  const currentItems = useMemo(() => {
+    return orders.flatMap((order) =>
+      (order.products || []).map((p) => {
+        const product = p.product || {};
+        return {
+          id: `${order._id}-${product._id || p.product || p.title}`,
+          title: p.title || product.title,
+          image: p.image || product.image,
+          quantity: p.quantity,
+          price: p.price,
+          currency: product.currency || "USD",
+          condition: order.status,
+          date: order.createdAt,
+        };
+      })
+    );
+  }, [orders]);
 
   return (
     <div
@@ -63,7 +85,9 @@ const History = ({ isDarkMode = false }) => {
         </div>
 
         {/* Cards */}
-        {currentItems.length === 0 ? (
+        {loading ? (
+          <Spin />
+        ) : currentItems.length === 0 ? (
           <Text style={{ color: isDarkMode ? "#aaa" : "#555" }}>
             No {viewType} items yet.
           </Text>
@@ -76,82 +100,52 @@ const History = ({ isDarkMode = false }) => {
               justifyItems: "center",
             }}
           >
-            {currentItems.map((item) => {
-              // ✅ AntD v5 menu items
-              const dropdownItems = [
-                {
-                  key: "edit",
-                  label: "Edit",
-                  onClick: () => handleEdit(item),
-                },
-                {
-                  key: "delete",
-                  label: "Delete",
-                  danger: true,
-                  onClick: () => handleDelete(item.id),
-                },
-              ];
+            {currentItems.map((item) => (
+              <Card
+                key={item.id}
+                hoverable
+                className={`history-card ${isDarkMode ? "dark" : "light"}`}
+                cover={
+                  <Image.PreviewGroup>
+                    <div className="card-image-container">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        preview={true}
+                      />
+                    </div>
+                  </Image.PreviewGroup>
+                }
+              >
+                {/* Title + Status */}
+                <div className="history-card-body">
+                  <Text className="history-card-title">{item.title}</Text>
+                  <span
+                    className={`condition-tag ${
+                      item.condition
+                        ?.toLowerCase()
+                        .replace(/\s+/g, "-")
+                        .replace(/\//g, "-") || "unknown"
+                    }`}
+                  >
+                    {item.condition || "Unknown"}
+                  </span>
+                </div>
 
-              return (
-                <Card
-                  key={item.id}
-                  hoverable
-                  className={`history-card ${isDarkMode ? "dark" : "light"}`}
-                  cover={
-                    <Image.PreviewGroup>
-                      <div className="card-image-container">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          preview={true}
-                        />
-                      </div>
-                    </Image.PreviewGroup>
-                  }
-                >
-                  {/* Menu Dropdown */}
-                  <div className="history-card-menu">
-                    <Dropdown
-                      menu={{ items: dropdownItems }}
-                      trigger={["click"]}
-                    >
-                      <span>
-                        <EllipsisOutlined className="history-card-menu-icon" />
-                      </span>
-                    </Dropdown>
-                  </div>
+                {/* Date */}
+                <p className="history-card-date">
+                  Added on: {new Date(item.date).toLocaleString()}
+                </p>
 
-                  {/* Title + Condition */}
-                  <div className="history-card-body">
-                    <Text className="history-card-title">{item.title}</Text>
-                    <span
-                      className={`condition-tag ${
-                        item.condition
-                          ?.toLowerCase()
-                          .replace(/\s+/g, "-") // all spaces → dash
-                          .replace(/\//g, "-") || // slash → dash
-                        "unknown"
-                      }`}
-                    >
-                      {item.condition || "Unknown"}
-                    </span>
-                  </div>
-
-                  {/* Date */}
-                  <p className="history-card-date">
-                    Added on: {new Date(item.date).toLocaleString()}
-                  </p>
-
-                  {/* Footer */}
-                  <div className="history-card-footer">
-                    <span className="stock">Stock: {item.quantity}</span>
-                    <span className="price">
-                      {item.price} {item.currency}
-                    </span>
-                  </div>
-                </Card>
-              );
-            })}
+                {/* Footer */}
+                <div className="history-card-footer">
+                  <span className="stock">Qty: {item.quantity}</span>
+                  <span className="price">
+                    {item.price} {item.currency}
+                  </span>
+                </div>
+              </Card>
+            ))}
           </div>
         )}
       </div>

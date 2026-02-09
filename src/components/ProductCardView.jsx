@@ -1,10 +1,15 @@
 import React from "react";
-import { Card, Button } from "antd";
+import { Card, Button, message } from "antd";
 import { FaShoppingCart, FaInfoCircle } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 const ProductCardView = ({ product }) => {
   const { addToCart } = useCart();
+  const { user } = useAuth();
+  const isOwner =
+    user &&
+    String(product.user || product.userId) === String(user._id || user.id);
 
   return (
     <Card
@@ -42,30 +47,43 @@ const ProductCardView = ({ product }) => {
         <h3>{product.title}</h3>
         <p>{product.description}</p>
         <h4>${product.price}</h4>
-        <Button
-          type="primary"
-          icon={<FaShoppingCart />}
-          onClick={() => addToCart(product)}
-          style={{
-            backgroundColor: "#FF6530",
-            borderColor: "#FF6530",
-            color: "#fff",
-            fontWeight: "bold",
-            borderRadius: 8,
-            height: 40,
-            width: "150px",
-            transition: "all 0.3s",
-            alignSelf: "center",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#ff7f50")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#FF6530")
-          }
-        >
-          Add to Cart
-        </Button>
+        {isOwner ? (
+          <span className="product-owner-badge">Your product</span>
+        ) : (
+          <Button
+            type="primary"
+            icon={<FaShoppingCart />}
+            onClick={async () => {
+              try {
+                await addToCart(product);
+                message.success("Added to cart!");
+              } catch (err) {
+                message.error(
+                  err.response?.data?.message || "Failed to add to cart"
+                );
+              }
+            }}
+            style={{
+              backgroundColor: "#FF6530",
+              borderColor: "#FF6530",
+              color: "#fff",
+              fontWeight: "bold",
+              borderRadius: 8,
+              height: 40,
+              width: "150px",
+              transition: "all 0.3s",
+              alignSelf: "center",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#ff7f50")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#FF6530")
+            }
+          >
+            Add to Cart
+          </Button>
+        )}
       </div>
     </Card>
   );

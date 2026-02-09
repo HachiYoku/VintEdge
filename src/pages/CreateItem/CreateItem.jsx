@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useOutletContext } from "react-router-dom";
 import { useItems } from "../../context/ItemContext";
 import {
   Row,
@@ -13,9 +13,12 @@ import {
   Radio,
   Space,
   Form,
+  message,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import "../../styles/pages/CreateItem.css";
+import api from "../../api/client";
+import { normalizeProduct } from "../../api/normalizeProduct";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -24,15 +27,21 @@ const CreateItem = () => {
   const { addItem, updateItem } = useItems();
   const navigate = useNavigate();
   const location = useLocation();
+  const { refreshProducts } = useOutletContext() || {};
   const editItem = location.state?.item || null;
 
   const [formInstance] = Form.useForm();
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageDirty, setImageDirty] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (editItem) {
       formInstance.setFieldsValue(editItem);
       setImagePreview(editItem.image || null);
+      setImageFile(null);
+      setImageDirty(false);
     }
   }, [editItem, formInstance]);
 
@@ -41,28 +50,66 @@ const CreateItem = () => {
     reader.onloadend = () => {
       const base64 = reader.result;
       setImagePreview(base64);
-      formInstance.setFieldsValue({ image: base64 });
+      setImageFile(file);
+      setImageDirty(true);
     };
     reader.readAsDataURL(file);
     return false;
   };
 
-  const handleSubmit = (values) => {
-    const newItem = {
-      ...values,
-      id: editItem ? editItem.id : Date.now(),
-      type: "sell",
-      date: editItem ? editItem.date : new Date().toISOString(),
-      image: values.image || imagePreview,
-    };
-
-    if (editItem) {
-      updateItem(newItem);
-    } else {
-      addItem(newItem);
+  const handleSubmit = async (values) => {
+    const priceNumber = Number(values.price);
+    if (!Number.isFinite(priceNumber) || priceNumber < 0) {
+      message.error("Please enter a valid price");
+      return;
     }
 
-    navigate("/profile");
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("category", values.category);
+    formData.append("price", String(priceNumber));
+    formData.append("currency", values.currency || "MMK");
+    formData.append("quantity", String(Number(values.quantity || 0)));
+    formData.append("condition", values.condition);
+
+    if (!editItem && imageFile) {
+      formData.append("image", imageFile);
+    }
+
+    if (editItem && imageDirty && imageFile) {
+      formData.append("image", imageFile);
+    }
+
+    try {
+      setSubmitting(true);
+      let saved;
+      if (editItem) {
+        const id = editItem._id || editItem.id;
+        const res = await api.put(`/product/${id}`, formData);
+        saved = res.data;
+      } else {
+        const res = await api.post("/product", formData);
+        saved = res.data;
+      }
+
+      const normalized = normalizeProduct(saved);
+      if (editItem) {
+        updateItem(normalized);
+      } else {
+        addItem(normalized);
+      }
+
+      if (typeof refreshProducts === "function") {
+        await refreshProducts();
+      }
+
+      navigate("/profile");
+    } catch (err) {
+      message.error(err.response?.data?.message || "Save failed");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -215,9 +262,20 @@ const CreateItem = () => {
 
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
-                  <Form.Item label="Price" name="price">
+                  <Form.Item
+                    label="Price"
+                    name="price"
+                    rules={[
+                      { required: true, message: "Please enter a price" },
+                    ]}
+                  >
                     <Space.Compact>
-                      <InputNumber className="price-input" min={0} />
+                      <InputNumber
+                        className="price-input"
+                        min={0}
+                        precision={2}
+                        stringMode
+                      />
                       <Form.Item name="currency" noStyle>
                         <Select className="currency-select">
                           <Option value="MMK">MMK</Option>
@@ -249,6 +307,7 @@ const CreateItem = () => {
                     type="primary"
                     htmlType="submit"
                     className="publish-btn"
+                    loading={submitting}
                   >
                     {editItem ? "Update" : "Publish"}
                   </Button>
