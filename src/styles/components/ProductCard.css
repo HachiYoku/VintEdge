@@ -17,12 +17,12 @@
 }
 
 .product-image {
-  width: 200px !important;
+  width: 100% !important;
   height: 200px !important;
-  object-fit: fit;
-  padding: 20px;
-  align-items: center !important;
-  justify-content: center !important;
+  object-fit: cover;
+  padding: 0;
+  display: block;
+  background: #f6f6f6;
 }
 
 .product-body {

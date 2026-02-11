@@ -13,7 +13,7 @@ import {
 import { EllipsisOutlined, UploadOutlined } from "@ant-design/icons";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../api/client";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, useLocation } from "react-router-dom";
 import "../../styles/pages/ProfilePage.css";
 import { normalizeProducts } from "../../api/normalizeProduct";
 
@@ -25,6 +25,7 @@ const { Title, Text } = Typography;
 const ProfilePage = ({ isDarkMode = false }) => {
   const { user, logout, setUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [editProfile, setEditProfile] = useState(false);
   const [profile, setProfile] = useState({ name: "", email: "", avatar: "" });
@@ -51,9 +52,13 @@ const ProfilePage = ({ isDarkMode = false }) => {
         const res = await api.get("/product");
         const normalized = normalizeProducts(res.data || []);
         const userId = String(user._id || user.id || "");
-        const filtered = normalized.filter(
-          (product) => String(product.user || product.userId) === userId
-        );
+        const filtered = normalized.filter((product) => {
+          const ownerId =
+            product.user?._id || product.userId || product.user || "";
+          const isOwner = String(ownerId) === userId;
+          const qty = Number(product.quantity ?? product.rating?.count ?? 0);
+          return isOwner && qty > 0;
+        });
         if (!canceled) setMyProducts(filtered);
       } catch (err) {
         console.error("Loading my products failed:", err);
@@ -66,7 +71,7 @@ const ProfilePage = ({ isDarkMode = false }) => {
     return () => {
       canceled = true;
     };
-  }, [user]);
+  }, [user, location.key]);
 
   if (!user) return <Navigate to="/login" replace />;
 

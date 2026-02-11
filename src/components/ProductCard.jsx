@@ -15,7 +15,8 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const isOwner =
     user &&
-    String(product.user || product.userId) === String(user._id || user.id);
+    String(product.user?._id || product.userId || product.user) ===
+      String(user._id || user.id);
 
   const handleCardClick = () => {
     navigate(`/product/${product.id}`);
@@ -36,6 +37,16 @@ const ProductCard = ({ product }) => {
     >
       <div onClick={handleCardClick} className="product-body">
         <Meta title={<span className="product-title">{product.title}</span>} />
+        <span
+          className={`condition-tag ${
+            product.condition
+              ?.toLowerCase()
+              .replace(/\s+/g, "-")
+              .replace(/\//g, "-") || "unknown"
+          }`}
+        >
+          {product.condition || "Unknown"}
+        </span>
         <div className="product-info">
           <p className="product-stock">
             Stock: {product.quantity ?? product.rating?.count ?? product.stock ?? 0}

@@ -9,7 +9,7 @@ import {
   InputNumber,
   Button,
   Upload,
-  Radio,
+  Select,
   Space,
   Form,
   message,
@@ -20,6 +20,14 @@ import api from "../../api/client";
 import { normalizeProduct } from "../../api/normalizeProduct";
 
 const { TextArea } = Input;
+const conditionOptions = [
+  { value: "Brand New", label: "Brand New" },
+  { value: "Like New", label: "Like New" },
+  { value: "Good", label: "Good" },
+  { value: "Fair", label: "Fair" },
+  { value: "Worn", label: "Worn" },
+  { value: "For parts/not working", label: "For parts/not working" },
+];
 
 const CreateItem = () => {
   const { addItem, updateItem } = useItems();
@@ -135,15 +143,8 @@ const CreateItem = () => {
           <Col xs={24} lg={8} className="left-column">
             {/* Image Card */}
             <Card title="Product Image" className="create-item-card">
-              <Row gutter={[16, 16]} align="middle">
-                <Col xs={24} sm={12}>
-                  <Upload showUploadList={false} beforeUpload={handleImage}>
-                    <div className="create-item-upload-box">
-                      <UploadOutlined className="upload-icon" />
-                    </div>
-                  </Upload>
-                </Col>
-                <Col xs={24} sm={12}>
+              <Row gutter={[16, 16]}>
+                <Col xs={24}>
                   <div className="create-item-image-preview">
                     {imagePreview ? (
                       <img
@@ -156,6 +157,19 @@ const CreateItem = () => {
                     )}
                   </div>
                 </Col>
+                <Col xs={24}>
+                  <Upload
+                    showUploadList={false}
+                    beforeUpload={handleImage}
+                    accept="image/*"
+                  >
+                    <div className="create-item-upload-box">
+                      <UploadOutlined className="upload-icon" />
+                      <span className="upload-title">Upload product photo</span>
+                      <span className="upload-subtitle">JPG/PNG, max 5MB</span>
+                    </div>
+                  </Upload>
+                </Col>
               </Row>
             </Card>
 
@@ -167,22 +181,12 @@ const CreateItem = () => {
                   { required: true, message: "Please select a condition" },
                 ]}
               >
-                <Radio.Group className="create-item-condition">
-                  <Row gutter={[8, 8]}>
-                    {[
-                      "Brand New",
-                      "Like New",
-                      "Good",
-                      "Fair",
-                      "Worn",
-                      "For parts/not working",
-                    ].map((option) => (
-                      <Col key={option} xs={12}>
-                        <Radio value={option}>{option}</Radio>
-                      </Col>
-                    ))}
-                  </Row>
-                </Radio.Group>
+                <Select
+                  className="create-item-condition-select"
+                  placeholder="Select condition"
+                  options={conditionOptions}
+                  size="large"
+                />
               </Form.Item>
             </Card>
           </Col>
@@ -222,6 +226,7 @@ const CreateItem = () => {
                             <InputNumber
                               min={0}
                               value={quantity}
+                              controls={false}
                               onChange={(v) =>
                                 formInstance.setFieldsValue({
                                   quantity: Number(v) || 0,
