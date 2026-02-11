@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Row,
   Col,
@@ -11,11 +11,11 @@ import {
   Dropdown,
 } from "antd";
 import { EllipsisOutlined, UploadOutlined } from "@ant-design/icons";
-import { useItems } from "../../context/ItemContext";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../api/client";
 import { useNavigate, Navigate } from "react-router-dom";
 import "../../styles/pages/ProfilePage.css";
+import { normalizeProducts } from "../../api/normalizeProduct";
 
 // 👇 add this import
 import imageCompression from "browser-image-compression";
@@ -23,13 +23,14 @@ import imageCompression from "browser-image-compression";
 const { Title, Text } = Typography;
 
 const ProfilePage = ({ isDarkMode = false }) => {
-  const { items, removeItem } = useItems();
   const { user, logout, setUser } = useAuth();
   const navigate = useNavigate();
 
   const [editProfile, setEditProfile] = useState(false);
   const [profile, setProfile] = useState({ name: "", email: "", avatar: "" });
   const [avatarFile, setAvatarFile] = useState(null);
+  const [myProducts, setMyProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -39,6 +40,32 @@ const ProfilePage = ({ isDarkMode = false }) => {
       avatar: user.avatar || "",
     });
     setAvatarFile(null);
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+    let canceled = false;
+    const loadProducts = async () => {
+      setProductsLoading(true);
+      try {
+        const res = await api.get("/product");
+        const normalized = normalizeProducts(res.data || []);
+        const userId = String(user._id || user.id || "");
+        const filtered = normalized.filter(
+          (product) => String(product.user || product.userId) === userId
+        );
+        if (!canceled) setMyProducts(filtered);
+      } catch (err) {
+        console.error("Loading my products failed:", err);
+        if (!canceled) setMyProducts([]);
+      } finally {
+        if (!canceled) setProductsLoading(false);
+      }
+    };
+    loadProducts();
+    return () => {
+      canceled = true;
+    };
   }, [user]);
 
   if (!user) return <Navigate to="/login" replace />;
@@ -82,7 +109,18 @@ const ProfilePage = ({ isDarkMode = false }) => {
 
   const handleEditItem = (item) =>
     navigate("/create-item", { state: { item } });
-  const handleDeleteItem = (id) => removeItem(id);
+
+  const handleDeleteItem = async (id) => {
+    try {
+      await api.delete(`/product/${id}`);
+      setMyProducts((prev) => prev.filter((p) => p.id !== id));
+    } catch (err) {
+      console.error("Delete product failed:", err);
+      alert(err.response?.data?.message || "Failed to delete product");
+    }
+  };
+
+  const renderedProducts = useMemo(() => myProducts, [myProducts]);
 
   return (
     <div className={`profile-page ${isDarkMode ? "dark" : "light"}`}>
@@ -161,11 +199,15 @@ const ProfilePage = ({ isDarkMode = false }) => {
           </Title>
 
           <Row gutter={[16, 16]} justify="center">
-            {items.length === 0 && (
+            {productsLoading && (
+              <Text className="no-products">Loading products...</Text>
+            )}
+
+            {!productsLoading && renderedProducts.length === 0 && (
               <Text className="no-products">No products yet.</Text>
             )}
 
-            {items.map((item) => {
+            {renderedProducts.map((item) => {
               const dropdownItems = [
                 {
                   key: "edit",
@@ -179,6 +221,8 @@ const ProfilePage = ({ isDarkMode = false }) => {
                   onClick: () => handleDeleteItem(item.id),
                 },
               ];
+
+              const itemDate = item.createdAt || item.date;
 
               return (
                 <Col
@@ -231,7 +275,8 @@ const ProfilePage = ({ isDarkMode = false }) => {
                     </div>
 
                     <p className="history-card-date">
-                      Added on: {new Date(item.date).toLocaleString()}
+                      Added on:{" "}
+                      {itemDate ? new Date(itemDate).toLocaleString() : "—"}
                     </p>
 
                     <div className="history-card-footer">

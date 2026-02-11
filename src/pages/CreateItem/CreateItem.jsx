@@ -44,6 +44,12 @@ const CreateItem = () => {
   }, [editItem, formInstance]);
 
   const handleImage = (file) => {
+    const maxSizeMB = 5;
+    const maxSizeBytes = maxSizeMB * 1024 * 1024;
+    if (file.size > maxSizeBytes) {
+      message.error(`Image is too large. Max size is ${maxSizeMB}MB.`);
+      return false;
+    }
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64 = reader.result;
