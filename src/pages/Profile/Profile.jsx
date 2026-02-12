@@ -15,8 +15,6 @@ import { useItems } from "../../context/ItemContext";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
 import "../../styles/pages/ProfilePage.css";
-
-// 👇 add this import
 import imageCompression from "browser-image-compression";
 
 const { Title, Text } = Typography;
@@ -29,19 +27,17 @@ const ProfilePage = ({ isDarkMode = false }) => {
   const [editProfile, setEditProfile] = useState(false);
   const [profile, setProfile] = useState({ name: "", email: "", avatar: "" });
 
+  // 🔹 Merge backend user + localStorage avatar
   useEffect(() => {
-    const savedProfile = localStorage.getItem("profile");
-    if (savedProfile) {
-      setProfile(JSON.parse(savedProfile));
-    } else if (user) {
-      const userProfile = {
-        name: user.name || "",
-        email: user.email || "",
-        avatar: user.avatar || "",
-      };
-      setProfile(userProfile);
-      localStorage.setItem("profile", JSON.stringify(userProfile));
-    }
+    if (!user) return;
+
+    const avatarFromStorage = localStorage.getItem("avatar") || "";
+
+    setProfile({
+      name: user.username || "",
+      email: user.email || "",
+      avatar: avatarFromStorage,
+    });
   }, [user]);
 
   if (!user) return <Navigate to="/login" replace />;
@@ -50,7 +46,7 @@ const ProfilePage = ({ isDarkMode = false }) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
-  // 👇 safer avatar upload with compression
+  // 🔹 Avatar upload with compression
   const handleAvatarUpload = async (file) => {
     try {
       const options = { maxSizeMB: 0.2, maxWidthOrHeight: 300 };
@@ -58,22 +54,23 @@ const ProfilePage = ({ isDarkMode = false }) => {
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfile({ ...profile, avatar: reader.result });
+        setProfile((prev) => ({ ...prev, avatar: reader.result }));
       };
       reader.readAsDataURL(compressedFile);
     } catch (err) {
       console.error("Image compression failed:", err);
     }
-    return false;
+    return false; // prevent default upload
   };
 
+  // 🔹 Save profile changes
   const saveProfile = () => {
-    try {
-      localStorage.setItem("profile", JSON.stringify(profile));
-    } catch (err) {
-      console.error("Saving profile failed:", err);
-      alert("Profile too large to save. Please use a smaller image.");
-    }
+    // Save avatar only in localStorage
+    localStorage.setItem("avatar", profile.avatar);
+
+    // Optionally update name/email in backend
+    // await updateUserOnBackend({ name: profile.name, email: profile.email });
+
     setEditProfile(false);
   };
 
@@ -218,9 +215,8 @@ const ProfilePage = ({ isDarkMode = false }) => {
                         className={`condition-tag ${
                           item.condition
                             ?.toLowerCase()
-                            .replace(/\s+/g, "-") // all spaces → dash
-                            .replace(/\//g, "-") || // slash → dash
-                          "unknown"
+                            .replace(/\s+/g, "-")
+                            .replace(/\//g, "-") || "unknown"
                         }`}
                       >
                         {item.condition || "Unknown"}

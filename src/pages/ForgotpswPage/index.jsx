@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Typography, message, Button, Input, Form } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "../../styles/pages/LoginPage.css";
-// import blogApi from "../api/blogApi"; // make sure this exists
 
 const { Title, Text } = Typography;
 
@@ -13,9 +13,10 @@ const ForgotPswPage = () => {
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const res = await blogApi.post("/api/auth/forgot-password", {
-        email: values.email,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/forgot-password`,
+        { email: values.email },
+      );
       message.success(res.data.message || "Reset link sent to your email");
     } catch (err) {
       message.error(err.response?.data?.message || "Something went wrong");
@@ -26,7 +27,6 @@ const ForgotPswPage = () => {
 
   return (
     <div className="login-page">
-      {/* Hero Section */}
       <div className="login-info">
         <img src="/fav.png" alt="logo" />
         <h1 className="login-hero-text">
@@ -37,7 +37,6 @@ const ForgotPswPage = () => {
         </p>
       </div>
 
-      {/* Form Section */}
       <div className="login-container">
         <Title level={2} className="login-title">
           Forgot Password

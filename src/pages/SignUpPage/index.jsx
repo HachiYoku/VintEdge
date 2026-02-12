@@ -8,16 +8,20 @@ import "../../styles/pages/SignUpPage.css";
 const { Title, Text } = Typography;
 
 const SignUpPage = () => {
-  const { signup } = useAuth();
+  const { registerUser } = useAuth(); // ✅ corrected
   const navigate = useNavigate();
 
-  const handleSignUp = (values) => {
-    const success = signup(values.name, values.email, values.password);
-    if (success) {
-      message.success("Account created successfully!");
+  const handleSignUp = async (values) => {
+    try {
+      await registerUser({
+        username: values.name,
+        email: values.email,
+        password: values.password,
+      });
+      message.success("Account created! Please verify your email.");
       navigate("/login");
-    } else {
-      message.error("Failed to create account");
+    } catch (err) {
+      message.error(err.message || "Failed to create account");
     }
   };
 
@@ -91,6 +95,7 @@ const SignUpPage = () => {
               block
               size="large"
               className="signup-button"
+              loading={loading}
             >
               Sign Up
             </Button>

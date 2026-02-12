@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Form, Input, Button, Typography, message } from "antd";
 import { LockOutlined } from "@ant-design/icons";
 import { useParams, useNavigate } from "react-router-dom";
-import "../../styles/pages/LoginPage.css";
-// import blogApi from "../api/blogApi";
+import axios from "axios";
+import "../../styles/pages/LoginPage.css"; // keep your CSS
 
 const { Title, Text } = Typography;
 
@@ -13,18 +13,17 @@ const ResetPswPage = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (values) => {
-    const { password, confirmPassword } = values;
-
-    if (password !== confirmPassword) {
+    if (values.password !== values.confirmPassword) {
       message.error("Passwords do not match!");
       return;
     }
 
     try {
       setLoading(true);
-      const res = await blogApi.post(`/api/auth/reset-password/${token}`, {
-        password,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/reset-password/${token}`,
+        { password: values.password },
+      );
       message.success(res.data.message || "Password reset successfully!");
       navigate("/login");
     } catch (err) {
@@ -36,7 +35,6 @@ const ResetPswPage = () => {
 
   return (
     <div className="login-page">
-      {/* Hero Section */}
       <div className="login-info">
         <img src="/fav.png" alt="logo" />
         <h1 className="login-hero-text">
@@ -45,7 +43,6 @@ const ResetPswPage = () => {
         <p className="login-sub-text">Enter a new password for your account.</p>
       </div>
 
-      {/* Form Section */}
       <div className="login-container">
         <Title level={2} className="login-title">
           Reset Password
@@ -97,10 +94,7 @@ const ResetPswPage = () => {
         </Form>
 
         <p className="text-center mt-2">
-          Remembered your password?{" "}
-          <a href="/login" className="text-decoration-none">
-            Login
-          </a>
+          Remembered your password? <a href="/login">Login</a>
         </p>
       </div>
     </div>

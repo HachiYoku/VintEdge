@@ -1,6 +1,5 @@
 import { Result, Button } from "antd";
 import { useNavigate } from "react-router-dom";
-import "../../styles/components/OrderButtons.css";
 
 const VerifyEmailFailed = () => {
   const navigate = useNavigate();
@@ -22,11 +21,7 @@ const VerifyEmailFailed = () => {
         >
           Resend Verification Email
         </Button>,
-        <Button
-          key="login"
-          className="secondary-orange-btn"
-          onClick={() => navigate("/login")}
-        >
+        <Button key="login" onClick={() => navigate("/login")}>
           Back to Login
         </Button>,
       ]}

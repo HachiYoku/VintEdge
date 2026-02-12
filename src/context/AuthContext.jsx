@@ -1,58 +1,103 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
+const API_URL = "http://localhost:3000";
 
 export const AuthProvider = ({ children }) => {
-  const [users, setUsers] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Load from localStorage
+  // 🔹 Load profile if token exists
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    const storedUser = JSON.parse(localStorage.getItem("currentUser")) || null;
-    setUsers(storedUsers);
-    setUser(storedUser);
-    setLoading(false);
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    fetch(`${API_URL}/user/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Unauthorized");
+        return res.json();
+      })
+      .then((data) => {
+        setUser(data);
+      })
+      .catch(() => {
+        localStorage.clear();
+        setUser(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
-  // Save users
-  useEffect(() => {
-    if (!loading) localStorage.setItem("users", JSON.stringify(users));
-  }, [users, loading]);
+  // 🔹 REGISTER
+  const registerUser = async ({ username, email, password }) => {
+    const res = await fetch(`${API_URL}/user/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password }),
+    });
 
-  // Save current user
-  useEffect(() => {
-    if (!loading) localStorage.setItem("currentUser", JSON.stringify(user));
-  }, [user, loading]);
+    const data = await res.json();
 
-  const signup = (name, email, password) => {
-    const exists = users.find((u) => u.email === email);
-    if (exists) return false;
+    if (!res.ok) {
+      throw new Error(data.message || "Registration failed");
+    }
 
-    const newUser = { name, email, password, avatar: "" };
-    setUsers([...users, newUser]);
-    setUser(newUser);
-    return true;
+    return data;
   };
 
-  const login = (email, password) => {
-    const found = users.find(
-      (u) => u.email === email && u.password === password
-    );
-    if (!found) return false;
-    setUser(found);
-    return true;
+  // 🔹 LOGIN
+  const loginUser = async ({ email, password }) => {
+    const res = await fetch(`${API_URL}/user/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Login failed");
+    }
+
+    // save token
+    localStorage.clear();
+    localStorage.setItem("accessToken", data.accessToken);
+
+    // fetch real profile
+    const profileRes = await fetch(`${API_URL}/user/profile`, {
+      headers: {
+        Authorization: `Bearer ${data.accessToken}`,
+      },
+    });
+
+    const profile = await profileRes.json();
+    setUser(profile);
   };
 
+  // 🔹 LOGOUT
   const logout = () => {
+    localStorage.clear();
     setUser(null);
-    localStorage.removeItem("currentUser");
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, loading, signup, login, logout }}
+      value={{
+        user,
+        loading,
+        registerUser,
+        loginUser,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

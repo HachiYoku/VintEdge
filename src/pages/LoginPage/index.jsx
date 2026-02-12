@@ -8,16 +8,24 @@ import "../../styles/pages/LoginPage.css";
 const { Title, Text } = Typography;
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { loginUser } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = (values) => {
-    const success = login(values.email, values.password);
-    if (success) {
+  const handleLogin = async (values) => {
+    try {
+      await loginUser({
+        email: values.email,
+        password: values.password,
+      });
       message.success("Logged in successfully!");
       navigate("/");
-    } else {
-      message.error("Invalid credentials");
+    } catch (err) {
+      if (err.message?.includes("verify your email")) {
+        message.warning(err.message);
+        navigate("/resend-verification"); // optional
+      } else {
+        message.error(err.message || "Invalid credentials");
+      }
     }
   };
 
@@ -36,7 +44,7 @@ const LoginPage = () => {
         <Title level={2} className="login-title">
           Login
         </Title>
-        <Text className="login-subtitle">Explore VintEdge </Text>
+        <Text className="login-subtitle">Explore VintEdge</Text>
 
         <Form layout="vertical" onFinish={handleLogin}>
           <Form.Item
