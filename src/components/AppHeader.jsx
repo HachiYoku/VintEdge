@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Layout, Space, Input, Badge, Drawer } from "antd";
 import BurgerMenu from "./BurgerMenu";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { TbUserSquare } from "react-icons/tb";
-import { PiShoppingCartBold } from "react-icons/pi";
+import { FiUser } from "react-icons/fi";
+import { PiShoppingCartLight } from "react-icons/pi";
 import { FiSearch } from "react-icons/fi";
 import { useCart } from "../context/CartContext";
 import "../styles/components/AppHeader.css";
@@ -79,11 +79,11 @@ const AppHeader = ({
 
         <Link to="/cart">
           <Badge count={totalItems} size="small" offset={[0, 5]}>
-            <PiShoppingCartBold className="cart-icon" />
+            <PiShoppingCartLight className="cart-icon" />
           </Badge>
         </Link>
         <Link to="/profile">
-          <TbUserSquare className="profile-icon" />
+          <FiUser className="profile-icon" />
         </Link>
       </Space>
 

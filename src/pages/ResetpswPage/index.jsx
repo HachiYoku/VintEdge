@@ -3,7 +3,7 @@ import { Form, Input, Button, Typography, message } from "antd";
 import { LockOutlined } from "@ant-design/icons";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../styles/pages/LoginPage.css";
-// import blogApi from "../api/blogApi";
+import api from "../../api/client";
 
 const { Title, Text } = Typography;
 
@@ -22,9 +22,10 @@ const ResetPswPage = () => {
 
     try {
       setLoading(true);
-      const res = await blogApi.post(`/api/auth/reset-password/${token}`, {
+      const res = await api.post(`/auth/reset-password/${token}`, {
         password,
       });
+
       message.success(res.data.message || "Password reset successfully!");
       navigate("/login");
     } catch (err) {

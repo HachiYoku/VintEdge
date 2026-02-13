@@ -3,7 +3,7 @@ import { Typography, message, Button, Input, Form } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "../../styles/pages/LoginPage.css";
-// import blogApi from "../api/blogApi"; // make sure this exists
+import api from "../../api/client";
 
 const { Title, Text } = Typography;
 
@@ -13,7 +13,7 @@ const ForgotPswPage = () => {
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const res = await blogApi.post("/api/auth/forgot-password", {
+      const res = await api.post("/auth/forgot-password", {
         email: values.email,
       });
       message.success(res.data.message || "Reset link sent to your email");

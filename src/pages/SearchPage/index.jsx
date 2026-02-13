@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Spin,Empty } from "antd";
+import { Spin, Empty } from "antd";
 import { useSearchParams } from "react-router-dom";
-import axios from "axios";
+import api from "../../api/client";
+import { normalizeProducts } from "../../api/normalizeProduct";
 import ProductCard from "../../components/ProductCard";
 
 const SearchPage = () => {
@@ -22,27 +23,27 @@ const SearchPage = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const res = await axios.get("https://fakestoreapi.com/products");
-        let filtered = res.data;
+        const res = await api.get("/product");
+        let filtered = normalizeProducts(res.data);
 
         if (searchTerm.trim() !== "") {
           const q = searchTerm.toLowerCase();
 
           // 1. Try to match category exactly
-          const categoryMatch = res.data.filter(
-            (p) => p.category.toLowerCase() === q
-          );
-
-          if (categoryMatch.length > 0) {
-            filtered = categoryMatch;
-          } else {
-            // 2. Otherwise, fallback to title search (and partial category search)
-            filtered = res.data.filter(
-              (p) =>
-                p.title.toLowerCase().includes(q) ||
-                p.category.toLowerCase().includes(q)
+            const categoryMatch = filtered.filter(
+              (p) => p.category.toLowerCase() === q
             );
-          }
+
+            if (categoryMatch.length > 0) {
+              filtered = categoryMatch;
+            } else {
+              // 2. Otherwise, fallback to title search (and partial category search)
+              filtered = filtered.filter(
+                (p) =>
+                  p.title.toLowerCase().includes(q) ||
+                  p.category.toLowerCase().includes(q)
+              );
+            }
         }
 
         setProducts(filtered);

@@ -37,3 +37,70 @@ body.dark-mode .product-card:hover,
 body.dark-mode .popular-item-card:hover {
   background-color: #3a3a3a;
 }
+
+.product-owner-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  width: 100%;
+  margin-top: 12px;
+  border-radius: 8px;
+  background: #ff6431;
+  color: #fff;
+  font-weight: 600;
+  user-select: none;
+  cursor: not-allowed;
+}
+
+body.dark-mode .product-owner-badge {
+  background: #ff6431;
+  color: #fff;
+}
+
+/* Condition Tags (shared) */
+.condition-tag {
+  margin-top: 6px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  display: inline-block;
+  width: fit-content;
+}
+
+.condition-tag.brand-new {
+  background-color: #ff6530;
+  color: #fff;
+}
+
+.condition-tag.like-new {
+  background-color: #52c41a;
+  color: #fff;
+}
+
+.condition-tag.fair {
+  background-color: #faad14;
+  color: #fff;
+}
+
+.condition-tag.good {
+  background-color: #9bf36e;
+  color: #1b1b1b;
+}
+
+.condition-tag.worn {
+  background-color: #a25b21;
+  color: #fff;
+}
+
+.condition-tag.for-parts-not-working {
+  background-color: #f5222d;
+  color: #fff;
+}
+
+.condition-tag.unknown {
+  background-color: #d9d9d9;
+  color: #333;
+}

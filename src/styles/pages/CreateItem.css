@@ -30,8 +30,9 @@
 /* === Upload Box === */
 .create-item-upload-box {
   border: 1px dashed #d9d9d9;
-  border-radius: 8px;
-  height: 150px;
+  border-radius: 12px;
+  width: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,16 +40,30 @@
   cursor: pointer;
   text-align: center;
   transition: all 0.3s;
+  background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 100%);
+  padding: 16px 12px;
 }
 
 .create-item-upload-box:hover {
-  border-color: #c7bfbf;
+  border-color: #ff8a63;
+  box-shadow: 0 6px 16px rgba(255, 100, 49, 0.15);
 }
 
 .upload-icon {
-  font-size: 12px;
+  font-size: 22px;
   margin-bottom: 8px;
-  padding: 35px;
+  color: #ff6431;
+}
+
+.upload-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+}
+
+.upload-subtitle {
+  font-size: 12px;
+  color: #777;
 }
 
 /* Add spacing between Product Image and Condition cards */
@@ -58,14 +73,14 @@
 
 /* === Image Preview === */
 .create-item-image-preview {
-  border: 1px solid #d9d9d9;
+  border: 1px solid #e3e3e3;
   border-radius: 8px;
-  height: 150px;
+  height: 170px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #f4f4f4;
+  background: #fafafa;
 }
 
 .preview-img {
@@ -78,34 +93,17 @@
   color: #999;
 }
 
-/* === Condition Radio Buttons === */
-.create-item-condition .ant-radio-inner {
-  display: none !important;
+/* === Condition Select === */
+.create-item-condition-select .ant-select-selector {
+  border-radius: 10px !important;
+  height: 40px !important;
+  align-items: center !important;
+  padding: 6px 12px !important;
 }
 
-.create-item-condition .ant-radio-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 6px 8px;
-  margin: 4px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s;
-  width: 100%;
-  text-align: center;
-  background: #f0f0f0; /* default background */
-  color: #000;
-}
-
-.create-item-condition .ant-radio-wrapper:hover {
-  background: #f0f0f0;
-}
-
-.create-item-condition .ant-radio-wrapper-checked {
-  background: #ff6431ed;
-  font-weight: 600;
-  color: #fff !important;
+.create-item-condition-select .ant-select-selection-item,
+.create-item-condition-select .ant-select-selection-placeholder {
+  line-height: 28px !important;
 }
 
 /* === Buttons === */
@@ -189,6 +187,10 @@
   text-align: center;
 }
 
+.qty-input .ant-input-number-input {
+  text-align: center;
+}
+
 .price-input {
   width: 70%;
 }
@@ -222,6 +224,7 @@ body.dark-mode .create-item-card {
 
 body.dark-mode .create-item-upload-box {
   border-color: #555;
+  background: linear-gradient(180deg, #2b2b2b 0%, #1f1f1f 100%);
 }
 
 body.dark-mode .create-item-image-preview {
@@ -247,20 +250,10 @@ body.dark-mode .ant-btn-primary {
   color: #fff !important;
 }
 
-/* Condition Buttons */
-body.dark-mode .create-item-condition .ant-radio-wrapper {
-  background: #141414;
-  color: #fff;
-}
-
-body.dark-mode .create-item-condition .ant-radio-wrapper:hover {
-  background: #ff6431c8;
-}
-
-body.dark-mode .create-item-condition .ant-radio-wrapper-checked {
-  background: #ff6431ed;
+body.dark-mode .create-item-condition-select .ant-select-selector {
+  background-color: #2b2b2b !important;
+  border-color: #666 !important;
   color: #fff !important;
-  font-weight: 600;
 }
 
 /* Quantity Buttons */

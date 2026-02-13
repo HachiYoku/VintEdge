@@ -11,13 +11,13 @@ const LoginPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = (values) => {
-    const success = login(values.email, values.password);
-    if (success) {
+  const handleLogin = async (values) => {
+    try {
+      await login(values.email, values.password);
       message.success("Logged in successfully!");
       navigate("/");
-    } else {
-      message.error("Invalid credentials");
+    } catch (err) {
+      message.error(err.response?.data?.message || "Invalid credentials");
     }
   };
 
