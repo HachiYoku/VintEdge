@@ -266,20 +266,22 @@ const CreateItem = () => {
 
               <Row gutter={[16, 16]}>
                 <Col xs={24} md={12}>
-                  <Form.Item
-                    label="Price"
-                    name="price"
-                    rules={[
-                      { required: true, message: "Please enter a price" },
-                    ]}
-                  >
+                  <Form.Item label="Price" required>
                     <Space.Compact>
-                      <InputNumber
-                        className="price-input"
-                        min={0}
-                        precision={2}
-                        stringMode
-                      />
+                      <Form.Item
+                        name="price"
+                        noStyle
+                        rules={[
+                          { required: true, message: "Please enter a price" },
+                        ]}
+                      >
+                        <InputNumber
+                          className="price-input"
+                          min={0}
+                          precision={2}
+                          stringMode
+                        />
+                      </Form.Item>
                       <Input value="MMK" disabled className="currency-select" />
                     </Space.Compact>
                   </Form.Item>

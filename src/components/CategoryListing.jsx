@@ -7,22 +7,7 @@ const CategoryListing = () => {
   const { categories } = useOutletContext();
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexWrap: "nowrap",
-        justifyContent: "center",
-        gap: "10px",
-        padding: "20px",
-        backgroundColor: "#F8F3F0",
-        borderRadius: "12px",
-        overflowX: "auto",
-        margin: "20px",
-        width: "calc(100% - 40px)",
-        marginTop: "70px",
-        marginBottom: "40px",
-      }}
-    >
+    <div className="category-listing">
       {categories.map((category, index) => (
         <CategoryCard key={index} category={category} />
       ))}
