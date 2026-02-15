@@ -76,7 +76,7 @@ const ForgotPswPage = () => {
 
         <p className="text-center mt-2">
           Remembered your password?{" "}
-          <Link to="/login" className="text-decoration-none ">
+          <Link to="/login" className="text-decoration-none " style={{ color: "#ff6431" }}>
             Login
           </Link>
         </p>

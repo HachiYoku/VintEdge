@@ -80,7 +80,7 @@ const LoginPage = () => {
         </Form>
 
         <p className="text-end mt-2">
-          <Link to="/forgot_password" className="text-decoration-none ">
+          <Link to="/forgot_password" className="text-decoration-none " style={{ color: "#ff6431" }}>
             Forgot Password?
           </Link>
         </p>
