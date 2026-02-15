@@ -19,6 +19,7 @@ import ProductDetailPage from "./pages/ProductDetail";
 import VerifyEmailSuccess from "./pages/auth/VerifyEmailSuccess";
 import VerifyEmailFailed from "./pages/auth/VerifyEmailFailed";
 import VerifyEmail from "./pages/auth/VerifyEmail";
+import ResendVerification from "./pages/auth/ResendVerification";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage/OrderConfirmationPage";
 import ResetpswPage from "./pages/ResetpswPage";
 import ForgotpswPage from "./pages/ForgotpswPage";
@@ -97,6 +98,14 @@ const App = () => {
                 element={
                   <PublicRoute>
                     <ResetpswPage />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/resend-verification"
+                element={
+                  <PublicRoute>
+                    <ResendVerification />
                   </PublicRoute>
                 }
               />

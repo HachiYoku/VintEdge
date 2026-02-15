@@ -38,7 +38,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    const res = await api.post("/user/login", { email, password });
+    const res = await api.post(
+      "/user/login",
+      { email, password },
+      { skipAuthRedirect: true }
+    );
     const token = res.data?.accessToken;
     if (!token) throw new Error("Missing access token");
     localStorage.setItem("accessToken", token);

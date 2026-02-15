@@ -19,7 +19,11 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const shouldRedirect =
+      error.response?.status === 401 &&
+      !error.config?.skipAuthRedirect &&
+      !error.config?.url?.includes("/user/login");
+    if (shouldRedirect) {
       localStorage.removeItem("accessToken");
       window.location.href = "/login";
     }
