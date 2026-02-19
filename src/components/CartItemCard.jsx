@@ -9,6 +9,7 @@ const { Text } = Typography;
 
 const CartItemCard = ({ item, selected, onSelectChange }) => {
   const { updateCartItemCount, removeFromCart } = useCart();
+  const currency = item.currency || "MMK";
 
   const stock =
     item.stock ?? item.product?.quantity ?? item.rating?.count ?? null;
@@ -64,7 +65,7 @@ const CartItemCard = ({ item, selected, onSelectChange }) => {
         {/* Right Section */}
         <div className="cart-card-right">
           <Text strong className="cart-card-price">
-            ${(item.price * item.quantity).toFixed(2)}
+            {(item.price * item.quantity).toFixed(2)} {currency}
           </Text>
 
           <Space>

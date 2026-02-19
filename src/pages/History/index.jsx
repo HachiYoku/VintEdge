@@ -31,7 +31,7 @@ const History = ({ isDarkMode = false }) => {
           image: p.image || product.image,
           quantity: p.quantity,
           price: p.price,
-          currency: product.currency || "USD",
+          currency: p.currency || product.currency || "MMK",
           condition: order.status,
           date: order.createdAt,
         };

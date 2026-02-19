@@ -58,6 +58,15 @@
   transition: color 0.3s;
 }
 
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  display: block;
+}
+
 .cart-icon:hover,
 .profile-icon:hover,
 .search-icon:hover {
@@ -90,6 +99,10 @@ body.dark-mode .cart-icon,
 body.dark-mode .profile-icon,
 body.dark-mode .search-icon {
   color: #ddd;
+}
+
+body.dark-mode .profile-avatar {
+  border-color: #444;
 }
 
 body.dark-mode .cart-icon:hover,

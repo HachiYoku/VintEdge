@@ -5,7 +5,6 @@ import {
   FacebookOutlined,
   TwitterOutlined,
   InstagramOutlined,
-  LinkedinOutlined,
   YoutubeOutlined,
   MailOutlined,
   PhoneOutlined,
@@ -26,7 +25,6 @@ const AppFooter = () => {
             <FacebookOutlined />
             <TwitterOutlined />
             <InstagramOutlined />
-            <LinkedinOutlined />
             <YoutubeOutlined />
           </div>
         </Col>

@@ -6,6 +6,7 @@ import { FiUser } from "react-icons/fi";
 import { PiShoppingCartLight } from "react-icons/pi";
 import { FiSearch } from "react-icons/fi";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import "../styles/components/AppHeader.css";
 
 const { Header } = Layout;
@@ -18,6 +19,7 @@ const AppHeader = ({
   const navigate = useNavigate();
   const location = useLocation();
   const { cart } = useCart();
+  const { user } = useAuth();
   const [showSearchDrawer, setShowSearchDrawer] = useState(false);
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -83,7 +85,15 @@ const AppHeader = ({
           </Badge>
         </Link>
         <Link to="/profile">
-          <FiUser className="profile-icon" />
+          {user?.avatar ? (
+            <img
+              src={user.avatar}
+              alt={user.username || "User avatar"}
+              className="profile-avatar"
+            />
+          ) : (
+            <FiUser className="profile-icon" />
+          )}
         </Link>
       </Space>
 

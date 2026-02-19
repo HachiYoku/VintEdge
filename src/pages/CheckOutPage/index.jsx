@@ -14,11 +14,11 @@ const CheckoutPage = () => {
   const checkoutItems = location.state?.checkoutItems || [];
   const { setCartFromApi } = useCart();
 
-  // Calculate total price
-  const totalPrice = checkoutItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0,
-  );
+  const totalsByCurrency = checkoutItems.reduce((acc, item) => {
+    const currency = item.currency || "MMK";
+    acc[currency] = (acc[currency] || 0) + item.price * item.quantity;
+    return acc;
+  }, {});
 
   const handleCheckout = async () => {
     if (checkoutItems.length === 0) return;
@@ -83,7 +83,10 @@ const CheckoutPage = () => {
 
                 {/* Price */}
                 <div className="checkout-price">
-                  <Text strong>${(item.price * item.quantity).toFixed(2)}</Text>
+                  <Text strong>
+                    {(item.price * item.quantity).toFixed(2)}{" "}
+                    {item.currency || "MMK"}
+                  </Text>
                 </div>
               </div>
             </Card>
@@ -91,9 +94,11 @@ const CheckoutPage = () => {
 
           {/* ✅ Checkout Summary */}
           <div className="checkout-summary">
-            <Title level={4} className="total">
-              Total: ${totalPrice.toFixed(2)}
-            </Title>
+            {Object.entries(totalsByCurrency).map(([currency, total]) => (
+              <Title key={currency} level={4} className="total">
+                Total ({currency}): {total.toFixed(2)}
+              </Title>
+            ))}
             <Button
               type="primary"
               size="large"
